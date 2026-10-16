@@ -6,13 +6,14 @@
       <template v-if="result.score!==null">
         <div class="hl-purity-value hl-mono">{{ result.score }}<span>/100</span></div>
         <div class="hl-purity-bar hl-risk-bar" :class="'hl-risk-'+result.level" role="meter" :aria-label="t('ipRisk.title')" aria-valuemin="0" aria-valuemax="100" :aria-valuenow="result.score"><span :style="{width:result.score+'%'}" /></div>
-        <p class="hl-purity-label">{{ t('ipRisk.level_'+result.level) }}</p>
+        <p class="hl-purity-label">{{ t(result.scoreKind==='observed'?'ipRisk.observedScore':'ipRisk.level_'+result.level) }}</p>
+        <p v-if="result.scoreKind==='observed'" class="hl-source-caption" role="status">{{ t('ipRisk.observedNote',result.range) }}</p>
       </template>
-      <p v-else class="hl-risk-incomplete" role="status">{{ result.range?`${result.range.min}–${result.range.max} /100 · `:'' }}{{ t('ipRisk.incomplete') }}</p>
+      <p v-else class="hl-risk-incomplete" role="status">{{ t('ipRisk.incomplete') }}</p>
       <p class="hl-source-caption">{{ t('ipRisk.coverage',{checked:result.coverage.checked,total:result.coverage.total}) }} · {{ isoToDateTime(result.queriedAt,locale) }}</p>
       <ul class="hl-risk-checks">
         <li v-for="check in result.checks" :key="check.id">
-          <div class="hl-risk-rule-heading"><strong>{{ t('ipRisk.rule_'+check.id) }}</strong><span :class="{'hl-risk-hit':check.hit===true}">{{ check.status==='ok' ? t(check.hit?'ipRisk.hit':'ipRisk.notHit') : t(check.status==='stale'?'ipRisk.stale':check.status==='unsupported'?'ipRisk.unsupported':'ipRisk.missing') }}</span></div>
+          <div class="hl-risk-rule-heading"><strong>{{ t('ipRisk.rule_'+check.id) }}</strong><span :class="{'hl-risk-hit':check.hit===true}">{{ check.hit===true?t('ipRisk.hit'):check.status==='ok' ? t('ipRisk.notHit') : t(check.status==='stale'?'ipRisk.stale':check.status==='unsupported'?'ipRisk.unsupported':'ipRisk.missing') }}</span></div>
           <p class="hl-source-caption">{{ check.source }} · {{ t('ipRisk.weight',{points:check.maxPoints}) }}<template v-if="check.hit"> · {{ t('ipRisk.added',{points:check.points}) }}</template><template v-if="check.suppressedBy"> · {{ t('ipRisk.deduplicated') }}</template></p>
           <p class="hl-source-caption hl-mono" v-if="check.matchedPrefix" data-mask="ip">{{ check.matchedPrefix }}</p>
           <p class="hl-source-caption" v-if="check.asOf">{{ t('ipRisk.asOf') }}: {{ isoToDateTime(check.asOf,locale) }}</p>

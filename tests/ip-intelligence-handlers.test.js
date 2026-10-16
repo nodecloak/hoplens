@@ -31,7 +31,8 @@ test('risk source observations are cached and coalesced for identical lookups', 
   adapters.ipapi=async()=>{calls++;return {status:'ok',data:{proxy:false,hosting:false}};};
   const handler=createIPRiskHandler({load:createReportLoader({evidence:()=>({}),adapters})});
   const res=response();await Promise.all([handler({query:{ip:'1.0.0.1'}},res),handler({query:{ip:'1.0.0.1'}},response())]);
-  assert.equal(res.body.score,null);assert.equal(res.body.coverage.checked,2);assert.equal(calls,1);
+  assert.equal(res.body.score,0);assert.equal(res.body.scoreKind,'observed');assert.equal(res.body.status,'partial');
+  assert.equal(res.body.coverage.checked,2);assert.equal(calls,1);
 });
 
 test('cached classification never pins the previous local risk snapshot',async()=>{
