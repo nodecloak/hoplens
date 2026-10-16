@@ -40,13 +40,13 @@
         </div>
       </div>
       <div class="text-base text-muted-foreground">
-        <p v-if="!isSimpleMode">{{ t('hoplens.connectivityNote') }}</p>
+        <p v-if="!isSimpleMode">{{ t('ipnodecloak.connectivityNote') }}</p>
       </div>
     </header>
 <dl class="hl-reach-rows"><div v-for="test in connectivityTests" :key="test.id"><dt>{{ test.name }}</dt><dd class="hl-reach-bar"><span v-if="test.time > 0" :class="{ 'hl-slow-bar': test.time > 150 }" :style="{ width: Math.min(100, Math.max(3, test.time / 3)) + '%' }" /></dd><dd><button type="button" class="hl-reach-value" @click="checkConnectivityHandler(test, () => {}, true)" :aria-label="t('connectivity.RefreshThisTest') + ': ' + test.name" :class="textClass(toneOf(test))">{{ test.time > 0 ? test.time + ' ms' : test.status }}</button></dd></div></dl>
 
 
-<details class="hl-test-details"><summary>{{ t('hoplens.details') }}</summary>
+<details class="hl-test-details"><summary>{{ t('ipnodecloak.details') }}</summary>
 <p class="hl-detail-note">{{ t('connectivity.Note') }}</p>
     <!-- Card grid -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">

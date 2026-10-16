@@ -187,7 +187,7 @@ describe('store — preferences', () => {
     // Legacy migration was retired: v6 content must not leak into the store,
     // and the stale key is left untouched (nothing reads it anymore).
     assert.equal(s.userPreferences.lang, 'auto', 'legacy lang does not carry over');
-    assert.equal(s.userPreferences.autoRunConnectivity, false, 'Hoplens keeps active tests opt-in');
+    assert.equal(s.userPreferences.autoRunConnectivity, false, 'IPNodeCloak keeps active tests opt-in');
     assert.ok(!('autoStart' in s.userPreferences));
   });
 });

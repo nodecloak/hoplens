@@ -1848,7 +1848,7 @@
     "title": "IP.NodeCloak — IP & network toolbox",
     "description": "A better and open-source IP toolbox: check your IP address & geolocation, test IP for WebRTC and DNS IP leaks, run an IP quality check, browser fingerprint check, plus speed test, global latency test, MTR test, Whois search, and more.",
     "keywords": "MyIP, IP tool, IP check, IP Leak Check, IP quality check, IP lookup, DNS leak test, WebRTC leak test, browser fingerprint check, speed test, global latency test, MTR test, DNS lookup, Whois search",
-    "footerLink": "https://github.com/nodecloak/hoplens",
+    "footerLink": "https://github.com/nodecloak/ipnodecloak",
     "copyRightName": "Originally from ",
     "copyRightLink": "https://ipcheck.ing",
     "copyRightLinkName": "IPCheck.ing"
@@ -1900,7 +1900,7 @@
     "appDescription": "All in one IP Toolbox",
     "installDescription": "You've already used IPCheck.ing {count} times — install it as an app for a smoother experience and quicker access."
   },
-  "hoplens": {
+  "ipnodecloak": {
     "live": "LIVE · YOUR PUBLIC ADDRESS",
     "overview": "Overview",
     "leaks": "Leak tests",
@@ -1954,7 +1954,7 @@
   },
   "ipDetails": {
     "title": "IP purity",
-    "note": "Explore this IP’s network, location and risk evidence, with a source for every observation.",
+    "note": "Explore this IP’s purity, network and location.",
     "domain": "AS domain",
     "prefix": "BGP prefix",
     "range": "IP range",
@@ -1964,8 +1964,6 @@
     "trafficValues": "Human {human}%, bot {bot}%",
     "human": "Human",
     "bot": "Bot",
-    "trafficNote": "Cloudflare Radar · ASN-wide HTTP traffic over the last 7 days.",
-    "viewRadar": "View this ASN on Cloudflare Radar",
     "locations": "Location comparison",
     "locationNote": "Each provider looks up this same IP. Geographic databases can disagree.",
     "countryOnly": "country only",

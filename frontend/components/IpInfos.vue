@@ -4,10 +4,10 @@
     <header class="mb-2 flex flex-col items-start justify-between gap-4">
       <h2 id="IPInfo"
         class="m-0 flex min-w-0 flex-1 items-center gap-2 text-xl md:text-3xl font-semibold tracking-tight leading-tight">
-        {{ t('hoplens.sourcesTitle') }}
+        {{ t('ipnodecloak.sourcesTitle') }}
       </h2>
       <div class="text-base text-muted-foreground">
-        <p>{{ t('hoplens.sourcesNote') }}</p>
+        <p>{{ t('ipnodecloak.sourcesNote') }}</p>
       </div>
     </header>
 
@@ -43,7 +43,7 @@ import { emitAppEvent, waitForAppEvent } from '@/utils/app-events';
 import { useAppCommand } from '@/composables/use-app-command.js';
 import { useAsnInfo } from '@/composables/use-asn-info.js';
 import { authenticatedFetch, fetchErrorLabel, logSourceFetchFailure } from '@/utils/authenticated-fetch';
-import IPCard from './hoplens/HoplensIPCard.vue';
+import IPCard from './ipnodecloak/IPNodeCloakIPCard.vue';
 import InfoBanner from './widgets/InfoBanner.vue';
 
 

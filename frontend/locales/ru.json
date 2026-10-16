@@ -1848,7 +1848,7 @@
     "title": "IP.NodeCloak — IP & network toolbox",
     "description": "Удобный набор IP-инструментов с открытым кодом: проверка IP-адреса и геолокации, проверка утечек IP через WebRTC и DNS, проверка качества IP, отпечатка браузера, скорости, глобальной задержки и MTR, поиск Whois и другие функции.",
     "keywords": "MyIP, инструменты IP, проверка IP, утечка IP, качество IP, поиск IP, тест утечки DNS, тест утечки WebRTC, отпечаток браузера, тест скорости, глобальная задержка, тест MTR, поиск DNS, поиск Whois",
-    "footerLink": "https://github.com/nodecloak/hoplens",
+    "footerLink": "https://github.com/nodecloak/ipnodecloak",
     "copyRightName": "Оригинальный проект: ",
     "copyRightLink": "https://ipcheck.ing",
     "copyRightLinkName": "IPCheck.ing"
@@ -1900,7 +1900,7 @@
     "appDescription": "Универсальный набор IP-инструментов",
     "installDescription": "Вы открываете IPCheck.ing уже в {count}-й раз — установите его как приложение, чтобы пользоваться им быстрее и удобнее."
   },
-  "hoplens": {
+  "ipnodecloak": {
     "live": "ОНЛАЙН · ВАШ ПУБЛИЧНЫЙ АДРЕС",
     "overview": "Обзор",
     "leaks": "Утечки",
@@ -1954,7 +1954,7 @@
   },
   "ipDetails": {
     "title": "Чистота IP",
-    "note": "Сеть, геолокация и сигналы риска этого IP с указанием источников.",
+    "note": "Чистота, сеть и геолокация этого IP.",
     "domain": "Домен AS",
     "prefix": "Префикс BGP",
     "range": "Диапазон IP",
@@ -1964,8 +1964,6 @@
     "trafficValues": "Люди {human}%, боты {bot}%",
     "human": "Люди",
     "bot": "Боты",
-    "trafficNote": "Cloudflare Radar · HTTP-трафик всей автономной системы за последние 7 дней.",
-    "viewRadar": "Посмотреть ASN в Cloudflare Radar",
     "locations": "Сравнение геолокации",
     "locationNote": "Все источники проверяют один IP. Географические базы могут расходиться.",
     "countryOnly": "только страна",

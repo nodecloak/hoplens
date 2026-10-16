@@ -7,7 +7,7 @@ Area-specific details: @frontend/AGENTS.md (Vue SPA) · @api/AGENTS.md (Express 
 
 This repository is NodeCloak's IP.NodeCloak fork, deployed at https://ip.nodecloak.com.
 Keep upstream MIT attribution. The IP.NodeCloak visual layer is in
-`frontend/components/hoplens/` and `frontend/style/hoplens.css`; use its dark,
+`frontend/components/ipnodecloak/` and `frontend/style/ipnodecloak.css`; use its dark,
 light and mobile tokens. Live summaries must use the latest diagnostic event,
 including failed reruns, rather than an older successful share-report snapshot.
 The dashboard shows actual check coverage, never a fabricated privacy score.

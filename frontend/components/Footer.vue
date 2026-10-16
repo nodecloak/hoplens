@@ -1,5 +1,5 @@
-<!-- Shared Hoplens footer, retaining the upstream project's attribution. -->
-<template><HoplensFooter /></template>
+<!-- Shared IPNodeCloak footer, retaining the upstream project's attribution. -->
+<template><IPNodeCloakFooter /></template>
 <script setup>
-import HoplensFooter from './hoplens/HoplensFooter.vue';
+import IPNodeCloakFooter from './ipnodecloak/IPNodeCloakFooter.vue';
 </script>

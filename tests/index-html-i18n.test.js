@@ -116,7 +116,7 @@ describe('index.html boot copy — shape holds across languages', () => {
             assert.equal(links.length, 1,
                 `index.html SLOW_HINTS.${code}: expected exactly one link, found ${links.length}`);
             assert.match(hint, /<a\s+href="\/">/,
-                `index.html SLOW_HINTS.${code}: reload must stay on Hoplens`);
+                `index.html SLOW_HINTS.${code}: reload must stay on IPNodeCloak`);
         });
     }
 });
