@@ -111,6 +111,8 @@ export const SCENARIO_WEIGHTS={
 export const buildIPReport=(ip,sources,now=Date.now())=>{
   const get=id=>sources.find(row=>row.id===id),data=id=>get(id)?.status==='ok'?get(id).data:null;
   const network=data('network'),classification=data('ipapi'),proxy=data('proxycheck'),registration=data('rdap'),rdns=data('rdns');
+  const usageType=proxy?.type&&proxy.type!=='unknown'?proxy.type:classification?.mobile===true?'mobile':classification?.hosting===true?'hosting':'unknown';
+  const usageTypeSource=proxy?.type&&proxy.type!=='unknown'?'proxycheck.io':usageType!=='unknown'?'IP-API':null;
   const countryCode=classification?.countryCode??proxy?.countryCode??network?.location?.countryCode??null;
   const risk=assessReportRisk(sources,now);
   const ptrRule=rule('ptr','DNS PTR',15,rdns&&typeof rdns.exists==='boolean'?'ok':get('rdns')?.status??'missing',rdns?rdns.exists===false:null,{asOf:get('rdns')?.observedAt??null});
@@ -125,9 +127,9 @@ export const buildIPReport=(ip,sources,now=Date.now())=>{
     profile:{countryCode,country:classification?.country??proxy?.country??network?.location?.country??null,region:classification?.region??proxy?.region??null,city:classification?.city??proxy?.city??null,
       asn:network?.asn??null,asnName:network?.asnName??null,domain:network?.domain??null,prefix:network?.prefix??null,range:network?.range??null,
       registration,registrationRelation:registration?.countryCode&&countryCode?registration.countryCode===countryCode?'same':'different':'unknown',nativeType:'unknown',
-      type:proxy?.type&&proxy.type!=='unknown'?proxy.type:classification?.mobile===true?'mobile':classification?.hosting===true?'hosting':'unknown',
+      type:usageType,
       rdns,sharing:proxy&&proxy.subnetDevices!==null?{count:proxy.subnetDevices,subnet:proxy.subnet,source:'proxycheck.io',providerUpdatedAt:proxy.providerUpdatedAt}:null},
-    risk,scenarios,platforms:assessPlatformRegions(countryCode,now),
+    risk:{...risk,usageType,usageTypeSource},scenarios,platforms:assessPlatformRegions(countryCode,now),
     passive:data('internetdb'),abuse:data('abuseipdb'),radar:data('radar'),
     evidence:risk.checks,sources:sources.map(row=>({...row})),scope:'public-ip-observations',livePlatformAccessTested:false};
 };

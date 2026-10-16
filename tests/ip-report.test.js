@@ -37,6 +37,20 @@ test('proxy observations preserve explicit flags and scoped estimates without re
   assert.equal(data.proxy,false);assert.equal(data.hosting,false);
   assert.equal(normalizeProxyObservation({status:'ok','1.1.1.1':{}},ip),null);
 });
+test('homepage risk summary retains the report network type and its actual source',()=>{
+  for(const type of ['business','residential','education','hosting','mobile']) {
+    const report=buildIPReport(ip,[...fixtures(),source('proxycheck',{type})],now);
+    assert.equal(report.profile.type,type);
+    assert.equal(report.risk.usageType,type);
+    assert.equal(report.risk.usageTypeSource,'proxycheck.io');
+  }
+  for(const [flags,type] of [[{mobile:true},'mobile'],[{hosting:true},'hosting'],[{mobile:false,hosting:false},'unknown']]) {
+    const report=buildIPReport(ip,fixtures().map(row=>row.id==='ipapi'?source('ipapi',flags):row),now);
+    assert.equal(report.profile.type,type);
+    assert.equal(report.risk.usageType,type);
+    assert.equal(report.risk.usageTypeSource,type==='unknown'?null:'IP-API');
+  }
+});
 test('registration is accepted only when its range contains the queried IP and excludes contacts',()=>{
   assert.equal(normalizeRegistration({startAddress:'1.1.1.0',endAddress:'1.1.1.255'},ip),null);
   const result=normalizeRegistration({startAddress:'157.254.32.0',endAddress:'157.254.33.255',country:'US',name:'NET',entities:[{email:'private@example.com'}]},ip);
