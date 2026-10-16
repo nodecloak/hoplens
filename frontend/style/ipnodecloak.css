@@ -31,7 +31,7 @@ body.hl-app{font-family:Geist,ui-sans-serif,system-ui,sans-serif;background:var(
 .hl-hero-main{min-width:0}
 .hl-eyebrow{display:flex;align-items:center;gap:10px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted-foreground);margin:0 0 22px}
 .hl-live-dot{width:7px;height:7px;border-radius:50%;background:var(--hl-signal);flex-shrink:0}
-.hl-public-ip{font-family:'Geist Mono',ui-monospace,monospace;font-size:clamp(40px,6.8vw,92px);font-weight:500;line-height:1.04;letter-spacing:-.055em;margin:0 0 24px;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.hl-public-ip{--info-mask-blur:32px;font-family:'Geist Mono',ui-monospace,monospace;font-size:clamp(40px,6.8vw,92px);font-weight:500;line-height:1.04;letter-spacing:-.055em;margin:0 0 24px;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
 .hl-public-ip.hl-ipv6{font-size:clamp(30px,4.6vw,58px);line-height:1.2}
 .hl-empty-ip{color:var(--muted-foreground)}
 .hl-chips{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:28px;min-height:34px}

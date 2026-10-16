@@ -134,6 +134,10 @@ Every "business state → color" mapping goes through `use-status-tone.js`
   hand-rolled `Intl` / `toLocaleDateString` without a why-comment.
 - **Fit-to-width tokens** — IP / MAC strings in `<FitText>` (`HERO_TIERS` /
   `INLINE_TIERS`; `:max-lines="2"` on heroes); no length-threshold helpers.
+- **IP masking** — the public-address hero declares `--info-mask-blur:32px`;
+  ordinary IP text defaults to 7px. Overrides use pixel values, and screenshot
+  capture must preserve each element's declared strength rather than a shared
+  fixed blur or a partially completed CSS transition.
 - **Filter tags** — `ToggleGroup :spacing="2"` of detached `h-7 rounded-full`
   pills, `w-full flex-wrap` (IPHistory, DnsResolver); never `spacing=0`.
 - **Shareable tool input** — watch `route.query.q` (immediate, so mount and
