@@ -101,7 +101,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ToolLoadingSkeleton } from '@/components/ui/tool-loading-skeleton';
 import InfoBanner from '@/components/widgets/InfoBanner.vue';
 import { Maximize, Minimize, PanelBottomOpen, SquareArrowOutUpRight, Globe, Route, Server, FileSearch, Network, EthernetPort, Calculator, Fingerprint, ListChecks, Activity, Waypoints, ShieldCheck, ScanEye, Radio, UserRound } from '@lucide/vue';
-const toolIcons = { pingtest: Globe, mtrtest: Route, dnsresolver: Server, whois: FileSearch, asn: Network, macchecker: EthernetPort, ipcalculator: Calculator, browserinfo: Fingerprint, securitychecklist: ListChecks, servicestatus: Activity, ruletest: Waypoints, censorshipcheck: ShieldCheck, invisibilitytest: ScanEye, enhanceddnsleaktest: Radio, personacheck: UserRound };
+const toolIcons = { ipreport: FileSearch, pingtest: Globe, mtrtest: Route, dnsresolver: Server, whois: FileSearch, asn: Network, macchecker: EthernetPort, ipcalculator: Calculator, browserinfo: Fingerprint, securitychecklist: ListChecks, servicestatus: Activity, ruletest: Waypoints, censorshipcheck: ShieldCheck, invisibilitytest: ScanEye, enhanceddnsleaktest: Radio, personacheck: UserRound };
 
 const { t } = useI18n();
 

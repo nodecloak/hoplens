@@ -81,7 +81,7 @@ export const useIPDetails=(ip,configs,{getJSON=readJSON,getTrace=readTrace}={})=
     if(!current||current.signal.aborted||!isUsablePublicIP(selected)||riskState.value==='loading') return;
     risk.value=null;riskState.value='loading';
     try {
-      const body=await getJSON(`/api/ip-risk?ip=${encodeURIComponent(selected)}`,current.signal,15000);
+      const body=await getJSON(`/api/ip-risk?ip=${encodeURIComponent(selected)}`,current.signal,25000);
       if(current.signal.aborted) return;
       if(!sameIP(body.ip,selected)) throw new Error('Address mismatch');
       risk.value=['ok','partial'].includes(body.status)?body:null;

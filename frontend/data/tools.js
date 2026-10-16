@@ -25,6 +25,7 @@
 // utils/tool-availability.js; deep links (?tool= / /tools/:slug) ignore them.
 
 export const ADVANCED_TOOLS = [
+  { slug: 'ipreport', emoji: '🛡️', titleKey: 'ipReport.Title', noteKey: 'ipReport.note', component: () => import('@/components/advanced-tools/IPAssessment.vue') },
   { slug: 'pingtest', emoji: '⏱️', titleKey: 'pingtest.Title', noteKey: 'advancedtools.PingTestNote', component: () => import('@/components/advanced-tools/GlobalLatencyTest.vue') },
   { slug: 'mtrtest', emoji: '🚉', titleKey: 'mtrtest.Title', noteKey: 'advancedtools.MTRTestNote', component: () => import('@/components/advanced-tools/MtrTest.vue') },
   { slug: 'ruletest', emoji: '🚏', titleKey: 'ruletest.Title', noteKey: 'advancedtools.RuleTestNote', component: () => import('@/components/advanced-tools/RuleTest.vue') },

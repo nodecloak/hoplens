@@ -62,8 +62,12 @@ behind `dns-resolver` (gated by `tests/dns-resolvers-data.test.js`).
   Tor observed exits and Spamhaus DROP IPv4/IPv6 are three more public rows,
   read by `common/ip-risk-data.js`; original timestamps/copyright remain in
   the files. Risk matching refuses snapshots older than 48 hours. The
-  first-party heuristic in `common/ip-risk-score.js` returns per-rule
-  evidence and a null score when observations are incomplete.
+  full-report heuristic in `common/ip-report-model.js` returns per-rule
+  evidence, coverage and a bounded interval when observations are incomplete.
+  `/api/ip-risk` is the same assessment's summary; `/api/ip-report` adds
+  profile, scenario weights, dated official region policy and source states.
+  `common/ip-report.js` bounds/coalesces provider caches and deadlines; snapshot
+  matching is current on every request. Optional credentials stay server-side.
 
 ## Conventions
 

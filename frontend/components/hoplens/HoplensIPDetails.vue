@@ -21,7 +21,7 @@
       </div>
       <aside class="hl-reputation-column">
         <div class="hl-classification-grid"><div><span><Network />{{ t('ipDetails.type') }}</span><strong>{{ t('ipDetails.'+usage) }}</strong><small v-if="usage!=='unknown'">IP-API</small></div><div><span><Route />{{ t('ipRisk.proxyMarker') }}</span><strong>{{ t(proxyFlag===true?'ipDetails.proxy':proxyFlag===false?'ipRisk.noProxyMarker':'ipDetails.unknown') }}</strong><small v-if="proxyFlag!==null">IP-API</small></div></div>
-        <HoplensRiskScore :result="risk" :state="riskState" :valid="valid" @check="requestRisk" />
+        <HoplensRiskScore :ip="ip" :result="risk" :state="riskState" :valid="valid" @check="requestRisk" />
       </aside>
     </div>
   </section>
