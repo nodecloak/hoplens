@@ -1,4 +1,4 @@
-// Validate environment variables exist to enable/disable frontend features
+// Expose backend capabilities, including providers with official keyless access.
 import { isReportSharingConfigured } from './share-report.js';
 import { isMaxMindReady } from '../common/maxmind-service.js';
 
@@ -17,13 +17,12 @@ export default (req, res) => {
     const allowedHostnames = ['ipcheck.ing', 'www.ipcheck.ing', 'localtest.ipcheck.ing', 'dev.ipcheck.ing', 'test.ipcheck.ing'];
     const originalSite = allowedHostnames.includes(hostname);
 
-    // IPINFO_API_TOKEN / CLOUDFLARE_API are the pre-rename spellings — keep
-    // reading them so existing deployments keep their features on upgrade.
+    // Keyless geo providers are backend capabilities; Cloudflare keeps its legacy alias.
     const envConfigs = {
         map: process.env.GOOGLE_MAP_API_KEY,
-        ipInfo: process.env.IPINFO_API_KEY || process.env.IPINFO_API_TOKEN,
+        ipInfo: true,
         ipChecking: process.env.IPCHECKING_API_KEY,
-        ip2location: process.env.IP2LOCATION_API_KEY,
+        ip2location: true,
         originalSite,
         cloudFlare: process.env.CLOUDFLARE_API_KEY || process.env.CLOUDFLARE_API,
         ipapiis: process.env.IPAPIIS_API_KEY,

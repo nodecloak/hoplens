@@ -5,19 +5,19 @@
 import getCountryName from '../common/country-name.js';
 import { makeGeoHandler } from '../common/geo-handler.js';
 
-function buildUrl(req) {
+const buildUrl = (req) => {
     const ipAddress = req.query.ip;
 
     // Build request URL for ipinfo.io.
     // IPINFO_API_TOKEN is the pre-rename spelling — keep reading it so
     // existing deployments don't lose the token on upgrade.
-    const tokens = (process.env.IPINFO_API_KEY || process.env.IPINFO_API_TOKEN || '').split(',');
+    const tokens = (process.env.IPINFO_API_KEY || process.env.IPINFO_API_TOKEN || '').split(',').map(value=>value.trim()).filter(Boolean);
     const token = tokens[Math.floor(Math.random() * tokens.length)];
 
-    const url_hasToken = `https://ipinfo.io/${ipAddress}?token=${token}`;
-    const url_noToken = `https://ipinfo.io/${ipAddress}`;
+    const url_hasToken = `https://ipinfo.io/${ipAddress}/json?token=${encodeURIComponent(token)}`;
+    const url_noToken = `https://ipinfo.io/${ipAddress}/json`;
     return token ? url_hasToken : url_noToken;
-}
+};
 
 // Parse one half of `loc`. Blank and non-numeric halves become null rather
 // than the 0 Number() would hand back — 0 is a real coordinate.
