@@ -5,7 +5,7 @@
         <header class="mb-2 flex flex-col items-start justify-between gap-4">
             <div class="flex flex-row items-center justify-between gap-4 w-full">
             <h2 id="AdvancedTools" class="m-0 flex min-w-0 flex-1 items-center gap-2 text-xl md:text-3xl font-semibold tracking-tight leading-tight">
-                🧰 {{ t('advancedtools.Title') }}
+                {{ t('advancedtools.Title') }}
             </h2>
             </div>
             <div class="text-base text-muted-foreground">
@@ -29,8 +29,6 @@
                     @keydown.space.prevent="openTool(card.slug)">
                     <CardContent class="p-4">
                         <h3 class="text-xl font-medium text-primary mb-2 pr-10">
-                            <PanelBottomOpen
-                                class="inline size-[1em] align-[-0.15em] mr-1.5 transition-colors duration-300" />
                             {{ t(card.titleKey) }}
                         </h3>
                         <!-- Description -->
@@ -38,7 +36,7 @@
                             {{ t(card.noteKey) }}
                         </p>
                         <!-- Top right emoji -->
-                        <span class="jn-emoji" aria-hidden="true">{{ card.icon }}</span>
+                        <component :is="toolIcons[card.slug] || Network" class="hl-tool-icon" aria-hidden="true" />
                     </CardContent>
                 </a>
 
@@ -102,7 +100,8 @@ import { Drawer, DrawerContent, DrawerClose } from '@/components/ui/drawer';
 import { Card, CardContent } from '@/components/ui/card';
 import { ToolLoadingSkeleton } from '@/components/ui/tool-loading-skeleton';
 import InfoBanner from '@/components/widgets/InfoBanner.vue';
-import { Maximize, Minimize, PanelBottomOpen, SquareArrowOutUpRight } from '@lucide/vue';
+import { Maximize, Minimize, PanelBottomOpen, SquareArrowOutUpRight, Globe, Route, Server, FileSearch, Network, EthernetPort, Calculator, Fingerprint, ListChecks, Activity, Waypoints, ShieldCheck, ScanEye, Radio, UserRound } from '@lucide/vue';
+const toolIcons = { pingtest: Globe, mtrtest: Route, dnsresolver: Server, whois: FileSearch, asn: Network, macchecker: EthernetPort, ipcalculator: Calculator, browserinfo: Fingerprint, securitychecklist: ListChecks, servicestatus: Activity, ruletest: Waypoints, censorshipcheck: ShieldCheck, invisibilitytest: ScanEye, enhanceddnsleaktest: Radio, personacheck: UserRound };
 
 const { t } = useI18n();
 

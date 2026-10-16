@@ -581,8 +581,11 @@ describe('watchDatasets', () => {
             await sleep(150);
             assert.equal(log.reloads.length, 1, 'tried once, failed');
             fail = false;
-            // Fix permissions: mtime and size unchanged, ctime moves.
-            fs.chmodSync(path.join(row.dir, 'a.txt'), 0o600);
+            // Windows chmod cannot change POSIX permission bits. Retouch there;
+            // on POSIX, a permission repair changes ctime without changing data.
+            const target = path.join(row.dir, 'a.txt');
+            if (process.platform === 'win32') fs.utimesSync(target, new Date(), new Date());
+            else fs.chmodSync(target, 0o600);
             await sleep(150);
             assert.equal(log.reloads.length, 2, 'retried');
         } finally {

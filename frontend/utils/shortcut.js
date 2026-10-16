@@ -74,8 +74,10 @@ const collectShortcutActions = (pool, entries = keyMap) =>
 // Navigation
 const navigateCards = (direction) => {
   const mainPart = document.getElementById('mainpart');
+  if (!mainPart) return;
   const cardBodies = mainPart.querySelectorAll('.keyboard-shortcut-card');
-  const cards = Array.from(cardBodies);
+  const cards = Array.from(cardBodies).filter(card => card.getClientRects().length > 0);
+  if (!cards.length) return;
   let currentIndex = cards.findIndex(card => card.getAttribute('data-keyboard-hover') === 'true');
 
   if (currentIndex !== -1) {

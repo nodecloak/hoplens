@@ -12,16 +12,16 @@
 export const PREFS_STORAGE_KEY = 'userPreferences_v7';
 
 export const DEFAULT_PREFERENCES = Object.freeze({
-  theme: 'auto', // auto | light | dark
+  theme: 'dark', // auto | light | dark
   connectivityMultipleTests: true,
   simpleMode: false,
   // Per-module startup auto-run switches. IP info has no switch — it always
   // runs on load. See use-refresh-orchestrator.js.
-  autoRunConnectivity: true,
-  autoRunWebRTC: true,
-  autoRunDnsLeak: true,
+  autoRunConnectivity: false,
+  autoRunWebRTC: false,
+  autoRunDnsLeak: false,
   popupConnectivityNotifications: false,
-  ipCardsToShow: 2,
+  ipCardsToShow: 6,
   ipGeoSource: 0,
   // Local IP-history recorder (see use-ip-history.js). Days: 1–30.
   ipHistoryEnabled: true,

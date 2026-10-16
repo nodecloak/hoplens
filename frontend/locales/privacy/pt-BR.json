@@ -2,7 +2,7 @@
   "privacy": {
     "Title": "Política de Privacidade",
     "UpdatedLabel": "Última atualização",
-    "Intro": "O IPCheck.ing é um conjunto de ferramentas de IP gratuito e de código aberto. Nós o criamos para ajudar você a entender o que sua rede e seu navegador revelam a seu respeito, por isso respeitar sua privacidade é importante para nós. Esta página explica o que acontece com seus dados quando você usa o site.",
+    "Intro": "O Hoplens é um conjunto de ferramentas de IP gratuito e de código aberto. Nós o criamos para ajudar você a entender o que sua rede e seu navegador revelam a seu respeito, por isso respeitar sua privacidade é importante para nós. Esta página explica o que acontece com seus dados quando você usa o site.",
     "sections": {
       "tools": {
         "title": "Como as ferramentas funcionam",
@@ -97,13 +97,19 @@
         "title": "Se você estiver na UE/EEE ou no Reino Unido",
         "paragraphs": [
           "No momento, não exibimos um banner de consentimento de cookies. Se você preferir não ser incluído na análise, poderá desativá-la a qualquer momento usando os métodos abaixo — bloquear o cookie de análise não afeta nenhuma ferramenta do site.",
-          "Para desativar a coleta: use um bloqueador de conteúdo (como o uBlock Origin) ou a extensão oficial do Google para desativar o Google Analytics, bloqueie cookies de terceiros ou limpe os cookies deste site. Cópias auto-hospedadas do IPCheck.ing só executam a análise se o operador a configurar."
+          "Para desativar a coleta: use um bloqueador de conteúdo (como o uBlock Origin) ou a extensão oficial do Google para desativar o Google Analytics, bloqueie cookies de terceiros ou limpe os cookies deste site. Cópias auto-hospedadas do Hoplens só executam a análise se o operador a configurar."
         ]
       },
       "retention": {
         "title": "Retenção de dados",
         "paragraphs": [
           "Os dados de análise são mantidos de acordo com as configurações de retenção do Google Analytics (por até 14 meses) e depois são excluídos automaticamente. Os dados da conta são mantidos enquanto sua conta existir."
+        ]
+      },
+      "infrastructure": {
+        "title": "Infraestrutura e serviços externos",
+        "paragraphs": [
+          "O Hoplens é operado pela NodeCloak e distribuído pela Cloudflare. A Cloudflare processa metadados das solicitações, incluindo seu IP, para entregar e proteger o site conforme sua política de privacidade. Os testes contatam provedores externos de IP, DNS, STUN, conectividade e velocidade, que podem observar essas solicitações. O teste de velocidade só é iniciado por você."
         ]
       }
     }
