@@ -23,6 +23,7 @@ import { isAsOrgLoaded } from '../common/as-org-db.js';
 import { isAsRelLoaded } from '../common/as-rel-db.js';
 import { isMaxMindReady } from '../common/maxmind-service.js';
 import { OUI_REGISTRIES, isOuiLoaded } from '../common/oui-db.js';
+import { RISK_FEEDS } from '../common/ip-risk-data.js';
 import { setUpstreamUserAgent } from '../common/fetch-with-timeout.js';
 
 const realFetch = globalThis.fetch;
@@ -40,6 +41,24 @@ const root = fs.mkdtempSync(path.join(os.tmpdir(), 'myip-datasets-test-'));
 after(() => fs.rmSync(root, { recursive: true, force: true }));
 
 const row = (id) => datasets.find((dataset) => dataset.id === id);
+
+// New risk sources use the same atomic publisher and retain the original attribution.
+describe('risk snapshot rows',()=>{
+    for(const feed of RISK_FEEDS) {
+        it(`publishes validated ${feed.id} through the shared engine`,async()=>{
+            const timestamp=Math.floor(Date.now()/1000),iso=new Date(timestamp*1000).toISOString();
+            const time=iso.slice(0,19).replace('T',' ');
+            const body=feed.id==='tor-exits'
+                ?Array.from({length:100},(_,i)=>`ExitNode ABC${i}\nExitAddress 8.8.8.${i} ${time}\n`).join('')
+                :Array.from({length:feed.min},(_,i)=>JSON.stringify({cidr:feed.id==='drop-v4'?`8.${i}.0.0/16`:`2606:${i.toString(16)}::/32`})).join('\n')+'\n'+JSON.stringify({type:'metadata',timestamp,records:feed.min,copyright:'(c) Source attribution'});
+            globalThis.fetch=async()=>new Response(body);
+            const {dataset,reloads}=tempRow(feed.id);
+            assert.equal((await updateDataset(dataset)).updated,true);
+            assert.equal(fs.readFileSync(path.join(dataset.dir,feed.file),'utf8'),body);
+            assert.equal(reloads.length,1);
+        });
+    }
+});
 
 // A row re-pointed at its own temp dir, with a recording reload.
 const tempRow = (id, overrides = {}) => {

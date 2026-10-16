@@ -32,21 +32,6 @@ export const normalizeNetwork = (ip, ripe, who, orgName=()=>null) => {
     location:normalizeLocation(who,ip)};
 };
 
-export const normalizePurity = (ip,body) => {
-  if (!body || !sameIP(body.ip,ip)) return null;
-  const types=['residential','mobile','business','hosting','education','government','unknown'];
-  const nativeTypes=['native','broadcast','unknown'];
-  const level=['pristine','clean','neutral','suspicious','risky','dangerous'].includes(body.risk?.level)?body.risk.level:null;
-  return {ip,purity:score(body.risk?.purity),level,
-    confidence:['low','medium','high'].includes(body.risk?.confidence)?body.risk.confidence:null,
-    usageType:types.includes(body.usageType)?body.usageType:'unknown',
-    nativeType:nativeTypes.includes(body.nativeType)?body.nativeType:'unknown',
-    stale:body.stale===true,queriedAt:typeof body.queriedAt==='string' && Number.isFinite(Date.parse(body.queriedAt))?body.queriedAt:null,
-    // The link is generated locally, never trusted from upstream JSON.
-    reportUrl:`https://ipure.dev/en/ip/${encodeURIComponent(ip)}`,
-    verdict:text(body.risk?.verdict,400)};
-};
-
 export const normalizeTraffic = body => {
   const percent = value => typeof value==='string' && /^\d+(\.\d+)?%?$/.test(value.trim()) ? score(Number(value.replace('%',''))) : score(value);
   const human=percent(body?.Human_Pct),bot=percent(body?.Bot_Pct);

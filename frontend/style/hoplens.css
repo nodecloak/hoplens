@@ -204,7 +204,18 @@ body.hl-app{font-family:Geist,ui-sans-serif,system-ui,sans-serif;background:var(
 .hl-purity-placeholder{min-height:100px;display:flex;align-items:center;margin:10px 0}
 .hl-purity-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:20px}
 .hl-purity-actions button{font-size:12px;height:38px;background:transparent}
-.hl-purity-context{margin-top:18px!important}
-.hl-other-source{margin-top:13px}
+.hl-risk-incomplete{font-size:17px;margin:24px 0 14px!important;line-height:1.5}
+.hl-risk-bar.hl-risk-moderate>span,.hl-risk-bar.hl-risk-elevated>span{background:var(--warning)}
+.hl-risk-bar.hl-risk-high>span{background:var(--destructive)}
+.hl-risk-checks{list-style:none;padding:0;margin:20px 0}
+.hl-risk-checks>li{padding:12px 0;border-top:1px solid var(--border)}
+.hl-risk-rule-heading{display:flex;justify-content:space-between;gap:12px;font-size:12px;line-height:1.6}
+.hl-risk-rule-heading>strong{font-weight:500}
+.hl-risk-rule-heading>span{color:var(--muted-foreground);flex-shrink:0}
+.hl-risk-rule-heading>.hl-risk-hit{color:var(--warning)}
+.hl-risk-method{margin-top:20px;padding-top:16px;border-top:1px solid var(--border);font-size:12px;line-height:1.8}
+.hl-risk-method summary{cursor:pointer;font-weight:500}
+.hl-risk-method p{margin:12px 0!important;color:var(--muted-foreground)}
+.hl-risk-method a{color:var(--hl-signal);text-decoration:underline;text-underline-offset:3px}
 @media(max-width:900px){.hl-intelligence-grid{gap:24px;grid-template-columns:1fr 1fr}.hl-ip-details{padding:24px}.hl-network-facts>div{grid-template-columns:88px 1fr;gap:12px}.hl-location-list>div{grid-template-columns:85px 1fr;gap:12px}.hl-classification-grid{grid-template-columns:1fr}.hl-classification-grid>div{padding:15px}.hl-classification-grid>div>span{margin-bottom:8px}}
 @media(max-width:700px){.hl-ip-details{padding:20px}.hl-intelligence-grid{grid-template-columns:1fr;gap:28px}.hl-main .hl-detail-header h2{font-size:21px}.hl-detail-header p{font-size:12px}.hl-network-facts>div{grid-template-columns:84px 1fr;gap:10px;font-size:12px}.hl-network-facts dd{font-size:12px}.hl-classification-grid{grid-template-columns:1fr 1fr}.hl-classification-grid strong{font-size:14px}.hl-purity-card{padding:18px}.hl-location-list>div{grid-template-columns:82px 1fr;gap:10px}}

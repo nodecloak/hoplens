@@ -8,7 +8,7 @@
         "title": "How the tools work",
         "paragraphs": [
           "Most tool results are computed in your browser or looked up live. Public IP metadata responses may be cached temporarily on our server to reduce repeated provider requests. Diagnostic reports are shared only when you explicitly create a shareable link.",
-          "IP lookups send the queried IP to external providers, including RIPEstat, IPWhois, IP-API and the other configured geolocation sources. Clicking the public purity check sends that IP to IPure (ipure.dev). Each provider's own privacy policy applies. Network metadata is cached in a bounded memory cache for up to six hours and successful purity reports for one hour; expired entries are replaced or evicted. These public-source caches do not contain your other browser diagnostics."
+          "IP lookups send the queried IP to RIPEstat, IPWhois, IP-API and other configured location providers under their own privacy policies. The NodeCloak risk index is calculated by our own disclosed rules. Public Tor and high-risk-network snapshots are downloaded and matched locally, without sending the queried IP to those snapshot providers. Classification queries send the IP to IP-API for explicit proxy/hosting flags and may be cached for five minutes; network metadata may be cached for six hours. Bounded public-response caches contain no other browser diagnostics."
         ]
       },
       "pulse": {
