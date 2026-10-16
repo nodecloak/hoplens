@@ -15,7 +15,7 @@ const zones={spamcop:'bl.spamcop.net',psbl:'psbl.surriel.com',dronebl:'dnsbl.dro
 export const classifyDNSBLAnswer=(answers,provider)=>{
   if(!Array.isArray(answers)||!answers.length) return {status:'error'};
   const codes=answers.map(value=>/^127\.0\.0\.(\d+)$/.exec(value)?.[1]).map(Number);
-  const allowed=provider==='spamhaus'?[2,3,4,9,10,11]:provider==='dronebl'?[2,3,5,6,7,8,9,10,12,13,14,15,16,17,18,19]:[2];
+  const allowed=provider==='spamhaus'?[2,3,4,9,10,11]:provider==='dronebl'?[2,3,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,255]:[2];
   if(codes.some(value=>!allowed.includes(value))) return {status:'error'};
   return {status:'ok',data:{listed:codes.some(value=>provider!=='spamhaus'||![10,11].includes(value)),policyListed:provider==='spamhaus'&&codes.some(value=>[10,11].includes(value)),codes:answers}};
 };
@@ -57,10 +57,17 @@ export const createReportSources=(deps={})=>{
       if(parseIp(ip)?.family!==4) return {status:'unsupported'};
       const zone=provider==='spamhaus'?`${env().SPAMHAUS_DQS_KEY}.zen.dq.spamhaus.net`:zones[provider];
       if(!zone) return {status:'unsupported'};
-      const query=async host=>{try{return classifyDNSBLAnswer(await resolve4(host),provider);}catch(error){return absent(error)?{status:'ok',data:{listed:false,policyListed:false,codes:[]}}:failed(error);}};
+      const query=async(host,positiveControl=false)=>{
+        try{
+          const answers=await resolve4(host);
+          // DroneBL's 127.0.0.2 test entry returns a testing-class sentinel, not a target listing code.
+          if(positiveControl&&provider==='dronebl'&&answers.length===1&&answers[0]==='127.0.0.1') return {status:'ok',data:{listed:true}};
+          return classifyDNSBLAnswer(answers,provider);
+        }catch(error){return absent(error)?{status:'ok',data:{listed:false,policyListed:false,codes:[]}}:failed(error);}
+      };
       let entry=health.get(zone);
       if(!entry||entry.until<Date.now()) {
-        const promise=Promise.all([query(`2.0.0.127.${zone}`),query(`1.0.0.127.${zone}`)]).then(([positive,negative])=>positive.status==='ok'&&positive.data.listed===true&&negative.status==='ok'&&negative.data.listed===false);
+        const promise=Promise.all([query(`2.0.0.127.${zone}`,true),query(`1.0.0.127.${zone}`)]).then(([positive,negative])=>positive.status==='ok'&&positive.data.listed===true&&negative.status==='ok'&&negative.data.listed===false);
         entry={promise,until:Date.now()+60000};health.set(zone,entry);
         if(await promise) entry.until=Date.now()+3600000;
       }
