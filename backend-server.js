@@ -238,7 +238,6 @@ const needsOui = requireOfflineData([isOuiLoaded]);
 const needsServiceStatus = requireOfflineData([isServiceStatusPrimed]);
 
 const FIVE_MIN_CACHE = 5 * 60;
-const ONE_HOUR_CACHE = 60 * 60;
 const ONE_DAY_CACHE = 24 * 60 * 60;
 const SEVEN_DAYS_CACHE = 7 * 24 * 60 * 60;
 const THIRTY_DAYS_CACHE = 30 * 24 * 60 * 60;
@@ -260,9 +259,8 @@ app.get('/api/ip2location', requirePublicIP(), withTimeZone(), cacheable(ONE_DAY
 app.get('/api/maxmind', requirePublicIP(), needsMaxMind, withTimeZone(), cacheable(ONE_DAY_CACHE), maxmindHandler);
 app.get('/api/whois', normalizeAsnQuery(), cacheable(ONE_DAY_CACHE), getWhois);
 app.get('/api/github-stars', cacheable(ONE_DAY_CACHE), githubStarsHandler);
-// Feature flags derived from env vars — they only change on a redeploy, so
-// an hour of caching is safe.
-app.get('/api/configs', cacheable(ONE_HOUR_CACHE), validateConfigs);
+// Live provider capability/readiness must refresh as soon as configuration changes.
+app.get('/api/configs', validateConfigs);
 // OONI aggregates cover a 30-day window aligned to UTC days — the payload
 // only drifts as new measurements land, so 1 day of edge cache keeps us polite
 // to OONI's free API without the view going meaningfully stale.
