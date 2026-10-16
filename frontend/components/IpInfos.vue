@@ -133,6 +133,12 @@ const fetchStatus = reactive([]);
 // Timing gate for the sponsor slot: flips once every visible card settled.
 const cardsHaveSettled = ref(false);
 
+// Paint the hero as soon as any source resolves; completion still waits for
+// every visible source, including unavailable IPv6 routes.
+watch(ipDataCards, () => emitAppEvent('ipinfo:updated', {
+  cards: ipDataCards.slice(0, ipCardsToShow.value).map((card) => ({ ...card })),
+}), { deep: true });
+
 // Middleware
 let pendingIPDetailsRequests = new Map();
 let ipDataCache = new Map();

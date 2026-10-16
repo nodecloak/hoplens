@@ -59,6 +59,9 @@ const unsubscribes = Object.entries(events).map(([event, key]) => onAppEvent(eve
   liveSections[section] = build(payload);
 }));
 const summary = computed(() => summarizeDiagnostics(liveSections, attempted));
+unsubscribes.push(onAppEvent('ipinfo:updated', (payload) => {
+  liveSections.ipinfo = REPORT_EVENT_BUILDERS['ipinfo:finished'].build(payload);
+}));
 const copied = ref(false);
 let copyTimer;
 const copyIP = async () => {

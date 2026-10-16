@@ -13,6 +13,13 @@ test('empty diagnostics show no address, no privacy verdict and zero completed c
   assert.equal(result.dnsCount, 0);
 });
 
+test('an early source can show the address while the complete IP check is still pending', () => {
+  const result = summarizeDiagnostics({ ipinfo: { cards: [{ ip: '1.1.1.1', source: 'Hoplens edge' }] } }, { IPInfo: false });
+  assert.equal(result.primary.ip, '1.1.1.1');
+  assert.equal(result.completed, 0);
+  assert.equal(result.percent, 0);
+});
+
 test('IPv6 is not considered an IPv4 mismatch and duplicate source IPs remain observations', () => {
   const result = summarizeDiagnostics({ ipinfo: { cards: [
     { ip: '8.8.8.8', source: 'one' }, { ip: '2606:4700:4700::1111', source: 'two' },
