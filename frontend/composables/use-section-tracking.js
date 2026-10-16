@@ -6,6 +6,8 @@ import { onMounted, onBeforeUnmount } from 'vue';
 import { useMainStore } from '@/store';
 import { trackEvent } from '@/utils/analytics';
 import { SECTION_IDS } from '@/data/sections';
+// Purity is an informational navigation target, without a test-loading lifecycle.
+const scrollSectionIds = ['hl-public-address','IPPurity',...SECTION_IDS];
 
 const isElementFullyInViewport = (el) => {
     const rect = el.getBoundingClientRect();
@@ -36,8 +38,8 @@ export function useSectionTracking() {
     const trackedSections = new Set();
 
     const checkSectionsAndTrack = () => {
-        const firstVisibleSectionId = firstElementInViewport(SECTION_IDS);
-        if (firstVisibleSectionId) store.changeSection(firstVisibleSectionId);
+        const firstVisibleSectionId = firstElementInViewport(scrollSectionIds);
+        if (firstVisibleSectionId) store.changeSection(firstVisibleSectionId==='hl-public-address'?'IPInfo':firstVisibleSectionId);
 
         SECTION_IDS.forEach(sectionId => {
             const section = document.getElementById(sectionId);

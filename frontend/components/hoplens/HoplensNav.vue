@@ -43,8 +43,8 @@ const emit = defineEmits(['full-check']);
 const { t, locale } = useI18n();
 const store = useMainStore();
 const menuOpen = ref(false);
-const links = [{ id: 'IPInfo', anchor: 'hl-public-address', key: 'hoplens.overview' }, { id: 'WebRTC', key: 'hoplens.leaks' }, { id: 'Connectivity', key: 'hoplens.connectivity' }, { id: 'SpeedTest', key: 'hoplens.speed' }, { id: 'AdvancedTools', key: 'hoplens.tools' }];
-const mobileLinks = [links[0], links[1], links[3], links[4]].map((link, index) => ({ ...link, icon: [Scan, ShieldCheck, Gauge, Network][index] }));
+const links = [{ id: 'IPInfo', anchor: 'hl-public-address', key: 'hoplens.overview' }, { id: 'IPPurity', key: 'ipDetails.title' }, { id: 'WebRTC', key: 'hoplens.leaks' }, { id: 'Connectivity', key: 'hoplens.connectivity' }, { id: 'SpeedTest', key: 'hoplens.speed' }, { id: 'AdvancedTools', key: 'hoplens.tools' }];
+const mobileLinks = ['IPInfo','WebRTC','SpeedTest','AdvancedTools'].map((id,index) => ({ ...links.find(link=>link.id===id), icon: [Scan, ShieldCheck, Gauge, Network][index] }));
 const changeLanguage = (code) => {
   if (!LOCALES.some((item) => item.code === code) || code === locale.value) return;
   store.updatePreference('lang', code);

@@ -1953,8 +1953,8 @@
     "connectivityNote": "Measure response times to the sites you use."
   },
   "ipDetails": {
-    "title": "Your IP, in detail",
-    "note": "Routing, location and reputation, with a source for every observation.",
+    "title": "IP purity",
+    "note": "Explore this IP’s network, location and risk evidence, with a source for every observation.",
     "domain": "AS domain",
     "prefix": "BGP prefix",
     "range": "IP range",

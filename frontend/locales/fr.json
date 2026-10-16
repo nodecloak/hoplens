@@ -1953,8 +1953,8 @@
     "connectivityNote": "Mesurez les temps de réponse de vos sites habituels."
   },
   "ipDetails": {
-    "title": "Votre IP en détail",
-    "note": "Routage, localisation et réputation, avec la source de chaque observation.",
+    "title": "Pureté IP",
+    "note": "Consultez le réseau, la localisation et les signaux de risque de cette IP, avec leurs sources.",
     "domain": "Domaine de l’AS",
     "prefix": "Préfixe BGP",
     "range": "Plage IP",
