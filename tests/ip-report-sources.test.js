@@ -43,6 +43,35 @@ test('healthy DNSBL NXDOMAIN for target is an explicit negative observation',asy
   },env:()=>({})});
   const response=await sources.dnsbl(ip,'spamcop');assert.equal(response.status,'ok');assert.equal(response.data.listed,false);
 });
+
+test('DroneBL test sentinel permits a healthy lookup without treating target sentinels as listings',async()=>{
+  let target=['127.0.0.11'];
+  const sources=createReportSources({resolve4:async host=>{
+    if(host==='2.0.0.127.dnsbl.dronebl.org') return ['127.0.0.1'];
+    if(host==='1.0.0.127.dnsbl.dronebl.org') throw Object.assign(new Error('NXDOMAIN'),{code:'ENOTFOUND'});
+    assert.equal(host,'95.32.254.157.dnsbl.dronebl.org');
+    if(target) return target;
+    throw Object.assign(new Error('NXDOMAIN'),{code:'ENOTFOUND'});
+  },env:()=>({})});
+  assert.deepEqual(await sources.dnsbl(ip,'dronebl'),{status:'ok',data:{listed:true,policyListed:false,codes:['127.0.0.11']}});
+  target=['127.0.0.255'];
+  assert.equal((await sources.dnsbl(ip,'dronebl')).data.listed,true);
+  target=null;
+  assert.equal((await sources.dnsbl(ip,'dronebl')).data.listed,false);
+  target=['127.0.0.1'];
+  assert.equal((await sources.dnsbl(ip,'dronebl')).status,'error');
+});
+
+test('DroneBL sentinel cannot hide a wildcard resolver or an invalid positive control',async()=>{
+  const wildcard=createReportSources({resolve4:async()=>['127.0.0.1'],env:()=>({})});
+  assert.equal((await wildcard.dnsbl(ip,'dronebl')).status,'error');
+  const invalid=createReportSources({resolve4:async host=>{
+    if(host.startsWith('2.0.0.127.')) return ['127.0.0.200'];
+    throw Object.assign(new Error('NXDOMAIN'),{code:'ENOTFOUND'});
+  },env:()=>({})});
+  assert.equal((await invalid.dnsbl(ip,'dronebl')).status,'error');
+  assert.equal(classifyDNSBLAnswer(['127.0.0.11','127.0.0.200'],'dronebl').status,'error');
+});
 test('PTR absence differs from a resolver outage',async()=>{
   let code='ENODATA';const sources=createReportSources({reverse:async()=>{throw Object.assign(new Error('DNS'),{code});},env:()=>({})});
   assert.equal((await sources.rdns(ip)).data.exists,false);code='ETIMEOUT';assert.equal((await sources.rdns(ip)).status,'error');
