@@ -1301,6 +1301,7 @@
     "CopyLink": "Copier le lien",
     "NoSelection": "Sélectionnez d'abord au moins un test.",
     "CreateFailed": "La création du lien de partage a échoué, veuillez réessayer plus tard.",
+    "ImageFailed": "Impossible d’enregistrer l’image. Veuillez réessayer.",
     "LinkOnce": "Ce lien ne s'affiche qu'une seule fois — copiez-le maintenant. Toute personne disposant du lien peut consulter le rapport jusqu'à son expiration.",
     "ExpiresAt": "Le rapport sera automatiquement supprimé le {time}.",
     "CopiedTitle": "Copié",

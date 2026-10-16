@@ -1,16 +1,18 @@
 <!-- Same-IP report: transparent first-party rules, distinct regional policy, source provenance and local exports. -->
 <template>
-  <div class="ip-report">
+  <div ref="reportRoot" class="ip-report">
+    <header v-if="report" class="ipr-image-heading"><strong>IP.NodeCloak</strong><h1>{{ t('ipReport.Title') }}</h1><p>{{ date(report.generatedAt) }} · {{ report.model }}</p></header>
     <p class="ipr-intro">{{ t('ipReport.note') }}</p>
-    <form class="ipr-query" @submit.prevent="submit">
+    <form class="ipr-query" data-screenshot-exclude @submit.prevent="submit">
       <label class="sr-only" for="ipReportQuery">{{ t('ipReport.query') }}</label>
       <Input id="ipReportQuery" v-model="query" class="font-mono" :placeholder="t('ipReport.query')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-1p-ignore data-lpignore="true" :aria-invalid="!!error" />
       <Button variant="action" :disabled="loading||!query.trim()" type="submit"><Spinner v-if="loading"/><Search v-else/>{{ t('ipReport.run') }}</Button>
     </form>
-    <p v-if="error" role="alert" class="text-destructive">{{ error }}</p>
+    <p v-if="error" role="alert" class="text-destructive" data-screenshot-exclude>{{ error }}</p>
+    <p v-if="imageError" role="alert" class="text-destructive" data-screenshot-exclude>{{ t('report.ImageFailed') }}</p>
     <p v-if="loading" role="status" class="ipr-loading"><Spinner/>{{ t('ipReport.loading') }}</p>
     <template v-if="report">
-      <div class="ipr-toolbar"><span class="hl-mono">{{ date(report.generatedAt) }} · {{ report.model }}</span><div><Button variant="outline" @click="share"><Check v-if="copied"/><Link v-else/>{{ t('ipReport.share') }}</Button><Button variant="outline" @click="download('json')"><Download/>JSON</Button><Button variant="outline" @click="download('txt')"><Download/>TXT</Button></div></div>
+      <div class="ipr-toolbar" data-screenshot-exclude><span class="hl-mono">{{ date(report.generatedAt) }} · {{ report.model }}</span><div><Button variant="outline" :disabled="imageExporting" @click="downloadImage"><Spinner v-if="imageExporting"/><ImageDown v-else/>{{ t('Tooltips.SaveAsImage') }}</Button><Button variant="outline" @click="share"><Check v-if="copied"/><Link v-else/>{{ t('ipReport.share') }}</Button><Button variant="outline" @click="download('json')"><Download/>JSON</Button><Button variant="outline" @click="download('txt')"><Download/>TXT</Button></div></div>
       <div class="ipr-hero-grid">
         <section class="ipr-panel ipr-identity">
           <span class="ipr-eyebrow">{{ t('ipReport.profile') }}</span>
@@ -59,7 +61,7 @@ import {ref,computed,watch,onScopeDispose} from 'vue';
 import {useRoute,useRouter} from 'vue-router';
 import {useI18n} from 'vue-i18n';
 import {Icon} from '@iconify/vue';
-import {Search,ShieldCheck,Download,Link,Check,Sparkles,Users,Play,Gamepad2,ShoppingBag,Mail} from '@lucide/vue';
+import {Search,ShieldCheck,Download,Link,Check,Sparkles,Users,Play,Gamepad2,ShoppingBag,Mail,ImageDown} from '@lucide/vue';
 import {Input} from '@/components/ui/input';
 import {Button} from '@/components/ui/button';
 import {Spinner} from '@/components/ui/spinner';
@@ -67,8 +69,11 @@ import {fetchWithTimeout} from '@/utils/fetch-with-timeout.js';
 import {isUsablePublicIP} from '@/utils/valid-ip.js';
 import {isoToDateTime} from '@/utils/time-utils.js';
 import {reportToText} from '../../../common/ip-report-model.js';
+import {useScreenshot} from '@/composables/use-screenshot.js';
 const {t,locale}=useI18n(),route=useRoute(),router=useRouter();
 const query=ref(''),report=ref(null),loading=ref(false),error=ref(''),copied=ref(false);
+const reportRoot=ref(null),imageError=ref(false),imageExporting=ref(false);
+const {capture}=useScreenshot();
 let controller=null,copiedTimer;
 const unknown=computed(()=>t('ipReport.states.missing'));
 const icons={ai:Sparkles,social:Users,streaming:Play,gaming:Gamepad2,commerce:ShoppingBag,email:Mail};
@@ -81,7 +86,7 @@ const ruleName=id=>t('ipReport.rules.'+id);
 const score=row=>row.score??'—';
 const blacklistSources=computed(()=>report.value?.sources.filter(row=>row.id.startsWith('dnsbl-'))??[]);
 const run=async value=>{
-  controller?.abort();report.value=null;error.value='';loading.value=false;
+  controller?.abort();report.value=null;error.value='';imageError.value=false;loading.value=false;
   if(!value) return;
   if(!isUsablePublicIP(value)){error.value=t('ipReport.invalid');return;}
   const current=new AbortController();controller=current;loading.value=true;
@@ -93,9 +98,41 @@ const submit=async()=>{const value=query.value.trim();if(value===route.query.q)a
 watch(()=>route.query.q,value=>{query.value=typeof value==='string'?value:'';run(query.value.trim());},{immediate:true});
 const share=async()=>{try{await navigator.clipboard.writeText(new URL('/tools/ipreport?q='+encodeURIComponent(report.value.ip),location.origin).href);copied.value=true;clearTimeout(copiedTimer);copiedTimer=setTimeout(()=>copied.value=false,2000);}catch{error.value=t('ipReport.copyError');}};
 const download=format=>{const blob=new Blob([format==='json'?JSON.stringify(report.value,null,2):reportToText(report.value)],{type:format==='json'?'application/json':'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=`ip-nodecloak-${report.value.ip.replaceAll(':','_')}.${format}`;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+// Capture a detached layout so exporting never resizes or expands the user's page.
+const downloadImage=async()=>{
+  if(!report.value||imageExporting.value)return;
+  imageExporting.value=true;
+  imageError.value=false;
+  const filename=`ipnodecloak-assessment-${report.value.ip.replaceAll(':','_')}.png`;
+  const stage=document.createElement('div');
+  stage.style.cssText='position:fixed;left:-20000px;top:0;width:1100px;pointer-events:none';
+  stage.setAttribute('aria-hidden','true');stage.inert=true;
+  try{
+    const snapshot=reportRoot.value.cloneNode(true);
+    snapshot.classList.add('ipr-image-export');
+    snapshot.querySelectorAll('[data-screenshot-exclude]').forEach(node=>node.remove());
+    snapshot.querySelectorAll('details').forEach(node=>node.open=true);
+    stage.append(snapshot);document.body.append(stage);
+    await document.fonts.ready;
+    imageError.value=!await capture(snapshot,{filename,trackLabel:'IPAssessment'});
+  }
+  catch{imageError.value=true;}
+  finally{stage.remove();imageExporting.value=false;}
+};
 onScopeDispose(()=>{controller?.abort();clearTimeout(copiedTimer);});
 </script>
 <style scoped>
 .ip-report{--ipr-accent:var(--hl-signal,#4f7a00);font-size:14px;line-height:1.65;max-width:1240px;margin:0 auto}.ipr-intro{color:var(--muted-foreground);max-width:85ch;margin-bottom:20px}.ipr-query{display:flex;gap:10px;max-width:720px;margin-bottom:20px}.ipr-query input{height:42px}.ipr-query button{height:42px}.ipr-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:24px 0 16px;font-size:11px;color:var(--muted-foreground)}.ipr-toolbar>div{display:flex;gap:8px}.ipr-toolbar button{height:32px;font-size:12px}.ipr-panel{border:1px solid var(--border);border-radius:16px;background:var(--card);padding:25px;min-width:0}.ipr-hero-grid{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(280px,1fr);gap:16px}.ipr-eyebrow{display:flex;align-items:center;justify-content:space-between;gap:8px;text-transform:uppercase;letter-spacing:.1em;font:11px/1.5 'Geist Mono',monospace;color:var(--muted-foreground);margin-bottom:20px}.ipr-eyebrow svg{width:17px}.ipr-identity h2{font-size:clamp(22px,3.2vw,36px);line-height:1.3;letter-spacing:-.04em;overflow-wrap:anywhere}.ipr-location{display:flex;align-items:center;gap:8px;margin:10px 0 23px}.ipr-location svg{width:18px;height:18px;flex-shrink:0}.ipr-facts{margin:0}.ipr-facts>div{display:grid;grid-template-columns:140px 1fr;gap:14px;padding:9px 0;border-bottom:1px solid var(--border)}.ipr-facts dt{color:var(--muted-foreground);font-size:12px}.ipr-facts dd{overflow-wrap:anywhere;min-width:0}.ipr-facts dd span,.ipr-facts small{display:block;color:var(--muted-foreground);font-size:11px;margin-top:3px}.ipr-caption{font-size:11px;color:var(--muted-foreground);line-height:1.7;margin-top:12px}.ipr-score-number{font-size:clamp(42px,5vw,66px);font-weight:500;line-height:1.2;letter-spacing:-.05em;margin:27px 0 22px}.ipr-score-number>span,.ipr-fit>span{font-size:13px;letter-spacing:0;color:var(--muted-foreground);margin-left:8px}.ipr-score h3{font-size:17px;font-weight:600;margin-top:18px}.ipr-score>p{font-size:12px;color:var(--muted-foreground)}.ipr-meter{height:7px;background:var(--muted);position:relative;overflow:hidden;border-radius:6px}.ipr-meter>span{position:absolute;inset:0 auto 0 0;background:var(--ipr-accent);border-radius:6px}.ipr-meter>.ipr-possible{opacity:.3}.ipr-coverage{display:flex;justify-content:space-between;align-items:center;margin-top:23px;padding-top:17px;border-top:1px solid var(--border)}.ipr-radar{border-top:1px solid var(--border);margin-top:25px;padding-top:20px;font-size:12px}.ipr-traffic{height:5px;background:var(--muted);border-radius:4px;overflow:hidden;margin-top:12px}.ipr-traffic>span{display:block;height:100%;background:var(--ipr-accent)}.ipr-traffic-label{display:flex;justify-content:space-between;font:11px/2 monospace}.ipr-section{margin:34px 0 20px}.ipr-section-heading{margin-bottom:16px}.ipr-section-heading h2{font-size:18px;font-weight:600}.ipr-section-heading p{color:var(--muted-foreground);font-size:12px;margin-top:5px}.ipr-section-heading .ipr-eyebrow{margin-bottom:6px}.ipr-scenarios{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.ipr-scenario{position:relative;padding:22px}.ipr-scenario>svg{width:21px;color:var(--muted-foreground)}.ipr-fit{position:absolute;right:20px;top:16px;font-size:24px;font-weight:500}.ipr-scenario h3{font-weight:600;font-size:16px;margin-top:18px}.ipr-scenario>p{font-size:12px;color:var(--muted-foreground)}.ipr-scenario>strong{display:block;margin-top:15px;font-size:12px}.ipr-scenario details{margin-top:16px;border-top:1px solid var(--border);padding-top:10px;font-size:11px}.ipr-factor-list li{display:flex;justify-content:space-between;gap:8px;padding-top:5px}.ipr-policy{margin:20px 0}.ipr-policy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.ipr-policy-grid article{border-left:2px solid var(--border);padding-left:15px}.ipr-policy-grid strong,.ipr-policy-grid span,.ipr-policy-grid small{display:block}.ipr-policy-grid span{margin-top:8px;font-size:12px}.ipr-policy-grid p,.ipr-policy-grid small{font-size:11px;color:var(--muted-foreground);margin-top:6px}.ipr-policy-grid a{margin-left:8px;text-decoration:underline}.ipr-two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}.ipr-evidence>li{padding:13px 0;border-bottom:1px solid var(--border)}.ipr-evidence>li>div{display:flex;align-items:center;gap:12px;font-size:12px}.ipr-evidence>li>div>span{margin-left:auto;color:var(--muted-foreground)}.ipr-evidence b{min-width:28px;text-align:right}.ipr-evidence p,.ipr-evidence small{font-size:10px;color:var(--muted-foreground);display:block;overflow-wrap:anywhere}.ipr-subheading{font-size:14px;font-weight:600;margin-top:27px}.ipr-source-table{overflow:auto}.ipr-source-table table{width:100%;border-collapse:collapse;text-align:left;font-size:12px;white-space:nowrap}.ipr-source-table th{font-size:10px;color:var(--muted-foreground);font-weight:500}.ipr-source-table td,.ipr-source-table th{padding:10px 12px;border-bottom:1px solid var(--border)}.ipr-source-table td:first-child,.ipr-source-table th:first-child{padding-left:0}.ipr-source-table a:hover{text-decoration:underline}.ipr-method{margin-top:20px}.ipr-method p,.ipr-method li{font-size:12px;color:var(--muted-foreground);max-width:100ch;margin-bottom:10px}.ipr-method h3{font-size:16px;font-weight:600;margin:22px 0 12px}.ipr-method ul{list-style:disc;padding-left:18px}.ipr-loading{display:flex;align-items:center;gap:10px;padding:35px;color:var(--muted-foreground)}summary{cursor:pointer}button svg{width:15px;height:15px}a:focus-visible,summary:focus-visible{outline:2px solid var(--ipr-accent);outline-offset:4px}@media(max-width:900px){.ipr-hero-grid{grid-template-columns:1fr}.ipr-scenarios{grid-template-columns:repeat(2,minmax(0,1fr))}.ipr-two-col{grid-template-columns:1fr}.ipr-score-number{font-size:48px}}@media(max-width:560px){.ipr-panel{padding:18px;border-radius:12px}.ipr-scenarios,.ipr-policy-grid{grid-template-columns:1fr}.ipr-facts>div{grid-template-columns:105px 1fr;gap:8px}.ipr-toolbar{align-items:flex-start}.ipr-toolbar>span{max-width:100%;overflow-wrap:anywhere}.ipr-query button{font-size:12px}.ipr-fit{font-size:22px}.ipr-scenario{min-height:200px}}
 .ipr-toolbar>div{flex-wrap:wrap;max-width:100%}
+.ipr-query input:focus{border-color:var(--ipr-accent);outline:0;box-shadow:none}
+.ipr-image-heading{display:none}
+.ipr-image-export{box-sizing:border-box;width:1100px;max-width:none;padding:32px;background:var(--background);color:var(--foreground)}
+.ipr-image-export .ipr-image-heading{display:block;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.ipr-image-heading strong{font-size:18px;color:var(--ipr-accent)}
+.ipr-image-heading h1{font-size:28px;margin:12px 0}
+.ipr-image-heading p{font-size:12px;color:var(--muted-foreground)}
+.ipr-image-export .ipr-hero-grid{grid-template-columns:minmax(0,1.8fr) minmax(280px,1fr)}
+.ipr-image-export .ipr-scenarios,.ipr-image-export .ipr-policy-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.ipr-image-export .ipr-two-col{grid-template-columns:1fr 1fr}
+.ipr-image-export .ipr-source-table{overflow:visible}
 </style>

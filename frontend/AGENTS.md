@@ -130,6 +130,12 @@ Every "business state → color" mapping goes through `use-status-tone.js`
   score and evidence. Never replace the visitor's local diagnostic IP with
   manually entered input. Keep the search icon inside the field and mobile
   input text at least 16px to avoid focus zoom on iOS.
+- **Report images** — local PNG exports reuse `useScreenshot`. Diagnostic
+  images render only `buildShareReport`'s selected, masked snapshot through
+  `ReportImage`; tables and truncated values wrap in the export. Assessment
+  images clone the full result offscreen, exclude controls, and expand factors.
+  Keep busy/error feedback and cleanup through preparation and capture. Purity
+  inputs show focus by coloring their existing border, without an outer ring.
 - **Input + icon trigger** — flex row, compact icon Button, no text label (QueryIP).
 - **AutoFill-proof inputs** — all six on every free-form Input: `autocomplete`
   / `autocorrect` / `autocapitalize="off"`, `spellcheck="false"`,

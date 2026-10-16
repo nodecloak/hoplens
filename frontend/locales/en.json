@@ -1301,6 +1301,7 @@
     "CopyLink": "Copy Link",
     "NoSelection": "Select at least one test first.",
     "CreateFailed": "Creating the share link failed, please try again later.",
+    "ImageFailed": "Unable to save the image. Please try again.",
     "LinkOnce": "This link is shown only once — copy it now. Anyone with the link can view the report until it expires.",
     "ExpiresAt": "The report auto-deletes at {time}.",
     "CopiedTitle": "Copied",
