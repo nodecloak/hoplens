@@ -75,6 +75,10 @@
 
                 <!-- Actions -->
                 <div class="flex flex-wrap items-center gap-2">
+                    <Button type="button" variant="outline" :disabled="!hasSelection || !!imageReport" @click="onDownloadImage">
+                        <Spinner v-if="imageReport" /><ImageDown v-else class="size-4 shrink-0" />
+                        {{ t('Tooltips.SaveAsImage') }}
+                    </Button>
                     <Button v-if="sharingEnabled" type="button" variant="action" class="cursor-pointer"
                         :disabled="!hasSelection || creating" @click="onCreateLink">
                         <Spinner v-if="creating" />
@@ -94,6 +98,7 @@
                 </div>
 
                 <p v-if="shareError" class="text-sm text-destructive">{{ t('report.CreateFailed') }}</p>
+                <p v-if="imageError" role="alert" class="text-sm text-destructive">{{ t('report.ImageFailed') }}</p>
 
                 <!-- The created link — shown once, with its expiry -->
 
@@ -111,19 +116,24 @@
             </div>
         </DialogContent>
     </Dialog>
+    <Teleport to="body">
+        <div v-if="imageReport" class="report-image-stage" aria-hidden="true" inert>
+            <ReportImage ref="imageRef" :report="imageReport" :masked="imageMasked" />
+        </div>
+    </Teleport>
 </template>
 
 <script setup>
 // Share-report dialog + its dock trigger. Reads the collector's snapshots,
 // lets the user pick sections / mask IP tails / choose the link TTL, and
-// fans out to the three exports: share link (env-gated via
-// configs.reportSharing), Markdown for AI assistants, JSON download.
-import { ref, computed, watch } from 'vue';
+// offers local image/JSON/Markdown exports and env-gated share links.
+import { ref, computed, watch, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useMainStore } from '@/store';
 import { trackEvent } from '@/utils/analytics';
 import { useCollectedReport } from '@/composables/use-report-collector.js';
 import { useReportShare } from '@/composables/use-report-share.js';
+import { useScreenshot } from '@/composables/use-screenshot.js';
 import { REPORT_SECTION_IDS, REPORT_TTL_DAYS } from '@/utils/report-schema.js';
 import { SECTION_TITLE_KEYS, buildShareReport, reportToMarkdown, downloadReportJson } from '@/utils/report-export.js';
 import { isoToDateTime } from '@/utils/time-utils.js';
@@ -137,7 +147,8 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import CopyButton from '@/components/widgets/CopyButton.vue';
-import { Share2, Link2, Bot, FileJson, ChevronRight } from '@lucide/vue';
+import ReportImage from './ReportImage.vue';
+import { Share2, Link2, Bot, FileJson, ChevronRight, ImageDown } from '@lucide/vue';
 
 const { t, locale } = useI18n();
 const store = useMainStore();
@@ -151,6 +162,8 @@ const selectedIds = ref([]);
 const maskTail = ref(false);
 const ttlDays = ref(String(REPORT_TTL_DAYS[0]));
 const previewOpen = ref(false);
+const imageReport = ref(null), imageRef = ref(null), imageMasked = ref(false), imageError = ref(false);
+const { capture } = useScreenshot();
 
 // The two original-site-only tools (sign-in + private API) don't exist for
 // self-host visitors — same gate as Advanced.vue's card grid. Hiding them
@@ -167,6 +180,7 @@ const openDialog = () => {
     // previously created link (its report may no longer match the data).
     selectedIds.value = [...availableSectionIds.value];
     resetShareLink();
+    imageError.value = false;
     isOpen.value = true;
 };
 
@@ -208,8 +222,31 @@ const onDownloadJson = () => {
     downloadReportJson(assembleReport());
 };
 
+const onDownloadImage = async () => {
+    if (imageReport.value || !hasSelection.value) return;
+    imageError.value = false;
+    imageMasked.value = maskTail.value;
+    imageReport.value = assembleReport();
+    try {
+        await nextTick();
+        await document.fonts.ready;
+        imageError.value = !await capture(imageRef.value?.$el, {
+            filename: `ipnodecloak-report-${imageReport.value.generatedAt.slice(0, 10)}.png`,
+            trackLabel: 'DiagnosticReport',
+        });
+    } catch {
+        imageError.value = true;
+    } finally {
+        imageReport.value = null;
+    }
+};
+
 const expiresAtDisplay = computed(() => isoToDateTime(expiresAt.value, locale.value));
 
 // For the `e` keyboard shortcut (use-shortcuts.js).
 defineExpose({ openDialog });
 </script>
+
+<style scoped>
+.report-image-stage{position:fixed;left:-20000px;top:0;pointer-events:none;width:1100px}
+</style>

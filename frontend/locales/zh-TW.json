@@ -1301,6 +1301,7 @@
     "CopyLink": "複製連結",
     "NoSelection": "請先選擇至少一項測試。",
     "CreateFailed": "產生分享連結失敗，請稍後再試。",
+    "ImageFailed": "圖片儲存失敗，請重試。",
     "LinkOnce": "連結僅顯示這一次，請立即複製。任何拿到連結的人都能在過期前檢視這份報告。",
     "ExpiresAt": "報告將於 {time} 自動刪除。",
     "CopiedTitle": "已複製",

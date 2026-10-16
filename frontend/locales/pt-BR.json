@@ -1301,6 +1301,7 @@
     "CopyLink": "Copiar link",
     "NoSelection": "Selecione pelo menos um teste primeiro.",
     "CreateFailed": "Falha ao criar o link compartilhável. Tente novamente mais tarde.",
+    "ImageFailed": "Não foi possível salvar a imagem. Tente novamente.",
     "LinkOnce": "Este link é mostrado apenas uma vez — copie-o agora. Qualquer pessoa com o link poderá ver o relatório até ele expirar.",
     "ExpiresAt": "O relatório será excluído automaticamente em {time}.",
     "CopiedTitle": "Copiado",
