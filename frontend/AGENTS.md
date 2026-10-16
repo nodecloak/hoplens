@@ -158,6 +158,8 @@ Every "business state → color" mapping goes through `use-status-tone.js`
   expansions of an inline visual; side panels use `Sheet`.
 - **Motion** — hover lift `transition-transform duration-300 ease-out
   hover:-translate-y-1.5`; loading is `<Spinner />`, never pulse-dots.
+  Advanced tool launch cards stay fixed on hover: only color/border feedback,
+  without translation or scaling of the card or its icon.
 
 ## Testing
 
