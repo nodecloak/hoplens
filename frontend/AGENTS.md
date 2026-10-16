@@ -136,6 +136,12 @@ Every "business state → color" mapping goes through `use-status-tone.js`
   images clone the full result offscreen, exclude controls, and expand factors.
   Keep busy/error feedback and cleanup through preparation and capture. Purity
   inputs show focus by coloring their existing border, without an outer ring.
+- **Purity sharing** — `IPNodeCloakIPDetails` publishes current-IP metadata and
+  risk states through `ippurity:updated`. The additive `ippurity` report section
+  includes only bounded whitelist fields and the score's original query time.
+  Pending/failed reruns remove the previous score; an invalid current IP clears
+  the section. Sharing never triggers scoring. Prefix addresses and range
+  endpoints use IP schema fields so every export honors tail masking.
 - **Input + icon trigger** — flex row, compact icon Button, no text label (QueryIP).
 - **AutoFill-proof inputs** — all six on every free-form Input: `autocomplete`
   / `autocorrect` / `autocapitalize="off"`, `spellcheck="false"`,

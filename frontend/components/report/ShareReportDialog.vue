@@ -172,7 +172,7 @@ const ORIGINAL_SITE_ONLY_SECTIONS = new Set(['invisibility', 'enhanceddnsleak'])
 const visibleSectionIds = computed(() => REPORT_SECTION_IDS.filter((id) =>
     !ORIGINAL_SITE_ONLY_SECTIONS.has(id) || store.configs?.originalSite === true));
 
-const hasSelection = computed(() => selectedIds.value.length > 0);
+const hasSelection = computed(() => selectedIds.value.some(id => availableSectionIds.value.includes(id)));
 
 const openDialog = () => {
     trackEvent('SideButtons', 'ToggleClick', 'ShareReport');

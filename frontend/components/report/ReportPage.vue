@@ -77,6 +77,7 @@ import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import ReportSectionCard from './sections/ReportSectionCard.vue';
 import ReportIpinfo from './sections/ReportIpinfo.vue';
+import ReportPurity from './sections/ReportPurity.vue';
 import ReportConnectivity from './sections/ReportConnectivity.vue';
 import ReportWebrtc from './sections/ReportWebrtc.vue';
 import ReportDnsleak from './sections/ReportDnsleak.vue';
@@ -92,6 +93,7 @@ import { FileText, FileQuestion, Bot } from '@lucide/vue';
 
 const SECTION_COMPONENTS = {
     ipinfo: ReportIpinfo,
+    ippurity: ReportPurity,
     connectivity: ReportConnectivity,
     webrtc: ReportWebrtc,
     dnsleak: ReportDnsleak,

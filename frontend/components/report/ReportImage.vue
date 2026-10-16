@@ -21,6 +21,7 @@ import { REPORT_SECTION_IDS } from '@/utils/report-schema.js';
 import { isoToDateTime } from '@/utils/time-utils.js';
 import ReportSectionCard from './sections/ReportSectionCard.vue';
 import ReportIpinfo from './sections/ReportIpinfo.vue';
+import ReportPurity from './sections/ReportPurity.vue';
 import ReportConnectivity from './sections/ReportConnectivity.vue';
 import ReportWebrtc from './sections/ReportWebrtc.vue';
 import ReportDnsleak from './sections/ReportDnsleak.vue';
@@ -37,7 +38,7 @@ const props = defineProps({ report: { type: Object, required: true }, masked: Bo
 const { t, locale } = useI18n();
 const sectionIds = computed(() => REPORT_SECTION_IDS.filter(id => props.report.sections[id]));
 const components = {
-  ipinfo: ReportIpinfo, connectivity: ReportConnectivity, webrtc: ReportWebrtc,
+  ipinfo: ReportIpinfo, ippurity: ReportPurity, connectivity: ReportConnectivity, webrtc: ReportWebrtc,
   dnsleak: ReportDnsleak, speedtest: ReportSpeedtest, pingtest: ReportPingtest,
   mtrtest: ReportMtrtest, ruletest: ReportRuletest, browserinfo: ReportBrowserinfo,
   invisibility: ReportInvisibility, enhanceddnsleak: ReportEnhanceddnsleak, persona: ReportPersona,

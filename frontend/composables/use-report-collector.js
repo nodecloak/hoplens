@@ -18,7 +18,11 @@ const collectedSections = reactive({});
 const ingest = (event, payload) => {
     const { section, build } = REPORT_EVENT_BUILDERS[event];
     const built = build(payload);
-    if (built === null) return;
+    if (built === null) {
+        // Purity describes the current IP, including resets and failed reruns.
+        if (section === 'ippurity') delete collectedSections.ippurity;
+        return;
+    }
     collectedSections[section] = { testedAt: new Date().toISOString(), ...built };
 };
 

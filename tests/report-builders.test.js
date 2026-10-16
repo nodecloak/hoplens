@@ -8,6 +8,7 @@ import { describe, it } from 'node:test';
 
 import { REPORT_EVENT_BUILDERS } from '../frontend/utils/report-builders.js';
 import { validateReport, REPORT_VERSION } from '../common/report-schema.js';
+import { purityPayload } from './fixtures/report-purity.js';
 
 const wrap = (sectionId, section) => ({
     v: REPORT_VERSION,
@@ -20,6 +21,7 @@ const wrap = (sectionId, section) => ({
 // Realistic payloads mirroring what each component actually emits — including
 // localized placeholder strings in ip slots, which the builders must drop.
 const PAYLOADS = {
+    'ippurity:updated': purityPayload(),
     'ipinfo:finished': {
         cards: [
             { source: 'IPCheck.ing IPv4', ip: '1.2.3.4', country_code: 'us', region: 'CA', city: 'SF', asn: 'AS15169', isp: 'Google LLC' },

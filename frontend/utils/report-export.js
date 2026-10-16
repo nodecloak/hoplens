@@ -11,6 +11,7 @@ import { REPORT_VERSION, REPORT_SECTION_IDS, maskReportIps } from './report-sche
 // Markdown headings reuse the same titles the homepage sections show).
 export const SECTION_TITLE_KEYS = {
     ipinfo: 'ipInfos.Title',
+    ippurity: 'ipDetails.title',
     connectivity: 'connectivity.Title',
     webrtc: 'webrtc.Title',
     dnsleak: 'dnsleaktest.Title',
@@ -75,6 +76,16 @@ const MTR_HOP_STATS = ['lossPct', 'sntCount', 'drop', 'rcv', 'lastMs', 'avgMs', 
 const IPINFO_EXTRA_COLS = ['anonymity', 'ipType', 'nativeIP', 'qualityScore', 'anonymityProtocol', 'anonymityProvider'];
 
 const SECTION_RENDERERS = {
+    ippurity: section => [
+        kvLines([['ip', section.ip], ['networkState', section.networkState], ['asn', section.network?.asn], ['network', section.network?.asnName], ['domain', section.network?.domain],
+            ['prefix', section.network?.prefix && `${section.network.prefix.address}/${section.network.prefix.length}`], ['range.start', section.network?.range?.start], ['range.end', section.network?.range?.end],
+            ['usageType', section.usageType], ['proxy', section.proxy], ['riskState', section.riskState], ['risk.model', section.risk?.model], ['risk.queriedAt', section.risk?.queriedAt],
+            ['risk.score', section.risk ? section.risk.score ?? 'unavailable' : 'not assessed'], ['risk.scoreKind', section.risk?.scoreKind],
+            ['risk.range', section.risk && `${section.risk.range.min}–${section.risk.range.max}`], ['risk.coverage', section.risk && `${section.risk.coverage.checked}/${section.risk.coverage.total}`],
+            ['asn.humanPct', section.traffic?.human], ['asn.botPct', section.traffic?.bot]]),
+        mdTable(['source', 'status', 'country', 'region', 'city'], section.locations.map(row => [row.name, row.status, row.country || row.countryCode, row.region, row.city])),
+        section.risk ? mdTable(['rule', 'source', 'status', 'hit', 'points', 'maxPoints', 'asOf', 'matchedPrefix', 'copyright', 'suppressedBy'], section.risk.checks.map(row => [row.id, row.source, row.status, row.hit, row.points, row.maxPoints, row.asOf, row.matchedPrefix && `${row.matchedPrefix.address}/${row.matchedPrefix.length}`, row.copyright, row.suppressedBy])) : '',
+    ].filter(Boolean).join('\n\n'),
     ipinfo: (section) => {
         const extras = IPINFO_EXTRA_COLS.filter((key) => section.cards.some((c) => c[key] !== undefined));
         return mdTable(
