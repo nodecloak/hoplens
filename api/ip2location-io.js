@@ -1,20 +1,18 @@
 // /api/ip2location — geolocation source handler backed by api.ip2location.io.
-// Picks a random API key and normalizes the response into the canonical
-// geo shape via the shared makeGeoHandler factory.
+// Uses official keyless access or an optional API key and normalizes the geo shape.
 
 import { makeGeoHandler } from '../common/geo-handler.js';
 
-function buildUrl(req) {
+const buildUrl = (req) => {
     const ipAddress = req.query.ip;
 
-    const keys = (process.env.IP2LOCATION_API_KEY).split(',');
+    const keys = (process.env.IP2LOCATION_API_KEY || '').split(',').map(value=>value.trim()).filter(Boolean);
     const key = keys[Math.floor(Math.random() * keys.length)];
-    return `https://api.ip2location.io/?ip=${ipAddress}&key=${key}`;
-}
+    return `https://api.ip2location.io/?ip=${encodeURIComponent(ipAddress)}${key ? '&key='+encodeURIComponent(key) : ''}`;
+};
 
-function modifyJsonForIPAPI(json) {
-    let asn = json.asn || {};
-    const { ip, country_code, country_name, region_name, city_name, latitude, longitude, as } = json;
+const modifyJsonForIPAPI = (json) => {
+    const { ip, country_code, country_name, region_name, city_name, latitude, longitude, as, asn } = json || {};
 
     return {
         ip: ip,
@@ -23,11 +21,11 @@ function modifyJsonForIPAPI(json) {
         country: country_code || 'N/A',
         country_name: country_name || 'N/A',
         country_code: country_code || 'N/A',
-        latitude: latitude || 'N/A',
-        longitude: longitude || 'N/A',
-        asn: asn === undefined || asn === null ? 'N/A' : 'AS' + asn,
+        latitude: latitude ?? null,
+        longitude: longitude ?? null,
+        asn: /^\d+$/.test(String(asn)) ? 'AS' + asn : null,
         org: as || 'N/A',
     };
-}
+};
 
 export default makeGeoHandler({ name: 'ip2location-io', buildUrl, normalize: modifyJsonForIPAPI });

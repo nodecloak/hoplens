@@ -36,7 +36,8 @@ import serviceStatusHandler, {
 } from '../api/service-status.js';
 import createReportHandler, { getReport as getReportHandler, normalizeTtlDays } from '../api/share-report.js';
 import { modifyJsonForIPAPI } from '../api/ipapi-is.js';
-import { modifyJson as modifyJsonForIpinfo } from '../api/ipinfo-io.js';
+import ipinfoHandler, { modifyJson as modifyJsonForIpinfo } from '../api/ipinfo-io.js';
+import ip2locationHandler from '../api/ip2location-io.js';
 import { REPORT_VERSION } from '../common/report-schema.js';
 import logger from '../common/logger.js';
 import { createIPReportHandler } from '../api/ip-report.js';
@@ -129,6 +130,60 @@ describe('configs handler', () => {
         configsHandler(createRequest(), res);
         assert.equal(res.body.ipInfo, true);
         assert.equal(res.body.cloudFlare, true);
+    });
+
+    it('offers officially supported keyless geolocation without credentials', () => {
+        for (const key of ['IPINFO_API_KEY','IPINFO_API_TOKEN','IP2LOCATION_API_KEY']) delete process.env[key];
+        const res=createResponse();
+        configsHandler(createRequest(),res);
+        assert.equal(res.body.ipInfo,true);
+        assert.equal(res.body.ip2location,true);
+    });
+});
+
+describe('keyless geolocation handlers',()=>{
+    it('requests IPinfo JSON without a token when credentials are absent',async()=>{
+        delete process.env.IPINFO_API_KEY;delete process.env.IPINFO_API_TOKEN;
+        globalThis.fetch=async url=>{
+            assert.equal(String(url),'https://ipinfo.io/8.8.8.8/json');
+            return Response.json({ip:'8.8.8.8',country:'US',loc:'37.4,-122.1',org:'AS15169 Google LLC'});
+        };
+        const res=createResponse();await ipinfoHandler(createRequest({query:{ip:'8.8.8.8'}}),res);
+        assert.equal(res.statusCode,200);assert.equal(res.body.country_code,'US');assert.equal(res.body.asn,'AS15169');
+    });
+    it('preserves legacy IPinfo tokens on the JSON endpoint',async()=>{
+        delete process.env.IPINFO_API_KEY;process.env.IPINFO_API_TOKEN='legacy-token';
+        globalThis.fetch=async url=>{
+            assert.equal(String(url),'https://ipinfo.io/8.8.8.8/json?token=legacy-token');
+            return Response.json({ip:'8.8.8.8',country:'US'});
+        };
+        const res=createResponse();await ipinfoHandler(createRequest({query:{ip:'8.8.8.8'}}),res);
+        assert.equal(res.body.ip,'8.8.8.8');
+    });
+    it('queries IP2Location without a key and preserves zero coordinates',async()=>{
+        delete process.env.IP2LOCATION_API_KEY;
+        globalThis.fetch=async url=>{
+            assert.equal(String(url),'https://api.ip2location.io/?ip=8.8.8.8');
+            return Response.json({ip:'8.8.8.8',country_code:'US',country_name:'United States',region_name:'Test',city_name:'Test',latitude:0,longitude:0,asn:'15169',as:'Google LLC'});
+        };
+        const res=createResponse();await ip2locationHandler(createRequest({query:{ip:'8.8.8.8'}}),res);
+        assert.equal(res.statusCode,200);assert.equal(res.body.country_code,'US');assert.equal(res.body.asn,'AS15169');
+        assert.equal(res.body.latitude,0);assert.equal(res.body.longitude,0);
+    });
+    it('keeps IP2Location credentials and represents absent ASN as unknown',async()=>{
+        process.env.IP2LOCATION_API_KEY='test-key';
+        globalThis.fetch=async url=>{
+            assert.equal(String(url),'https://api.ip2location.io/?ip=8.8.8.8&key=test-key');
+            return Response.json({ip:'8.8.8.8',country_code:'US'});
+        };
+        const res=createResponse();await ip2locationHandler(createRequest({query:{ip:'8.8.8.8'}}),res);
+        assert.equal(res.body.ip,'8.8.8.8');assert.equal(res.body.asn,null);
+    });
+    it('keeps an upstream quota failure unavailable rather than returning a location',async()=>{
+        delete process.env.IP2LOCATION_API_KEY;
+        globalThis.fetch=async()=>new Response('',{status:429});
+        const res=createResponse();await ip2locationHandler(createRequest({query:{ip:'8.8.8.8'}}),res);
+        assert.equal(res.statusCode,500);assert.equal(res.body.country_code,undefined);
     });
 });
 
