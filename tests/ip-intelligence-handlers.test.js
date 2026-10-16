@@ -3,11 +3,32 @@ import test, { afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import networkHandler from '../api/network-info.js';
 import { createIPRiskHandler } from '../api/ip-risk.js';
+import { createIPClassificationHandler } from '../api/ip-classification.js';
 import { createReportLoader } from '../common/ip-report.js';
 import geoHandler from '../api/ipapi-com.js';
 const originalFetch=globalThis.fetch;
 afterEach(()=>{globalThis.fetch=originalFetch;});
 const response=()=>({statusCode:200,status(code){this.statusCode=code;return this;},json(body){this.body=body;return this;}});
+
+test('automatic classification uses only its two sources and reuses them in a later assessment',async()=>{
+  const calls=[];
+  const adapters=Object.fromEntries(['network','ipapi','proxycheck','rdap','rdns','internetdb','abuseipdb','radar','dnsbl'].map(id=>[id,async()=>{calls.push(id);return {status:'empty'};}]));
+  adapters.proxycheck=async()=>{calls.push('proxycheck');return {status:'ok',data:{type:'business',proxy:false}};};
+  adapters.ipapi=async()=>{calls.push('ipapi');return {status:'ok',data:{hosting:false,mobile:false}};};
+  const load=createReportLoader({adapters,evidence:()=>({})});
+  const result=response();await createIPClassificationHandler({load:load.classification})({query:{ip:'8.8.8.8'}},result);
+  assert.deepEqual(calls.sort(),['ipapi','proxycheck']);
+  assert.equal(result.body.usageType,'business');assert.equal(result.body.usageTypeSource,'proxycheck.io');
+  assert.equal(result.body.proxy,false);assert.equal(result.body.score,undefined);
+  await load('8.8.8.8');assert.equal(calls.filter(id=>id==='proxycheck').length,1);assert.equal(calls.filter(id=>id==='ipapi').length,1);
+});
+
+test('classification source failures remain unknown instead of inventing a network type',async()=>{
+  const fail=async()=>{throw Error('unavailable');};
+  const load=createReportLoader({adapters:{proxycheck:fail,ipapi:fail}});
+  const result=await load.classification('8.8.8.8');
+  assert.equal(result.usageType,'unknown');assert.equal(result.usageTypeSource,null);assert.equal(result.proxy,null);
+});
 
 test('network overview retains valid routing when geolocation fails', async()=>{
   const calls=[];

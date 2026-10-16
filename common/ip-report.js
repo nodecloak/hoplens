@@ -15,7 +15,15 @@ export const createReportLoader=({adapters=createReportSources(),evidence=getRis
     },{maxEntries:256,ttlForValue:value=>value.status==='ok'?300000:value.status==='disabled'?60000:30000}));
     return loaders.get(id)(key);
   };
-  return async ip=>{
+  const classification=async ip=>{
+    const sources=await Promise.all(['ipapi','proxycheck'].map(id=>observe(id,ip,adapters[id])));
+    const report=buildIPReport(ip,sources,now());
+    const proxy=sources.filter(row=>row.status==='ok').flatMap(row=>[row.data?.proxy,row.data?.vpn,row.data?.tor,row.data?.anonymous]);
+    return {ip,usageType:report.profile.type,usageTypeSource:report.risk.usageTypeSource,
+      proxy:proxy.includes(true)?true:proxy.includes(false)?false:null,
+      sources:sources.map(({id,status})=>({id,status}))};
+  };
+  const load=async ip=>{
     const ids=['network','ipapi','proxycheck','rdap','rdns','internetdb','abuseipdb'];
     const network=observe('network',ip,adapters.network);
     const tasks=ids.filter(id=>id!=='network').map(id=>observe(id,ip,adapters[id]));
@@ -25,5 +33,7 @@ export const createReportLoader=({adapters=createReportSources(),evidence=getRis
     for(const [id,value] of Object.entries(evidence(ip))) sources.push({id,status:value.status,data:value.status==='ok'?value:null,observedAt:new Date(now()).toISOString(),durationMs:0});
     return buildIPReport(ip,sources,now());
   };
+  load.classification=classification;
+  return load;
 };
 export const loadIPReport=createReportLoader();

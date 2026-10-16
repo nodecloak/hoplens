@@ -24,6 +24,7 @@ const sources=[
   {id:'maxmind',name:'MaxMind',config:'maxMind'},
 ];
 const sameIP=(a,b)=>{const x=parseIp(a),y=parseIp(b);return !!x&&!!y&&x.family===y.family&&x.value===y.value;};
+const mergeProxy=(previous,incoming)=>previous===true||incoming===true?true:previous===false||incoming===false?false:null;
 
 export const useIPDetails=(ip,configs,{getJSON=readJSON,getTrace=readTrace}={})=>{
   const network=shallowRef(null),locations=ref([]),classification=ref({}),traffic=ref(null),risk=ref(null);
@@ -41,6 +42,10 @@ export const useIPDetails=(ip,configs,{getJSON=readJSON,getTrace=readTrace}={})=
     locations.value=sources.map(source=>({...source,status:source.config&&!settings?.[source.config]?'disabled':networkState.value,location:null}));
     if(!isUsablePublicIP(selected)) return;
     const query=encodeURIComponent(selected);
+    getJSON(`/api/ip-classification?ip=${query}`,signal).then(body=>{
+      if(signal.aborted||!sameIP(body.ip,selected)) return;
+      classification.value={...classification.value,...body,proxy:mergeProxy(classification.value.proxy,body.proxy)};
+    }).catch(()=>{});
     const task=async(id,load)=>{
       try { const patch=await load();if(!signal.aborted) updateRow(id,patch); }
       catch { if(!signal.aborted) { updateRow(id,{status:'unavailable'}); if(id==='whois') {networkState.value='unavailable';if(settings?.cloudFlare) trafficState.value='unavailable';} } }
@@ -70,7 +75,7 @@ export const useIPDetails=(ip,configs,{getJSON=readJSON,getTrace=readTrace}={})=
         const body=await getJSON(`/api/${source.id}?ip=${query}`,signal);
         const location=normalizeLocation(body,selected);
         if(source.id==='ipapicom'&&!signal.aborted&&sameIP(body.ip,selected)) {
-          classification.value={hosting:typeof body.isHosting==='boolean'?body.isHosting:null,mobile:typeof body.isMobile==='boolean'?body.isMobile:null,proxy:typeof body.isProxy==='boolean'?body.isProxy:null};
+          classification.value={...classification.value,hosting:typeof body.isHosting==='boolean'?body.isHosting:null,mobile:typeof body.isMobile==='boolean'?body.isMobile:null,proxy:mergeProxy(classification.value.proxy,body.isProxy)};
         }
         return {status:location?'ok':'unavailable',location};
       });
