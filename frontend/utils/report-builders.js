@@ -8,6 +8,7 @@
 
 import { isValidIP } from './valid-ip.js';
 import { CONNECTIVITY_STATUS, ANONYMITY_CODES } from './report-schema.js';
+import { buildPurity } from './report-purity.js';
 
 // --- small shared normalizers ----------------------------------------------
 
@@ -373,6 +374,7 @@ const buildPersona = (payload) => {
 
 export const REPORT_EVENT_BUILDERS = {
     'ipinfo:finished': { section: 'ipinfo', build: buildIpinfo },
+    'ippurity:updated': { section: 'ippurity', build: buildPurity },
     'connectivity:finished': { section: 'connectivity', build: buildConnectivity },
     'webrtc:finished': { section: 'webrtc', build: buildWebrtc },
     'dnsleak:finished': { section: 'dnsleak', build: buildDnsleak },

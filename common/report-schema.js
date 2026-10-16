@@ -101,6 +101,7 @@ const arr = (max, items) => ({ kind: 'array', max, items });
 const obj = (fields) => ({ kind: 'object', fields });
 const opt = (spec) => ({ ...spec, optional: true });
 const nullable = (spec) => ({ ...spec, nullable: true });
+const purityState = () => oneOf('pending', 'loading', 'ok', 'partial', 'disabled', 'different', 'unavailable', 'unknown', 'missing', 'stale', 'unsupported', 'error', 'limited');
 
 // Shared sub-shapes.
 const pingStats = obj({
@@ -160,6 +161,25 @@ const SECTION_SPECS = {
             qualityScore: opt(num(0, 100)),
             anonymityProtocol: opt(str(32)),
             anonymityProvider: opt(str(64)),
+        })),
+    }),
+    ippurity: obj({
+        testedAt: isoDate(), ip: ipValue(),
+        networkState: purityState(), trafficState: purityState(), riskState: oneOf('pending', 'loading', 'ok', 'partial', 'unavailable'),
+        network: opt(obj({
+            asn: opt(int(0, 4294967295)), asnName: opt(str(180)), asnSource: opt(str(64)), domain: opt(str(253)),
+            prefix: opt(obj({ address: ipValue(), length: int(0, 128) })),
+            range: opt(obj({ start: ipValue(), end: ipValue() })),
+        })),
+        usageType: oneOf('business', 'residential', 'mobile', 'hosting', 'education', 'unknown'),
+        usageTypeSource: opt(str(96)), proxy: nullable(bool()),
+        locations: arr(8, obj({ id: str(32), name: str(64), status: purityState(), countryCode: countryCode(), country: opt(str(180)), region: opt(str(180)), city: opt(str(180)), countryOnly: bool() })),
+        traffic: opt(obj({ human: num(0, 100), bot: num(0, 100) })),
+        risk: opt(obj({
+            model: opt(str(64)), score: nullable(int(0, 100)), scoreKind: oneOf('complete', 'observed', 'unavailable'),
+            level: nullable(oneOf('none', 'low', 'moderate', 'elevated', 'high')), queriedAt: isoDate(),
+            range: obj({ min: num(0, 100), max: num(0, 100) }), coverage: obj({ checked: int(0, 32), total: int(0, 32) }),
+            checks: arr(7, obj({ id: oneOf('drop', 'tor', 'proxy', 'hosting', 'dnsbl', 'services', 'abuse'), source: str(96), status: purityState(), hit: nullable(bool()), points: int(0, 100), maxPoints: int(0, 100), asOf: opt(isoDate()), copyright: opt(str(256)), suppressedBy: opt(oneOf('tor', 'proxy')), matchedPrefix: opt(obj({ address: ipValue(), length: int(0, 128) })) })),
         })),
     }),
     connectivity: obj({

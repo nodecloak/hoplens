@@ -299,7 +299,7 @@ describe('constants', () => {
         assert.deepEqual(REPORT_TTL_DAYS, [1, 3, 7]);
         assert.ok(REPORT_SECTION_IDS.includes('ipinfo'));
         assert.ok(REPORT_SECTION_IDS.includes('enhanceddnsleak'));
-        assert.equal(REPORT_SECTION_IDS.length, 12);
+        assert.equal(REPORT_SECTION_IDS.length, 13);
     });
 });
 

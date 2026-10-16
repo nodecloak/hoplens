@@ -1313,6 +1313,7 @@
       "Instruction": "Based on the data above, analyze the health of this network. Point out anomalies (DNS leaks, WebRTC exposure, proxy/VPN traits, packet loss, high latency, routing issues) and give concrete troubleshooting suggestions.",
       "Sections": {
         "ipinfo": "Public IP addresses as seen by multiple independent sources (sources may disagree when a proxy or split routing is involved).",
+        "ippurity": "IP purity snapshot: network and location metadata, ASN-wide traffic, and the first-party risk score with query time, possible range, coverage and rule evidence. Higher risk scores mean more observed signals. Missing or failed checks remain unknown; sharing does not run an assessment.",
         "connectivity": "Browser reachability probes against well-known websites; timeMs is the displayed round-trip, minTimeMs the best of repeated rounds.",
         "webrtc": "IPs exposed through WebRTC STUN — if these differ from the main public IP, the real address may be leaking past a proxy/VPN.",
         "dnsleak": "Egress IPs of the DNS resolvers that actually answered the browser's lookups — resolvers not belonging to the user's ISP/VPN provider indicate a DNS leak.",

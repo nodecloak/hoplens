@@ -32,6 +32,7 @@ import { useI18n } from 'vue-i18n';
 import { useMainStore } from '@/store';
 import { useIPDetails } from '@/composables/use-ip-details.js';
 import { isUsablePublicIP } from '@/utils/valid-ip.js';
+import { emitAppEvent } from '@/utils/app-events.js';
 import IPNodeCloakRiskScore from './IPNodeCloakRiskScore.vue';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@iconify/vue';
@@ -42,6 +43,9 @@ const {t,locale}=useI18n();
 const store=useMainStore();
 const valid=computed(()=>isUsablePublicIP(props.ip));
 const {network,locations,classification,traffic,risk,networkState,trafficState,riskState,refresh,requestRisk}=useIPDetails(()=>props.ip,()=>store.configs);
+watch([()=>props.ip,network,locations,classification,traffic,risk,networkState,trafficState,riskState],()=>{
+  emitAppEvent('ippurity:updated',{ip:props.ip,network:network.value,locations:locations.value,classification:classification.value,traffic:traffic.value,risk:risk.value,networkState:networkState.value,trafficState:trafficState.value,riskState:riskState.value});
+},{immediate:true,deep:true});
 watch(network,value=>emit('network',value));
 const proxyFlag=computed(()=>risk.value?.checks?.find(check=>check.id==='proxy')?.hit??classification.value.proxy??null);
 const usage=computed(()=>risk.value?.usageType&&risk.value.usageType!=='unknown'?risk.value.usageType:classification.value.usageType&&classification.value.usageType!=='unknown'?classification.value.usageType:classification.value.mobile===true?'mobile':classification.value.hosting===true?'hosting':'unknown');

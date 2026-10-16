@@ -1313,6 +1313,7 @@
       "Instruction": "Com base nos dados acima, analise a saúde desta rede. Aponte anomalias (vazamentos de DNS, exposição WebRTC, traços de proxy/VPN, perda de pacotes, alta latência, problemas de roteamento) e dê sugestões concretas de solução.",
       "Sections": {
         "ipinfo": "IPs públicos vistos por várias fontes independentes (as fontes podem divergir quando há proxy ou roteamento dividido).",
+        "ippurity": "Retrato da pureza do IP: rede, localizações, tráfego do ASN e índice próprio de risco, com data da consulta, intervalo, cobertura e evidências. Quanto maior o risco, mais sinais observados. Verificações ausentes permanecem desconhecidas; compartilhar não inicia uma avaliação.",
         "connectivity": "Sondas de acessibilidade do navegador contra sites conhecidos; timeMs é o tempo de ida e volta exibido, minTimeMs é o melhor de rodadas repetidas.",
         "webrtc": "IPs expostos por WebRTC STUN — se forem diferentes do IP público principal, o IP real pode estar vazando para além de um proxy/VPN.",
         "dnsleak": "IPs de saída dos resolvedores DNS que realmente responderam às consultas do navegador — resolvedores que não pertencem ao ISP/provedor de VPN do usuário indicam vazamento de DNS.",

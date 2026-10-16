@@ -1313,6 +1313,7 @@
       "Instruction": "À partir des données ci-dessus, analysez l'état de ce réseau. Signalez les anomalies (fuites DNS, exposition WebRTC, traits de proxy/VPN, pertes de paquets, latence élevée, problèmes de routage) et proposez des pistes de dépannage concrètes.",
       "Sections": {
         "ipinfo": "Adresses IP publiques vues par plusieurs sources indépendantes (elles peuvent diverger en présence d'un proxy ou d'un routage réparti).",
+        "ippurity": "Instantané de pureté IP : réseau, localisations, trafic ASN et indice de risque interne avec date, intervalle, couverture et preuves. Un score élevé indique davantage de signaux observés. Les vérifications manquantes restent inconnues ; le partage ne lance aucune évaluation.",
         "connectivity": "Sondes d'accessibilité du navigateur vers des sites connus ; timeMs est l'aller-retour affiché, minTimeMs le meilleur des tours répétés.",
         "webrtc": "IP exposées via WebRTC STUN — si elles diffèrent de l'IP publique principale, l'adresse réelle peut fuir malgré un proxy/VPN.",
         "dnsleak": "IP de sortie des résolveurs DNS ayant réellement répondu aux requêtes du navigateur — des résolveurs n'appartenant pas au FAI/fournisseur VPN de l'utilisateur indiquent une fuite DNS.",
