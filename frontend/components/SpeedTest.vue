@@ -10,13 +10,13 @@
         </h2>
       </div>
       <div class="text-base text-muted-foreground">
-        <p v-if="!isSimpleMode">{{ t('hoplens.speedNote') }}</p>
+        <p v-if="!isSimpleMode">{{ t('ipnodecloak.speedNote') }}</p>
       </div>
     </header>
-<div class="hl-speed-metrics"><div v-for="metric in metrics" :key="metric.key"><span>{{ metric.label }}</span><p>{{ state.speedTest[metric.key] }}<small>{{ metric.unit }}</small></p></div></div><div class="hl-speed-progress"><Progress v-if="isRunning || isPaused" :model-value="state.speedTest.progress" :aria-label="progressLabel" /><p>{{ isRunning || isPaused || isFinished || isError ? progressLabel : t('hoplens.speedNote') }}</p></div><Button variant="action" class="hl-speed-cta" @click="speedTestController"><component :is="ctaIcon" />{{ t(isRunning ? 'hoplens.pauseSpeed' : isPaused ? 'hoplens.resumeSpeed' : 'hoplens.startSpeed') }}</Button>
+<div class="hl-speed-metrics"><div v-for="metric in metrics" :key="metric.key"><span>{{ metric.label }}</span><p>{{ state.speedTest[metric.key] }}<small>{{ metric.unit }}</small></p></div></div><div class="hl-speed-progress"><Progress v-if="isRunning || isPaused" :model-value="state.speedTest.progress" :aria-label="progressLabel" /><p>{{ isRunning || isPaused || isFinished || isError ? progressLabel : t('ipnodecloak.speedNote') }}</p></div><Button variant="action" class="hl-speed-cta" @click="speedTestController"><component :is="ctaIcon" />{{ t(isRunning ? 'ipnodecloak.pauseSpeed' : isPaused ? 'ipnodecloak.resumeSpeed' : 'ipnodecloak.startSpeed') }}</Button>
 
 
-<details class="hl-test-details"><summary>{{ t('hoplens.details') }}</summary>
+<details class="hl-test-details"><summary>{{ t('ipnodecloak.details') }}</summary>
 <p class="hl-detail-note">{{ t('speedtest.Note') }}</p>
     <Card class="keyboard-shortcut-card jn-card">
       <CardContent class="p-4 md:p-6">

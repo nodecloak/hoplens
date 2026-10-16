@@ -1,7 +1,7 @@
 // Live overview regression tests: unknown results must stay unknown.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { summarizeDiagnostics } from '../frontend/utils/hoplens-summary.js';
+import { summarizeDiagnostics } from '../frontend/utils/ipnodecloak-summary.js';
 
 test('empty diagnostics show no address, no privacy verdict and zero completed checks', () => {
   const result = summarizeDiagnostics({}, {});
@@ -14,7 +14,7 @@ test('empty diagnostics show no address, no privacy verdict and zero completed c
 });
 
 test('an early source can show the address while the complete IP check is still pending', () => {
-  const result = summarizeDiagnostics({ ipinfo: { cards: [{ ip: '1.1.1.1', source: 'Hoplens edge' }] } }, { IPInfo: false });
+  const result = summarizeDiagnostics({ ipinfo: { cards: [{ ip: '1.1.1.1', source: 'IPNodeCloak edge' }] } }, { IPInfo: false });
   assert.equal(result.primary.ip, '1.1.1.1');
   assert.equal(result.completed, 0);
   assert.equal(result.percent, 0);

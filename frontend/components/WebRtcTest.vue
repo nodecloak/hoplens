@@ -15,13 +15,13 @@
         </JnTooltip>
       </div>
       <div class="text-base text-muted-foreground">
-        <p v-if="!isSimpleMode">{{ t('hoplens.webrtcNote') }}</p>
+        <p v-if="!isSimpleMode">{{ t('ipnodecloak.webrtcNote') }}</p>
       </div>
     </header>
 <dl class="hl-probe-rows"><div v-for="stun in stunServers" :key="stun.id"><dt :title="stun.url">{{ stun.url }}</dt><dd :class="textClass(toneOf(stun))" :data-mask="maskAttr(stun.ip)">{{ stun.ip }}</dd></div></dl>
 
 
-<details class="hl-test-details"><summary>{{ t('hoplens.details') }}</summary>
+<details class="hl-test-details"><summary>{{ t('ipnodecloak.details') }}</summary>
 <p class="hl-detail-note">{{ t('webrtc.Note') }}</p>
     <!-- Card grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">

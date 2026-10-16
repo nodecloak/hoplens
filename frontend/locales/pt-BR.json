@@ -1848,7 +1848,7 @@
     "title": "IP.NodeCloak — IP & network toolbox",
     "description": "Uma caixa de ferramentas de IP melhor e de código aberto: verifique seu IP e sua geolocalização, teste vazamentos de IP por WebRTC e DNS, faça uma verificação de qualidade de IP, verifique a impressão digital do navegador, além de teste de velocidade, teste de latência global, teste MTR, pesquisa Whois e muito mais.",
     "keywords": "MyIP, ferramenta de IP, verificar IP, teste de vazamento de IP, verificação de qualidade de IP, consulta de IP, teste de vazamento de DNS, teste de vazamento WebRTC, verificação de impressão digital do navegador, teste de velocidade, teste de latência global, teste MTR, consulta DNS, pesquisa Whois",
-    "footerLink": "https://github.com/nodecloak/hoplens",
+    "footerLink": "https://github.com/nodecloak/ipnodecloak",
     "copyRightName": "Originalmente de ",
     "copyRightLink": "https://ipcheck.ing",
     "copyRightLinkName": "IPCheck.ing"
@@ -1900,7 +1900,7 @@
     "appDescription": "Caixa de ferramentas de IP tudo em um",
     "installDescription": "Você já usou o IPCheck.ing {count} vezes — instale-o como app para uma experiência mais fluida e acesso mais rápido."
   },
-  "hoplens": {
+  "ipnodecloak": {
     "live": "AO VIVO · SEU ENDEREÇO PÚBLICO",
     "overview": "Visão geral",
     "leaks": "Vazamentos",
@@ -1954,7 +1954,7 @@
   },
   "ipDetails": {
     "title": "Pureza do IP",
-    "note": "Veja a rede, a localização e as evidências de risco deste IP, com a fonte de cada observação.",
+    "note": "Veja a pureza, a rede e a localização deste IP.",
     "domain": "Domínio do AS",
     "prefix": "Prefixo BGP",
     "range": "Faixa de IP",
@@ -1964,8 +1964,6 @@
     "trafficValues": "Humano {human}%, bot {bot}%",
     "human": "Humano",
     "bot": "Bot",
-    "trafficNote": "Cloudflare Radar · Tráfego HTTP de todo o ASN nos últimos 7 dias.",
-    "viewRadar": "Ver este ASN no Cloudflare Radar",
     "locations": "Comparação de localização",
     "locationNote": "Cada provedor consulta o mesmo IP. As bases geográficas podem divergir.",
     "countryOnly": "apenas país",

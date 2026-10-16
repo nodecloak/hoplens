@@ -1848,7 +1848,7 @@
     "title": "IP.NodeCloak — IP & network toolbox",
     "description": "Une boîte à outils IP open source et tout-en-un : vérifiez votre adresse IP et sa géolocalisation, testez les fuites IP via WebRTC et DNS, effectuez une vérification de la qualité IP, une vérification de l'empreinte du navigateur, ainsi qu'un test de vitesse, un test de latence mondiale, un test MTR, une recherche Whois, et plus encore.",
     "keywords": "MonIP, Outil IP, Vérification IP, Test de fuite IP, Test de fuite DNS, Qualité IP, Test de fuite WebRTC, Empreinte du navigateur, Test de vitesse, Test de latence mondiale, Test MTR, Recherche DNS, Recherche Whois",
-    "footerLink": "https://github.com/nodecloak/hoplens",
+    "footerLink": "https://github.com/nodecloak/ipnodecloak",
     "copyRightName": "Originalement de ",
     "copyRightLink": "https://ipcheck.ing",
     "copyRightLinkName": "IPCheck.ing"
@@ -1900,7 +1900,7 @@
     "appDescription": "La boîte à outils IP tout-en-un",
     "installDescription": "Vous avez déjà utilisé IPCheck.ing {count} fois — installez-le comme application pour une expérience plus fluide et un accès plus rapide."
   },
-  "hoplens": {
+  "ipnodecloak": {
     "live": "EN DIRECT · VOTRE ADRESSE PUBLIQUE",
     "overview": "Aperçu",
     "leaks": "Fuites",
@@ -1954,7 +1954,7 @@
   },
   "ipDetails": {
     "title": "Pureté IP",
-    "note": "Consultez le réseau, la localisation et les signaux de risque de cette IP, avec leurs sources.",
+    "note": "Consultez la pureté, le réseau et la localisation de cette IP.",
     "domain": "Domaine de l’AS",
     "prefix": "Préfixe BGP",
     "range": "Plage IP",
@@ -1964,8 +1964,6 @@
     "trafficValues": "Humain {human} %, robot {bot} %",
     "human": "Humain",
     "bot": "Robot",
-    "trafficNote": "Cloudflare Radar · Trafic HTTP de tout l’ASN sur les 7 derniers jours.",
-    "viewRadar": "Voir cet ASN sur Cloudflare Radar",
     "locations": "Comparaison des localisations",
     "locationNote": "Chaque service interroge la même IP. Les bases géographiques peuvent diverger.",
     "countryOnly": "pays uniquement",

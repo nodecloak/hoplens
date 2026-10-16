@@ -1,14 +1,14 @@
 <template>
-  <HoplensNav :busy="!store.allHasLoaded" @full-check="store.setRefreshEveryThing(true)" />
+  <IPNodeCloakNav :busy="!store.allHasLoaded" @full-check="store.setRefreshEveryThing(true)" />
   <User ref="userRef" />
   <Achievements ref="achievementsRef" />
   <Preferences />
   <main id="mainpart" class="hl-main">
-    <HoplensHero @share-report="shareReportRef?.openDialog()" @query-ip="queryIPRef?.openModal()">
+    <IPNodeCloakHero @share-report="shareReportRef?.openDialog()" @query-ip="queryIPRef?.openModal()">
       <template #history><IPHistory /><InfoMask :show-mask-button="showMaskButton" :info-mask-level="infoMaskLevel" :toggle-info-mask="toggleInfoMask" /></template>
-    </HoplensHero>
+    </IPNodeCloakHero>
       <IPCheck />
-      <section class="hl-leak-section"><h2>{{ t('hoplens.leaks') }}</h2><div class="hl-leak-grid"><WebRTC /><DNSLeaks /></div></section>
+      <section class="hl-leak-section"><h2>{{ t('ipnodecloak.leaks') }}</h2><div class="hl-leak-grid"><WebRTC /><DNSLeaks /></div></section>
       <div class="hl-network-grid"><Connectivity /><SpeedTest /></div>
       <AdvancedTools ref="advancedToolsRef" />
   </main>
@@ -32,8 +32,8 @@
 // out of the route chunk and out of the mount's critical path. Their
 // template refs are null until the chunk lands — consumers (use-shortcuts)
 // must optional-chain.
-import HoplensNav from './hoplens/HoplensNav.vue';
-import HoplensHero from './hoplens/HoplensHero.vue';
+import IPNodeCloakNav from './ipnodecloak/IPNodeCloakNav.vue';
+import IPNodeCloakHero from './ipnodecloak/IPNodeCloakHero.vue';
 import IPCheck from './IpInfos.vue';
 import Connectivity from './ConnectivityTest.vue';
 import WebRTC from './WebRtcTest.vue';

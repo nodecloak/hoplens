@@ -6,13 +6,13 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-User=hoplens
-Group=hoplens
-WorkingDirectory=/srv/hoplens/current
-EnvironmentFile=/etc/hoplens.env
+User=ipnodecloak
+Group=ipnodecloak
+WorkingDirectory=/srv/ipnodecloak/current
+EnvironmentFile=/etc/ipnodecloak.env
 Environment=NODE_ENV=production
-Environment=PATH=/opt/hoplens/node-v24.22.0-linux-x64/bin:/usr/bin:/bin
-ExecStart=/opt/hoplens/node-v24.22.0-linux-x64/bin/node --import ./sentry-instrument.js backend-server.js
+Environment=PATH=/opt/ipnodecloak/node-v24.22.0-linux-x64/bin:/usr/bin:/bin
+ExecStart=/opt/ipnodecloak/node-v24.22.0-linux-x64/bin/node --import ./sentry-instrument.js backend-server.js
 Restart=on-failure
 RestartSec=5
 TimeoutStopSec=20
@@ -20,7 +20,7 @@ NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=strict
 ProtectHome=true
-ReadWritePaths=/var/lib/hoplens
+ReadWritePaths=/var/lib/ipnodecloak
 UMask=0027
 MemoryMax=768M
 

@@ -29,8 +29,8 @@
            `hidden`) keeps the accessible name in every locale, and being out of
            flow it costs no `gap-2`. -->
       <div class="ml-auto flex shrink-0 items-center gap-1">
-        <Select :model-value="locale" @update:model-value="changeLanguage"><SelectTrigger class="w-14 h-8 text-xs" :aria-label="t('hoplens.language')"><span>{{ locale==='zh'?'简':locale==='zh-TW'?'繁':locale.slice(0,2).toUpperCase() }}</span></SelectTrigger><SelectContent><SelectItem v-for="language in LOCALES" :key="language.code" :value="language.code">{{ language.nativeName }}</SelectItem></SelectContent></Select>
-        <Button variant="ghost" size="icon" :aria-label="t('hoplens.theme')" @click="store.updatePreference('theme',store.isDarkMode?'light':'dark')"><Sun v-if="store.isDarkMode"/><Moon v-else/></Button>
+        <Select :model-value="locale" @update:model-value="changeLanguage"><SelectTrigger class="w-14 h-8 text-xs" :aria-label="t('ipnodecloak.language')"><span>{{ locale==='zh'?'简':locale==='zh-TW'?'繁':locale.slice(0,2).toUpperCase() }}</span></SelectTrigger><SelectContent><SelectItem v-for="language in LOCALES" :key="language.code" :value="language.code">{{ language.nativeName }}</SelectItem></SelectContent></Select>
+        <Button variant="ghost" size="icon" :aria-label="t('ipnodecloak.theme')" @click="store.updatePreference('theme',store.isDarkMode?'light':'dark')"><Sun v-if="store.isDarkMode"/><Moon v-else/></Button>
       <Button as-child variant="default" size="icon" class="shrink-0 cursor-pointer sm:w-auto sm:px-4">
         <RouterLink to="/">
           <ArrowLeft class="size-4" />

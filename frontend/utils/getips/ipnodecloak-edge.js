@@ -3,8 +3,8 @@ import { fetchWithTimeout } from '../fetch-with-timeout.js';
 import { parseTrace } from '../parse-trace.js';
 import { isUsablePublicIP } from '../valid-ip.js';
 
-export const hoplensEdge = {
-  id: 'hoplens-edge',
+export const ipnodecloakEdge = {
+  id: 'ipnodecloak-edge',
   name: 'IP.NodeCloak edge',
   run: async () => {
     const response = await fetchWithTimeout('/cdn-cgi/trace', { cache: 'no-store' });

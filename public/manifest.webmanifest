@@ -2,7 +2,7 @@
   "name": "IP.NodeCloak · IP & network toolbox",
   "short_name": "IP.NodeCloak",
   "description": "All in one IP Toolbox",
-  "id": "com.nodecloak.hoplens",
+  "id": "com.nodecloak.ipnodecloak",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -11,12 +11,12 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/brand/hoplens-app-icon-180.png",
+      "src": "/brand/ipnodecloak-app-icon-180.png",
       "sizes": "180x180",
       "type": "image/png"
     },
     {
-      "src": "/brand/hoplens-app-icon-512.png",
+      "src": "/brand/ipnodecloak-app-icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

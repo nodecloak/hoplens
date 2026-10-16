@@ -1848,7 +1848,7 @@
     "title": "IP.NodeCloak — IP 與網路檢測工具箱",
     "description": "更完善的開源 IP 工具箱：查詢 IP 位址與地理位置、測試 WebRTC 與 DNS IP 洩漏、執行 IP 品質檢查、瀏覽器指紋檢查，還有網速測試、全球延遲測試、MTR 測試、Whois 查詢等。",
     "keywords": "MyIP, IP 工具, IP 檢查, IP 洩漏檢查, IP 品質檢查, IP 查詢, DNS 洩漏測試, WebRTC 洩漏測試, 瀏覽器指紋檢查, 網速測試, 全球延遲測試, MTR 測試, DNS 查詢, Whois 查詢",
-    "footerLink": "https://github.com/nodecloak/hoplens",
+    "footerLink": "https://github.com/nodecloak/ipnodecloak",
     "copyRightName": "原始來源：",
     "copyRightLink": "https://ipcheck.ing",
     "copyRightLinkName": "IPCheck.ing"
@@ -1900,7 +1900,7 @@
     "appDescription": "一站式 IP 工具箱",
     "installDescription": "這已經是你第 {count} 次使用 IPCheck.ing 了，將它安裝為應用程式，可以獲得更好的使用體驗，開啟也更方便。"
   },
-  "hoplens": {
+  "ipnodecloak": {
     "live": "即時 · 你的公網位址",
     "overview": "概覽",
     "leaks": "洩漏檢測",
@@ -1954,7 +1954,7 @@
   },
   "ipDetails": {
     "title": "純淨度",
-    "note": "查看 IP 純淨度、網路歸屬與位置，每項資訊均標註來源。",
+    "note": "查看 IP 純淨度、網路歸屬與位置。",
     "domain": "AS 網域",
     "prefix": "BGP 網段",
     "range": "IP 範圍",
@@ -1964,8 +1964,6 @@
     "trafficValues": "人類 {human}%，機器人 {bot}%",
     "human": "人類",
     "bot": "機器人",
-    "trafficNote": "Cloudflare Radar · 整個 ASN 最近 7 天的 HTTP 流量統計。",
-    "viewRadar": "在 Cloudflare Radar 查看此 ASN",
     "locations": "多來源位置比對",
     "locationNote": "各資料來源查詢的是同一個 IP，地理資料庫之間可能存在差異。",
     "countryOnly": "僅國家/地區",

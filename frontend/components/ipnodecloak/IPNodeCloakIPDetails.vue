@@ -13,15 +13,15 @@
         </dl>
         <p class="hl-source-caption" v-if="network?.asn">ASN: {{ network.asnSource }}<template v-if="network.prefix"> · {{ t('ipDetails.routingSource') }}</template></p>
         <div class="hl-traffic-block">
-          <div class="hl-fact-heading"><h3>{{ t('ipDetails.traffic') }}</h3><a v-if="network?.asn" :href="`https://radar.cloudflare.com/as${network.asn}`" target="_blank" rel="noopener" class="hl-detail-link" :aria-label="t('ipDetails.viewRadar')"><ArrowUpRight /></a></div>
+          <div class="hl-fact-heading"><h3>{{ t('ipDetails.traffic') }}</h3></div>
           <template v-if="traffic"><div class="hl-traffic-bar" role="img" :aria-label="t('ipDetails.trafficValues',{human:traffic.human,bot:traffic.bot})"><span :style="{width:traffic.human+'%'}"/><span :style="{width:traffic.bot+'%'}"/></div><div class="hl-traffic-values hl-mono"><span>{{ t('ipDetails.human') }} {{ traffic.human.toFixed(2) }}%</span><span>{{ t('ipDetails.bot') }} {{ traffic.bot.toFixed(2) }}%</span></div></template>
-          <p v-else class="hl-detail-empty">{{ statusLabel(trafficState) }}</p><p class="hl-source-caption">{{ t('ipDetails.trafficNote') }}</p>
+          <p v-else class="hl-detail-empty">{{ statusLabel(trafficState) }}</p>
         </div>
         <div class="hl-geography-block"><h3>{{ t('ipDetails.locations') }}</h3><p class="hl-source-caption">{{ t('ipDetails.locationNote') }}</p><dl class="hl-location-list"><div v-for="source in locations" :key="source.id"><dt>{{ source.name }}</dt><dd v-if="source.status==='ok'&&source.location"><Icon v-if="source.location.countryCode" :icon="'circle-flags:'+source.location.countryCode.toLowerCase()" class="size-4 shrink-0"/><span>{{ locationText(source.location) }}<small v-if="source.countryOnly"> · {{ t('ipDetails.countryOnly') }}</small></span></dd><dd v-else class="hl-detail-empty">{{ statusLabel(source.status) }}</dd></div></dl></div>
       </div>
       <aside class="hl-reputation-column">
         <div class="hl-classification-grid"><div><span><Network />{{ t('ipDetails.type') }}</span><strong>{{ t('ipDetails.'+usage) }}</strong><small v-if="usage!=='unknown'">IP-API</small></div><div><span><Route />{{ t('ipRisk.proxyMarker') }}</span><strong>{{ t(proxyFlag===true?'ipDetails.proxy':proxyFlag===false?'ipRisk.noProxyMarker':'ipDetails.unknown') }}</strong><small v-if="proxyFlag!==null">IP-API</small></div></div>
-        <HoplensRiskScore :ip="ip" :result="risk" :state="riskState" :valid="valid" @check="requestRisk" />
+        <IPNodeCloakRiskScore :ip="ip" :result="risk" :state="riskState" :valid="valid" @check="requestRisk" />
       </aside>
     </div>
   </section>
@@ -32,7 +32,7 @@ import { useI18n } from 'vue-i18n';
 import { useMainStore } from '@/store';
 import { useIPDetails } from '@/composables/use-ip-details.js';
 import { isUsablePublicIP } from '@/utils/valid-ip.js';
-import HoplensRiskScore from './HoplensRiskScore.vue';
+import IPNodeCloakRiskScore from './IPNodeCloakRiskScore.vue';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@iconify/vue';
 import { ArrowUpRight, RefreshCw, Route, Network } from '@lucide/vue';

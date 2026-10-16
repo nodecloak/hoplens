@@ -1,7 +1,7 @@
 <!-- IP.NodeCloak fork overview, local development and attribution. -->
 # IP.NodeCloak · NodeCloak
 
-[ip.nodecloak.com](https://ip.nodecloak.com) · [GitHub](https://github.com/nodecloak/hoplens)
+[ip.nodecloak.com](https://ip.nodecloak.com) · [GitHub](https://github.com/nodecloak/ipnodecloak)
 
 IP.NodeCloak 是 NodeCloak 的 IP 与网络诊断工具，基于 [Jason Ng / MyIP](https://github.com/jason5ng32/MyIP) 的 MIT 开源项目构建，界面采用 IP.NodeCloak 视觉设计。
 

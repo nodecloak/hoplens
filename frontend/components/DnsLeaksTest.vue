@@ -16,13 +16,13 @@
         </JnTooltip>
       </div>
       <div class="text-base text-muted-foreground">
-        <p v-if="!isSimpleMode">{{ t('hoplens.dnsNote') }}</p>
+        <p v-if="!isSimpleMode">{{ t('ipnodecloak.dnsNote') }}</p>
       </div>
     </header>
 <dl class="hl-probe-rows"><div v-for="leak in leakTest" :key="leak.slot"><dt>{{ leak.providerName }}</dt><dd :class="textClass(toneOf(leak))" :data-mask="maskAttr(leak.ip)">{{ leak.ip }}</dd></div></dl>
 
 
-<details class="hl-test-details"><summary>{{ t('hoplens.details') }}</summary>
+<details class="hl-test-details"><summary>{{ t('ipnodecloak.details') }}</summary>
 <p class="hl-detail-note">{{ t('dnsleaktest.Note') }}</p>
     <!-- Card grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
