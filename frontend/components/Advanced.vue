@@ -21,7 +21,7 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
             <Card v-for="card in enabledCards" :key="card.slug"
                 :data-adv-slug="card.slug"
-                class="keyboard-shortcut-card jn-card jn-adv-card group relative overflow-visible transition-transform duration-300 ease-out hover:-translate-y-1.5 data-[keyboard-hover=true]:ring-2 data-[keyboard-hover=true]:ring-green-500/50">
+                class="keyboard-shortcut-card jn-card jn-adv-card group relative overflow-visible transition-colors duration-150 data-[keyboard-hover=true]:ring-2 data-[keyboard-hover=true]:ring-green-500/50">
                 <a :href="card.noStandalone ? `/?tool=${card.slug}` : `/tools/${card.slug}`"
                     class="block cursor-pointer no-underline text-inherit"
                     @click="onCardClick($event, card.slug)"
@@ -191,25 +191,6 @@ defineExpose({
 </script>
 
 <style scoped>
-.jn-emoji {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.75rem;
-    font-size: 1.6rem;
-    line-height: 1;
-    transition: transform 0.4s ease, text-shadow 0.4s ease;
-    pointer-events: none;
-}
-
-.jn-adv-card:hover .jn-emoji {
-    transform: translateY(-10pt) scale(1.8);
-    text-shadow: 0 0 10pt rgb(0 0 0 / 0.38);
-}
-
-:global(.dark) .jn-adv-card:hover .jn-emoji {
-    text-shadow: 0 0 10pt rgb(255 255 255 / 0.15);
-}
-
 /* Drawer content area width (desktop) */
 .jn-canvas-width {
     width: fit-content;
