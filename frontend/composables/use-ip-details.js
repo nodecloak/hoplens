@@ -84,8 +84,8 @@ export const useIPDetails=(ip,configs,{getJSON=readJSON,getTrace=readTrace}={})=
       const body=await getJSON(`/api/ip-risk?ip=${encodeURIComponent(selected)}`,current.signal,15000);
       if(current.signal.aborted) return;
       if(!sameIP(body.ip,selected)) throw new Error('Address mismatch');
-      risk.value=body.status==='ok'?body:null;
-      riskState.value=['ok','limited','unavailable'].includes(body.status)?body.status:'unavailable';
+      risk.value=['ok','partial'].includes(body.status)?body:null;
+      riskState.value=['ok','partial'].includes(body.status)?body.status:'unavailable';
     } catch {if(!current.signal.aborted) riskState.value='unavailable';}
   };
   onScopeDispose(()=>controller?.abort());

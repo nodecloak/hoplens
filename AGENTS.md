@@ -11,6 +11,8 @@ Keep upstream MIT attribution. The IP.NodeCloak visual layer is in
 light and mobile tokens. Live summaries must use the latest diagnostic event,
 including failed reruns, rather than an older successful share-report snapshot.
 The dashboard shows actual check coverage, never a fabricated privacy score.
+The optional first-party IP risk index is a disclosed heuristic model with
+per-rule evidence and coverage; missing/stale evidence never becomes zero risk.
 Basic probes are opt-in beyond the initial IP lookup; speed tests stay manual.
 Deployment and rollback are documented in `ops/README.md`. The dedicated API
 binds loopback by default; do not replace the system Node runtime or edit the

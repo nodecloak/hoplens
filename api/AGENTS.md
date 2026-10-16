@@ -59,6 +59,11 @@ behind `dns-resolver` (gated by `tests/dns-resolvers-data.test.js`).
   contact data (`common/peeringdb-distill.js`). The IEEE row (MAC Lookup)
   needs no key: five registry CSVs published as downloaded, answered by the
   longest covering assignment (`common/oui-db.js`).
+  Tor observed exits and Spamhaus DROP IPv4/IPv6 are three more public rows,
+  read by `common/ip-risk-data.js`; original timestamps/copyright remain in
+  the files. Risk matching refuses snapshots older than 48 hours. The
+  first-party heuristic in `common/ip-risk-score.js` returns per-rule
+  evidence and a null score when observations are incomplete.
 
 ## Conventions
 

@@ -13,6 +13,7 @@
 //             as the ASN Profile is hidden without it
 //   oui       IEEE MAC registries (MA-L / MA-M  common/oui-db.js
 //             / MA-S / IAB / CID), published together as downloaded
+//   tor-exits / drop-v4 / drop-v6 public risk snapshots common/ip-risk-data.js
 //
 // Sources: https://dev.maxmind.com/geoip/geolite2-free-geolocation-data ·
 // https://publicdata.caida.org/datasets/ (CAIDA AUA) · https://www.peeringdb.com ·
@@ -32,6 +33,8 @@ import { distillPeeringdbDump } from './peeringdb-distill.js';
 import { hasRadarApiKey } from './cf-radar.js';
 import { MAXMIND_DB_DIR, MAXMIND_CITY_DB, MAXMIND_ASN_DB, reloadMaxMindDatabases, isMaxMindReady } from './maxmind-service.js';
 import { OUI_DB_DIR, OUI_REGISTRIES, OUI_FILES, readOuiRegistries, reloadOuiDatabase, isOuiLoaded } from './oui-db.js';
+import { RISK_FEEDS, readRiskFile, reloadRiskFeed, isRiskFeedLoaded } from './ip-risk-data.js';
+import { isFreshRiskTime } from './ip-risk-score.js';
 
 // The pre-engine CAIDA updater's state: same { identifier, updatedAt } shape.
 const CAIDA_LEGACY_STATE = { file: '.caida-update-state.json', toState: (json) => json };
@@ -166,6 +169,23 @@ const findFile = async (dir, name) => {
 
 // Exported for tests (rows are re-pointed at a temp dir there).
 export const datasets = [
+    // Raw source dates/copyright stay in the files. The shared daily scheduler
+    // avoids per-visitor downloads and respects DROP polling limits.
+    ...RISK_FEEDS.map(feed=>({
+        id:feed.id,dir:feed.dir,files:[feed.file],
+        findRemote:async()=>({url:feed.url,identifier:null}),
+        fetch:async({remote,tempDir,signal})=>{
+            const file=path.join(tempDir,feed.file);
+            await downloadToFile(remote.url,file,{signal});
+            return {[feed.file]:file};
+        },
+        validate:async staged=>{
+            const snapshot=readRiskFile(feed,staged[feed.file]);
+            if(!isFreshRiskTime(snapshot.asOf)) throw new Error('Risk snapshot is stale or future-dated');
+        },
+        reload:reason=>reloadRiskFeed(feed.id,reason),
+        isLoaded:()=>isRiskFeedLoaded(feed.id),
+    })),
     {
         id: 'maxmind',
         dir: MAXMIND_DB_DIR,

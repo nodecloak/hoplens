@@ -42,7 +42,7 @@ test('late network and purity responses from a previous IP are ignored', async (
     const riskRequest=state.requestRisk();
     state.ip.value='1.1.1.1';await flush();
     finishNetwork({ip:'8.8.8.8',asn:15169});
-    finishRisk({ip:'8.8.8.8',status:'ok',purity:90});
+    finishRisk({ip:'8.8.8.8',status:'ok',score:10});
     await riskRequest;await flush();
     assert.equal(state.network.value.ip,'1.1.1.1');
     assert.equal(state.network.value.asn,13335);
@@ -52,16 +52,16 @@ test('late network and purity responses from a previous IP are ignored', async (
   } finally {state.scope.stop();}
 });
 
-test('manual public purity limits remain explicit and valid zero scores are displayed', async () => {
-  let status='limited',riskCalls=0;
+test('manual risk assessment preserves incomplete evidence and valid zero scores', async () => {
+  let status='partial',riskCalls=0;
   const state=setup({getTrace:async()=>({ip:'8.8.8.8',loc:'US'}),getJSON:async url=>{
-    if(url.includes('ip-risk')) {riskCalls++;return {ip:'8.8.8.8',status,purity:0};}
+    if(url.includes('ip-risk')) {riskCalls++;return {ip:'8.8.8.8',status,score:status==='ok'?0:null};}
     return {ip:'8.8.8.8'};
   }});
   try {
     await flush();assert.equal(riskCalls,0);
-    await state.requestRisk();assert.equal(state.riskState.value,'limited');assert.equal(state.risk.value,null);
-    status='ok';await state.requestRisk();assert.equal(state.risk.value.purity,0);
+    await state.requestRisk();assert.equal(state.riskState.value,'partial');assert.equal(state.risk.value.score,null);
+    status='ok';await state.requestRisk();assert.equal(state.risk.value.score,0);
     state.scope.stop();await state.requestRisk();assert.equal(riskCalls,2);
   } finally {state.scope.stop();}
 });

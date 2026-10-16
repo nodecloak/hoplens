@@ -20,13 +20,8 @@
         <div class="hl-geography-block"><h3>{{ t('ipDetails.locations') }}</h3><p class="hl-source-caption">{{ t('ipDetails.locationNote') }}</p><dl class="hl-location-list"><div v-for="source in locations" :key="source.id"><dt>{{ source.name }}</dt><dd v-if="source.status==='ok'&&source.location"><Icon v-if="source.location.countryCode" :icon="'circle-flags:'+source.location.countryCode.toLowerCase()" class="size-4 shrink-0"/><span>{{ locationText(source.location) }}<small v-if="source.countryOnly"> · {{ t('ipDetails.countryOnly') }}</small></span></dd><dd v-else class="hl-detail-empty">{{ statusLabel(source.status) }}</dd></div></dl></div>
       </div>
       <aside class="hl-reputation-column">
-        <div class="hl-classification-grid"><div><span><Route />{{ t('ipDetails.origin') }}</span><strong>{{ t('ipDetails.'+origin) }}</strong><small v-if="origin!=='unknown'">IPure</small></div><div><span><Network />{{ t('ipDetails.type') }}</span><strong>{{ t('ipDetails.'+usage) }}</strong><small v-if="usage!=='unknown'">{{ risk?.usageType&&risk.usageType!=='unknown' ? 'IPure' : 'IP-API' }}</small><small v-if="classification.proxy===true">{{ t('ipDetails.proxy') }} · IP-API</small></div></div>
-        <section class="hl-purity-card" aria-labelledby="hl-purity-title"><div class="hl-fact-heading"><h3 id="hl-purity-title"><ShieldCheck />{{ t('ipDetails.purity') }}</h3><span class="hl-ip-family">IPure</span></div>
-          <template v-if="riskState==='ok'&&risk?.purity!==null"><div class="hl-purity-value hl-mono">{{ risk.purity }}<span>/100</span></div><div class="hl-purity-bar" role="meter" :aria-label="t('ipDetails.purity')" aria-valuemin="0" aria-valuemax="100" :aria-valuenow="risk.purity"><span :style="{width:risk.purity+'%'}"/></div><p v-if="risk.level" class="hl-purity-label">{{ t('ipDetails.level_'+risk.level) }}</p><p v-if="risk.confidence" class="hl-source-caption">{{ t('ipDetails.confidence') }}: {{ t('ipDetails.confidence_'+risk.confidence) }}</p><p class="hl-source-caption" v-if="risk.queriedAt">{{ t('ipDetails.asOf') }}: {{ isoToDateTime(risk.queriedAt,locale) }} <span v-if="risk.stale">({{ t('ipDetails.stale') }})</span></p></template>
-          <p v-else class="hl-detail-empty hl-purity-placeholder" role="status">{{ t(riskState==='pending'?'ipDetails.onDemand':riskState==='limited'?'ipDetails.limited':riskState==='loading'?'ipDetails.loading':'ipDetails.unavailable') }}</p>
-          <p class="hl-source-caption">{{ t('ipDetails.purityNote') }}</p><div class="hl-purity-actions"><Button variant="outline" :disabled="!valid||riskState==='loading'" @click="requestRisk"><LoaderCircle v-if="riskState==='loading'" class="animate-spin"/><ShieldCheck v-else/>{{ t(riskState==='ok'?'ipDetails.recheck':'ipDetails.checkPurity') }}</Button><a v-if="valid" :href="`https://ipure.dev/en/ip/${encodeURIComponent(ip)}`" target="_blank" rel="noopener" class="hl-detail-link">{{ t('ipDetails.sourceReport') }}<ArrowUpRight /></a></div>
-        </section>
-        <p class="hl-source-caption hl-purity-context">{{ t('ipDetails.scoreContext') }}</p><a href="https://ippure.com/" target="_blank" rel="noopener" class="hl-detail-link hl-other-source">{{ t('ipDetails.viewIPPure') }}<ArrowUpRight /></a>
+        <div class="hl-classification-grid"><div><span><Network />{{ t('ipDetails.type') }}</span><strong>{{ t('ipDetails.'+usage) }}</strong><small v-if="usage!=='unknown'">IP-API</small></div><div><span><Route />{{ t('ipRisk.proxyMarker') }}</span><strong>{{ t(proxyFlag===true?'ipDetails.proxy':proxyFlag===false?'ipRisk.noProxyMarker':'ipDetails.unknown') }}</strong><small v-if="proxyFlag!==null">IP-API</small></div></div>
+        <HoplensRiskScore :result="risk" :state="riskState" :valid="valid" @check="requestRisk" />
       </aside>
     </div>
   </section>
@@ -37,10 +32,10 @@ import { useI18n } from 'vue-i18n';
 import { useMainStore } from '@/store';
 import { useIPDetails } from '@/composables/use-ip-details.js';
 import { isUsablePublicIP } from '@/utils/valid-ip.js';
-import { isoToDateTime } from '@/utils/time-utils.js';
+import HoplensRiskScore from './HoplensRiskScore.vue';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@iconify/vue';
-import { ArrowUpRight, RefreshCw, Route, Network, ShieldCheck, LoaderCircle } from '@lucide/vue';
+import { ArrowUpRight, RefreshCw, Route, Network } from '@lucide/vue';
 const props=defineProps({ip:{type:String,default:''}});
 const emit=defineEmits(['network']);
 const {t,locale}=useI18n();
@@ -48,7 +43,7 @@ const store=useMainStore();
 const valid=computed(()=>isUsablePublicIP(props.ip));
 const {network,locations,classification,traffic,risk,networkState,trafficState,riskState,refresh,requestRisk}=useIPDetails(()=>props.ip,()=>store.configs);
 watch(network,value=>emit('network',value));
-const origin=computed(()=>risk.value?.nativeType??'unknown');
+const proxyFlag=computed(()=>risk.value?.checks?.find(check=>check.id==='proxy')?.hit??classification.value.proxy??null);
 const usage=computed(()=>risk.value?.usageType&&risk.value.usageType!=='unknown'?risk.value.usageType:classification.value.mobile===true?'mobile':classification.value.hosting===true?'hosting':'unknown');
 const statusLabel=state=>t('ipDetails.'+(['loading','disabled','different','unavailable','unknown'].includes(state)?state:'pending'));
 const locationText=location=>{

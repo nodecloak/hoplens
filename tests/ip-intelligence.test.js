@@ -1,7 +1,7 @@
 // Public-IP intelligence must preserve unknowns, source identity and address boundaries.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { normalizeNetwork, normalizeLocation, normalizePurity, normalizeTraffic, createCachedLoader } from '../common/ip-intelligence.js';
+import { normalizeNetwork, normalizeLocation, normalizeTraffic, createCachedLoader } from '../common/ip-intelligence.js';
 
 test('routing metadata reports the actual containing prefix and both range endpoints', () => {
   const data = normalizeNetwork('157.254.32.95', { data: { prefix:'157.254.32.0/23', asns:[402139] } }, { ip:'157.254.32.95',success:true,connection:{asn:402139,org:'Peekabo Networks',domain:'peekabo.io'},country_code:'HK',city:'Central' });
@@ -24,12 +24,6 @@ test('IPv6 spellings compare semantically and ranges retain all address bits', (
   assert.ok(normalizeLocation({ip:'2606:4700:4700:0:0:0:0:1111',country_code:'US'},'2606:4700:4700::1111'));
   const data = normalizeNetwork('2606:4700:4700::1111',{data:{prefix:'2606:4700:4700::/48',asns:[13335]}},null);
   assert.equal(data.range.end,'2606:4700:4700:ffff:ffff:ffff:ffff:ffff');
-});
-test('purity score zero is valid, missing or out-of-range values never become zero', () => {
-  assert.equal(normalizePurity('8.8.8.8',{ip:'8.8.8.8',risk:{purity:0,confidence:'low'}}).purity,0);
-  for (const purity of [undefined,null,'43',-1,101,NaN]) assert.equal(normalizePurity('8.8.8.8',{ip:'8.8.8.8',risk:{purity}}).purity,null);
-  assert.equal(normalizePurity('8.8.8.8',{ip:'1.1.1.1',risk:{purity:75}}),null);
-  assert.equal(normalizePurity('8.8.8.8',{ip:'8.8.8.8',usageType:'unknown'}).usageType,'unknown');
 });
 test('ASN traffic accepts 0%, rejects incomplete/inconsistent percentages', () => {
   assert.deepEqual(normalizeTraffic({Human_Pct:'0.00%',Bot_Pct:'100.00%'}),{human:0,bot:100});

@@ -2,7 +2,7 @@
 import test, { afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import networkHandler from '../api/network-info.js';
-import riskHandler from '../api/ip-risk.js';
+import { createIPRiskHandler } from '../api/ip-risk.js';
 import geoHandler from '../api/ipapi-com.js';
 const originalFetch=globalThis.fetch;
 afterEach(()=>{globalThis.fetch=originalFetch;});
@@ -17,16 +17,28 @@ test('network overview retains valid routing when geolocation fails', async()=>{
   assert.equal(calls.length,2);
 });
 
-test('public purity never retries a provider verification challenge', async()=>{
-  let calls=0;globalThis.fetch=async()=>{calls++;return new Response('',{status:403});};
-  const res=response();await riskHandler({query:{ip:'9.9.9.9'}},res);
-  assert.equal(res.body.status,'limited');assert.equal(res.body.purity,undefined);assert.equal(calls,1);
+test('risk assessment keeps source failures incomplete without inventing a clean score', async()=>{
+  const handler=createIPRiskHandler({evidence:()=>({}),lookup:async()=>{throw new Error('Unavailable');}});
+  const res=response();await handler({query:{ip:'9.9.9.9'}},res);
+  assert.equal(res.body.status,'partial');assert.equal(res.body.score,null);assert.equal(res.body.coverage.checked,0);
 });
 
-test('public purity rejects a report for the wrong IP', async()=>{
-  globalThis.fetch=async()=>Response.json({ip:'8.8.8.8',risk:{purity:100}});
-  const res=response();await riskHandler({query:{ip:'1.0.0.1'}},res);
-  assert.equal(res.body.status,'unavailable');assert.equal(res.body.purity,undefined);
+test('risk assessment rejects flags for the wrong IP and caches identical lookups', async()=>{
+  let calls=0;
+  const handler=createIPRiskHandler({evidence:()=>({}),lookup:async()=>{calls++;return {query:'8.8.8.8',status:'success',proxy:false,hosting:false,asOf:new Date().toISOString()};}});
+  const res=response();await handler({query:{ip:'1.0.0.1'}},res);await handler({query:{ip:'1.0.0.1'}},response());
+  assert.equal(res.body.score,null);assert.equal(res.body.coverage.checked,0);assert.equal(calls,1);
+});
+
+test('cached classification never pins the previous local risk snapshot',async()=>{
+  const asOf=new Date().toISOString();let hit=false,calls=0;
+  const handler=createIPRiskHandler({
+    evidence:()=>({drop:{status:'ok',hit,asOf},tor:{status:'ok',hit:false,asOf}}),
+    lookup:async()=>{calls++;return {query:'8.8.8.8',status:'success',proxy:false,hosting:false,asOf};},
+  });
+  const first=response();await handler({query:{ip:'8.8.8.8'}},first);assert.equal(first.body.score,0);
+  hit=true;const next=response();await handler({query:{ip:'8.8.8.8'}},next);
+  assert.equal(next.body.score,70);assert.equal(calls,1);
 });
 
 test('IP-API preserves only explicit classification flags and keeps unknowns absent', async()=>{

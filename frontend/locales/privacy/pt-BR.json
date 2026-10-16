@@ -8,7 +8,7 @@
         "title": "Como as ferramentas funcionam",
         "paragraphs": [
           "A maioria dos resultados é calculada no navegador ou consultada ao vivo. Respostas públicas de metadados de IP podem ser armazenadas temporariamente em cache no nosso servidor para reduzir consultas repetidas. Relatórios de diagnóstico são compartilhados somente quando você cria explicitamente um link de compartilhamento.",
-          "As consultas enviam o IP pesquisado a provedores externos, incluindo RIPEstat, IPWhois, IP-API e outras fontes de geolocalização configuradas. O botão de pureza pública envia esse IP ao IPure (ipure.dev). A política de privacidade de cada provedor se aplica. Metadados de rede ficam em um cache de memória com capacidade limitada por até seis horas, e relatórios de pureza bem-sucedidos por uma hora; entradas vencidas são substituídas ou removidas. Esses caches de fontes públicas não contêm outros diagnósticos do navegador."
+          "As consultas enviam o IP a RIPEstat, IPWhois, IP-API e outras fontes de localização configuradas, conforme suas políticas de privacidade. O índice NodeCloak é calculado por nossas regras publicadas. Snapshots públicos de Tor e redes de alto risco são baixados e comparados localmente, sem enviar o IP consultado a esses provedores. A classificação envia o IP ao IP-API para marcadores explícitos de proxy/hospedagem e pode ser armazenada em cache por cinco minutos; metadados de rede, por seis horas. Esses caches públicos de capacidade limitada não contêm outros diagnósticos do navegador."
         ]
       },
       "pulse": {
