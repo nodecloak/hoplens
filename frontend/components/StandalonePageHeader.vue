@@ -11,9 +11,9 @@
     <div class="mx-auto flex w-full max-w-[1600px] items-center gap-2 px-4 h-14">
       <RouterLink to="/"
         class="inline-flex items-center gap-1.5 rounded-md px-1 py-1 text-lg font-semibold text-foreground no-underline hover:opacity-80 transition-opacity"
-        aria-label="Hoplens">
+        aria-label="IP.NodeCloak">
         <brandIcon />
-        <span class="tracking-tight font-semibold">hoplens</span>
+        <span class="tracking-tight font-semibold">IP.NodeCloak</span>
       </RouterLink>
       <!-- Breadcrumb: " / <title>" — only when the page passes a title. -->
       <template v-if="title">

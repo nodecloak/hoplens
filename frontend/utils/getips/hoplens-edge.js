@@ -5,7 +5,7 @@ import { isUsablePublicIP } from '../valid-ip.js';
 
 export const hoplensEdge = {
   id: 'hoplens-edge',
-  name: 'Hoplens edge',
+  name: 'IP.NodeCloak edge',
   run: async () => {
     const response = await fetchWithTimeout('/cdn-cgi/trace', { cache: 'no-store' });
     if (!response.ok) throw new Error('Edge trace unavailable');

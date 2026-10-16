@@ -3,10 +3,10 @@
 Single source of truth for anyone — human or AI — contributing to MyIP.
 Area-specific details: @frontend/AGENTS.md (Vue SPA) · @api/AGENTS.md (Express API).
 
-## Hoplens fork
+## IP.NodeCloak fork
 
-This repository is NodeCloak's Hoplens fork, deployed at https://ip.nodecloak.com.
-Keep upstream MIT attribution. The Hoplens visual layer is in
+This repository is NodeCloak's IP.NodeCloak fork, deployed at https://ip.nodecloak.com.
+Keep upstream MIT attribution. The IP.NodeCloak visual layer is in
 `frontend/components/hoplens/` and `frontend/style/hoplens.css`; use its dark,
 light and mobile tokens. Live summaries must use the latest diagnostic event,
 including failed reruns, rather than an older successful share-report snapshot.
@@ -158,7 +158,7 @@ Access control and timeouts live in shared middleware, not handlers
 ## Workflow
 
 - **Fork branch discipline.** Preserve the inherited `dev` branch for upstream
-  integration. Hoplens features use `codex/*` or other descriptive branches;
+  integration. IP.NodeCloak features use `codex/*` or other descriptive branches;
   `main` only moves through reviewed pull requests after checks pass.
 - **No commits without explicit user approval** — AI edits → user reviews →
   user tests → user says "commit". Even with tests green, visual changes need

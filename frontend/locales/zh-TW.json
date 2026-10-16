@@ -1845,7 +1845,7 @@
     "AsnProfile": "開啟 ASN 檔案查詢面板"
   },
   "page": {
-    "title": "Hoplens — IP 與網路檢測工具箱",
+    "title": "IP.NodeCloak — IP 與網路檢測工具箱",
     "description": "更完善的開源 IP 工具箱：查詢 IP 位址與地理位置、測試 WebRTC 與 DNS IP 洩漏、執行 IP 品質檢查、瀏覽器指紋檢查，還有網速測試、全球延遲測試、MTR 測試、Whois 查詢等。",
     "keywords": "MyIP, IP 工具, IP 檢查, IP 洩漏檢查, IP 品質檢查, IP 查詢, DNS 洩漏測試, WebRTC 洩漏測試, 瀏覽器指紋檢查, 網速測試, 全球延遲測試, MTR 測試, DNS 查詢, Whois 查詢",
     "footerLink": "https://github.com/nodecloak/hoplens",

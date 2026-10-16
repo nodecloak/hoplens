@@ -1845,7 +1845,7 @@
     "AsnProfile": "Open ASN Profile Lookup panel"
   },
   "page": {
-    "title": "Hoplens — IP & network toolbox",
+    "title": "IP.NodeCloak — IP & network toolbox",
     "description": "A better and open-source IP toolbox: check your IP address & geolocation, test IP for WebRTC and DNS IP leaks, run an IP quality check, browser fingerprint check, plus speed test, global latency test, MTR test, Whois search, and more.",
     "keywords": "MyIP, IP tool, IP check, IP Leak Check, IP quality check, IP lookup, DNS leak test, WebRTC leak test, browser fingerprint check, speed test, global latency test, MTR test, DNS lookup, Whois search",
     "footerLink": "https://github.com/nodecloak/hoplens",

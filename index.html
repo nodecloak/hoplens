@@ -6,7 +6,7 @@
   <link rel="preload" href="/fonts/Geist.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/GeistMono.woff2" as="font" type="font/woff2" crossorigin>
   <meta name="keywords"
-    content="Hoplens, IP tool, IP check, IP Leak Check, IP quality check, IP lookup, DNS leak test, WebRTC leak test, browser fingerprint check, speed test, global latency test, MTR test, DNS lookup, Whois search" />
+    content="IP.NodeCloak, IP tool, IP check, IP Leak Check, IP quality check, IP lookup, DNS leak test, WebRTC leak test, browser fingerprint check, speed test, global latency test, MTR test, DNS lookup, Whois search" />
   <meta name="description"
     content="A better and open-source IP toolbox: check your IP address & geolocation, test IP for WebRTC and DNS IP leaks, run an IP quality check, browser fingerprint check, plus speed test, global latency test, MTR test, Whois search, and more.">
   <meta name="robots" content="index, follow" />
@@ -21,7 +21,7 @@
   <meta name="format-detection" content="telephone=no" />
   <link rel="manifest" href="/manifest.webmanifest" />
   <link rel="apple-touch-icon" href="/brand/hoplens-app-icon-180.png" />
-  <title>Hoplens - Check My IP Address and Geolocation - IP Leak Test - DNS Leak Test - IP Quality Check - Test Network Speed - All in one IP Toolbox</title>
+  <title>IP.NodeCloak - Check My IP Address and Geolocation - IP Leak Test - DNS Leak Test - IP Quality Check - Test Network Speed - All in one IP Toolbox</title>
   <link rel="icon" type="image/svg+xml" href="/brand/hoplens-app-icon.svg" />
 
   <!-- @site-url:open -->
@@ -29,18 +29,18 @@
   <meta property="og:url" content="__SITE_URL__/" />
   <!-- @site-url:close -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Hoplens" />
-  <meta property="og:title" content="Hoplens — All in one IP Toolbox" />
+  <meta property="og:site_name" content="IP.NodeCloak" />
+  <meta property="og:title" content="IP.NodeCloak — All in one IP Toolbox" />
   <meta property="og:description"
     content="IP lookup, ASN info, connectivity tests, WebRTC and DNS leak detection, speed test, MTR, Whois, and browser fingerprint — in one open-source web app." />
   <!-- @site-url:open -->
   <meta property="og:image" content="__SITE_URL__/brand/hoplens-app-icon-512.png" />
   <meta property="og:image:width" content="512" />
   <meta property="og:image:height" content="512" />
-  <meta property="og:image:alt" content="Hoplens logo with the tagline: All in one IP Toolbox" />
+  <meta property="og:image:alt" content="IP.NodeCloak logo with the tagline: All in one IP Toolbox" />
   <!-- @site-url:close -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Hoplens — All in one IP Toolbox" />
+  <meta name="twitter:title" content="IP.NodeCloak — All in one IP Toolbox" />
   <meta name="twitter:description"
     content="IP lookup, ASN info, connectivity tests, WebRTC and DNS leak detection, speed test, MTR, Whois, and browser fingerprint — in one open-source web app." />
   <!-- @site-url:open -->
@@ -54,7 +54,7 @@
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": "__SITE_URL__/#website",
-    "name": "Hoplens",
+    "name": "IP.NodeCloak",
     "url": "__SITE_URL__/",
     "description": "Open-source IP toolbox: lookup, connectivity tests, WebRTC and DNS leak detection, speed test, MTR, Whois, and browser fingerprint.",
     "inLanguage": ["en", "zh-CN", "zh-TW", "fr", "ru", "pt-BR"],
@@ -312,7 +312,7 @@
     <p id="jn-loading-quip" aria-hidden="true"></p>
 
     <p id="jn-loading-slow-hint" hidden>
-      Taking longer? <a href="/">Reload Hoplens</a>.
+      Taking longer? <a href="/">Reload IP.NodeCloak</a>.
     </p>
   </div>
 
@@ -329,22 +329,22 @@
     (() => {
       const QUIPS = {
         "en": [
-                "Loading Hoplens…"
+                "Loading IP.NodeCloak…"
         ],
         "zh": [
-                "正在加载 Hoplens…"
+                "正在加载 IP.NodeCloak…"
         ],
         "zh-TW": [
-                "正在載入 Hoplens…"
+                "正在載入 IP.NodeCloak…"
         ],
         "fr": [
-                "Chargement de Hoplens…"
+                "Chargement de IP.NodeCloak…"
         ],
         "ru": [
-                "Загрузка Hoplens…"
+                "Загрузка IP.NodeCloak…"
         ],
         "pt-BR": [
-                "Carregando Hoplens…"
+                "Carregando IP.NodeCloak…"
         ]
 };
 
@@ -352,12 +352,12 @@
       // whole sentences because the link position differs per language; the
       // markup's English text stays as the no-script fallback.
       const SLOW_HINTS = {
-        "en": "Taking longer? <a href=\"/\">Reload Hoplens</a>.",
-        "zh": "加载较慢？<a href=\"/\">重新加载 Hoplens</a>。",
-        "zh-TW": "載入較慢？<a href=\"/\">重新載入 Hoplens</a>。",
-        "fr": "Un peu long ? <a href=\"/\">Recharger Hoplens</a>.",
-        "ru": "Долго загружается? <a href=\"/\">Обновить Hoplens</a>.",
-        "pt-BR": "Demorando? <a href=\"/\">Recarregar Hoplens</a>."
+        "en": "Taking longer? <a href=\"/\">Reload IP.NodeCloak</a>.",
+        "zh": "加载较慢？<a href=\"/\">重新加载 IP.NodeCloak</a>。",
+        "zh-TW": "載入較慢？<a href=\"/\">重新載入 IP.NodeCloak</a>。",
+        "fr": "Un peu long ? <a href=\"/\">Recharger IP.NodeCloak</a>.",
+        "ru": "Долго загружается? <a href=\"/\">Обновить IP.NodeCloak</a>.",
+        "pt-BR": "Demorando? <a href=\"/\">Recarregar IP.NodeCloak</a>."
 };
 
       // Hand-copy of matchLocale() in common/locale-registry.js — index.html
@@ -419,7 +419,7 @@
 
   <noscript>
     <p style="padding: 40px; text-align: center;">
-      Hoplens requires JavaScript. Please enable it and refresh.
+      IP.NodeCloak requires JavaScript. Please enable it and refresh.
     </p>
   </noscript>
 

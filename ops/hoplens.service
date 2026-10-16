@@ -1,6 +1,6 @@
-# Isolated Hoplens API. Static assets are served by nginx.
+# Isolated IP.NodeCloak API. Static assets are served by nginx.
 [Unit]
-Description=Hoplens IP and network toolbox API
+Description=IP.NodeCloak IP and network toolbox API
 After=network-online.target
 Wants=network-online.target
 

@@ -1,5 +1,5 @@
-<!-- Hoplens production deployment and rollback runbook. -->
-# Hoplens operations
+<!-- IP.NodeCloak production deployment and rollback runbook. -->
+# IP.NodeCloak operations
 
 Production: https://ip.nodecloak.com · API: `127.0.0.1:11967`.
 

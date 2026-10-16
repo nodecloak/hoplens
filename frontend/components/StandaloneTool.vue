@@ -61,7 +61,7 @@ const toolComponent = computed(() => (tool.value
 useDocumentMeta(() => {
   if (!tool.value) return {};
   return {
-    title: `${t(tool.value.titleKey)} · Hoplens`,
+    title: `${t(tool.value.titleKey)} · IP.NodeCloak`,
     description: t(tool.value.noteKey),
     canonical: `${window.location.origin}/tools/${tool.value.slug}`,
   };
