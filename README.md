@@ -6,6 +6,7 @@
 IP.NodeCloak 是 NodeCloak 的 IP 与网络诊断工具，基于 [Jason Ng / MyIP](https://github.com/jason5ng32/MyIP) 的 MIT 开源项目构建，界面采用 IP.NodeCloak 视觉设计。
 
 - 多来源公网 IPv4 / IPv6、位置与网络信息对照。
+- 完整 IP 测评报告：本站透明评分、六种使用场景、AI 地区政策、黑名单与被动服务证据；支持链接分享和 JSON / TXT 下载。
 - WebRTC、DNS、网站连通性检测和手动测速。
 - DNS 查询、Whois、全球延迟与 MTR、MAC 查询、IP 计算器、浏览器信息、安全清单与服务状态。
 - 诊断报告复制与 JSON 导出、IP 隐私遮罩、浏览器本地历史记录。

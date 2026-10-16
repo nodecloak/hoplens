@@ -3,6 +3,7 @@ import test, { afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import networkHandler from '../api/network-info.js';
 import { createIPRiskHandler } from '../api/ip-risk.js';
+import { createReportLoader } from '../common/ip-report.js';
 import geoHandler from '../api/ipapi-com.js';
 const originalFetch=globalThis.fetch;
 afterEach(()=>{globalThis.fetch=originalFetch;});
@@ -18,24 +19,29 @@ test('network overview retains valid routing when geolocation fails', async()=>{
 });
 
 test('risk assessment keeps source failures incomplete without inventing a clean score', async()=>{
-  const handler=createIPRiskHandler({evidence:()=>({}),lookup:async()=>{throw new Error('Unavailable');}});
+  const adapters=Object.fromEntries(['network','ipapi','proxycheck','rdap','rdns','internetdb','abuseipdb','radar','dnsbl'].map(id=>[id,async()=>{throw new Error('Unavailable');}]));
+  const handler=createIPRiskHandler({load:createReportLoader({evidence:()=>({}),adapters})});
   const res=response();await handler({query:{ip:'9.9.9.9'}},res);
   assert.equal(res.body.status,'partial');assert.equal(res.body.score,null);assert.equal(res.body.coverage.checked,0);
 });
 
-test('risk assessment rejects flags for the wrong IP and caches identical lookups', async()=>{
+test('risk source observations are cached and coalesced for identical lookups', async()=>{
   let calls=0;
-  const handler=createIPRiskHandler({evidence:()=>({}),lookup:async()=>{calls++;return {query:'8.8.8.8',status:'success',proxy:false,hosting:false,asOf:new Date().toISOString()};}});
-  const res=response();await handler({query:{ip:'1.0.0.1'}},res);await handler({query:{ip:'1.0.0.1'}},response());
-  assert.equal(res.body.score,null);assert.equal(res.body.coverage.checked,0);assert.equal(calls,1);
+  const adapters=Object.fromEntries(['network','ipapi','proxycheck','rdap','rdns','internetdb','abuseipdb','radar','dnsbl'].map(id=>[id,async()=>({status:'empty'})]));
+  adapters.ipapi=async()=>{calls++;return {status:'ok',data:{proxy:false,hosting:false}};};
+  const handler=createIPRiskHandler({load:createReportLoader({evidence:()=>({}),adapters})});
+  const res=response();await Promise.all([handler({query:{ip:'1.0.0.1'}},res),handler({query:{ip:'1.0.0.1'}},response())]);
+  assert.equal(res.body.score,null);assert.equal(res.body.coverage.checked,2);assert.equal(calls,1);
 });
 
 test('cached classification never pins the previous local risk snapshot',async()=>{
   const asOf=new Date().toISOString();let hit=false,calls=0;
-  const handler=createIPRiskHandler({
+  const adapters=Object.fromEntries(['network','ipapi','proxycheck','rdap','rdns','internetdb','abuseipdb','radar'].map(id=>[id,async()=>({status:'disabled'})]));
+  adapters.ipapi=async()=>{calls++;return {status:'ok',data:{proxy:false,hosting:false}};};
+  adapters.internetdb=async()=>({status:'ok',data:{vulnerabilities:[]}});adapters.dnsbl=async()=>({status:'ok',data:{listed:false}});
+  const handler=createIPRiskHandler({load:createReportLoader({adapters,
     evidence:()=>({drop:{status:'ok',hit,asOf},tor:{status:'ok',hit:false,asOf}}),
-    lookup:async()=>{calls++;return {query:'8.8.8.8',status:'success',proxy:false,hosting:false,asOf};},
-  });
+  })});
   const first=response();await handler({query:{ip:'8.8.8.8'}},first);assert.equal(first.body.score,0);
   hit=true;const next=response();await handler({query:{ip:'8.8.8.8'}},next);
   assert.equal(next.body.score,70);assert.equal(calls,1);

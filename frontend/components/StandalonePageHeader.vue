@@ -17,8 +17,8 @@
       </RouterLink>
       <!-- Breadcrumb: " / <title>" — only when the page passes a title. -->
       <template v-if="title">
-        <span class="text-muted-foreground" aria-hidden="true">/</span>
-        <span class="min-w-0 truncate font-medium">{{ title }}</span>
+        <span class="hidden sm:inline text-muted-foreground" aria-hidden="true">/</span>
+        <span class="hidden sm:inline min-w-0 truncate font-medium">{{ title }}</span>
       </template>
       <!-- Button `as-child` renders the RouterLink as its root, so this is a
            single <a> styled as a button — not a <button> nested in an <a>.
@@ -28,12 +28,16 @@
            overflowed — a dangling "/" plus a clipped button. `sr-only` (not
            `hidden`) keeps the accessible name in every locale, and being out of
            flow it costs no `gap-2`. -->
-      <Button as-child variant="default" size="icon" class="ml-auto shrink-0 cursor-pointer sm:w-auto sm:px-4">
+      <div class="ml-auto flex shrink-0 items-center gap-1">
+        <Select :model-value="locale" @update:model-value="changeLanguage"><SelectTrigger class="w-14 h-8 text-xs" :aria-label="t('hoplens.language')"><span>{{ locale==='zh'?'简':locale==='zh-TW'?'繁':locale.slice(0,2).toUpperCase() }}</span></SelectTrigger><SelectContent><SelectItem v-for="language in LOCALES" :key="language.code" :value="language.code">{{ language.nativeName }}</SelectItem></SelectContent></Select>
+        <Button variant="ghost" size="icon" :aria-label="t('hoplens.theme')" @click="store.updatePreference('theme',store.isDarkMode?'light':'dark')"><Sun v-if="store.isDarkMode"/><Moon v-else/></Button>
+      <Button as-child variant="default" size="icon" class="shrink-0 cursor-pointer sm:w-auto sm:px-4">
         <RouterLink to="/">
           <ArrowLeft class="size-4" />
           <span class="sr-only sm:not-sr-only">{{ t('advancedtools.BackToHome') }}</span>
         </RouterLink>
       </Button>
+      </div>
     </div>
   </header>
 </template>
@@ -43,8 +47,11 @@
 // `title` (already localized by the caller); everything else is fixed chrome.
 import { useI18n } from 'vue-i18n';
 import brandIcon from '@/components/svgicons/Brand.vue';
-import { ArrowLeft } from '@lucide/vue';
+import { ArrowLeft,Sun,Moon } from '@lucide/vue';
 import { Button } from '@/components/ui/button';
+import { Select,SelectTrigger,SelectContent,SelectItem } from '@/components/ui/select';
+import { useMainStore } from '@/store';
+import { LOCALES } from '@/utils/locale-registry.js';
 
 defineProps({
     // Breadcrumb text shown after the brand (e.g. "🌐 MTR Test" or "Privacy").
@@ -52,5 +59,6 @@ defineProps({
     title: { type: String, default: '' },
 });
 
-const { t } = useI18n();
+const { t,locale } = useI18n(),store=useMainStore();
+const changeLanguage=code=>{if(LOCALES.some(row=>row.code===code)&&code!==locale.value){store.updatePreference('lang',code);window.location.reload();}};
 </script>

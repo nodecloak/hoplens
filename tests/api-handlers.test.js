@@ -39,6 +39,16 @@ import { modifyJsonForIPAPI } from '../api/ipapi-is.js';
 import { modifyJson as modifyJsonForIpinfo } from '../api/ipinfo-io.js';
 import { REPORT_VERSION } from '../common/report-schema.js';
 import logger from '../common/logger.js';
+import { createIPReportHandler } from '../api/ip-report.js';
+import { createIPRiskHandler } from '../api/ip-risk.js';
+
+it('IP report and homepage risk share the exact same assessment result',async()=>{
+    const report={ip:'8.8.8.8',risk:{model:'nodecloak-ip-risk-v2',score:null,status:'partial',range:{min:10,max:35}},sources:[]};
+    const load=async ip=>{assert.equal(ip,report.ip);return report;};
+    const full=createResponse(),summary=createResponse(),req=createRequest({query:{ip:report.ip}});
+    await createIPReportHandler({load})(req,full);await createIPRiskHandler({load})(req,summary);
+    assert.deepEqual(full.body,report);assert.deepEqual(summary.body,{ip:report.ip,...report.risk});
+});
 
 // -- shared test utilities ------------------------------------------------
 
