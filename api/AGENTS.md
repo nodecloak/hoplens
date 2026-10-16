@@ -68,6 +68,9 @@ behind `dns-resolver` (gated by `tests/dns-resolvers-data.test.js`).
   unavailable scores; `status` follows evidence completeness, not score presence.
   `/api/ip-risk` is the same assessment's summary; `/api/ip-report` adds
   profile, scenario weights, dated official region policy and source states.
+  `/api/ip-classification` loads just IP-API/proxycheck network classification
+  automatically for the homepage; it shares the report provider caches without
+  running risk checks. Risk assessment remains an explicit user action.
   `common/ip-report.js` bounds/coalesces provider caches and deadlines; snapshot
   matching is current on every request. Optional credentials stay server-side.
 

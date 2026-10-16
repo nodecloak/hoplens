@@ -20,7 +20,7 @@
         <div class="hl-geography-block"><h3>{{ t('ipDetails.locations') }}</h3><p class="hl-source-caption">{{ t('ipDetails.locationNote') }}</p><dl class="hl-location-list"><div v-for="source in locations" :key="source.id"><dt>{{ source.name }}</dt><dd v-if="source.status==='ok'&&source.location"><Icon v-if="source.location.countryCode" :icon="'circle-flags:'+source.location.countryCode.toLowerCase()" class="size-4 shrink-0"/><span>{{ locationText(source.location) }}<small v-if="source.countryOnly"> · {{ t('ipDetails.countryOnly') }}</small></span></dd><dd v-else class="hl-detail-empty">{{ statusLabel(source.status) }}</dd></div></dl></div>
       </div>
       <aside class="hl-reputation-column">
-        <div class="hl-classification-grid"><div><span><Network />{{ t('ipDetails.type') }}</span><strong>{{ t('ipDetails.'+usage) }}</strong><small v-if="usage!=='unknown'">{{ risk?.usageTypeSource || 'IP-API' }}</small></div><div><span><Route />{{ t('ipRisk.proxyMarker') }}</span><strong>{{ t(proxyFlag===true?'ipDetails.proxy':proxyFlag===false?'ipRisk.noProxyMarker':'ipDetails.unknown') }}</strong></div></div>
+        <div class="hl-classification-grid"><div><span><Network />{{ t('ipDetails.type') }}</span><strong>{{ t('ipDetails.'+usage) }}</strong><small v-if="usage!=='unknown'">{{ risk?.usageTypeSource || classification.usageTypeSource || 'IP-API' }}</small></div><div><span><Route />{{ t('ipRisk.proxyMarker') }}</span><strong>{{ t(proxyFlag===true?'ipDetails.proxy':proxyFlag===false?'ipRisk.noProxyMarker':'ipDetails.unknown') }}</strong></div></div>
         <IPNodeCloakRiskScore :ip="ip" :result="risk" :state="riskState" :valid="valid" @check="requestRisk" />
       </aside>
     </div>
@@ -44,7 +44,7 @@ const valid=computed(()=>isUsablePublicIP(props.ip));
 const {network,locations,classification,traffic,risk,networkState,trafficState,riskState,refresh,requestRisk}=useIPDetails(()=>props.ip,()=>store.configs);
 watch(network,value=>emit('network',value));
 const proxyFlag=computed(()=>risk.value?.checks?.find(check=>check.id==='proxy')?.hit??classification.value.proxy??null);
-const usage=computed(()=>risk.value?.usageType&&risk.value.usageType!=='unknown'?risk.value.usageType:classification.value.mobile===true?'mobile':classification.value.hosting===true?'hosting':'unknown');
+const usage=computed(()=>risk.value?.usageType&&risk.value.usageType!=='unknown'?risk.value.usageType:classification.value.usageType&&classification.value.usageType!=='unknown'?classification.value.usageType:classification.value.mobile===true?'mobile':classification.value.hosting===true?'hosting':'unknown');
 const statusLabel=state=>t('ipDetails.'+(['loading','disabled','different','unavailable','unknown'].includes(state)?state:'pending'));
 const locationText=location=>{
   let country=location.country;

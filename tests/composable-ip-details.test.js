@@ -25,16 +25,51 @@ test('IP detail source failures stay independent and unconfigured sources never 
     assert.equal(state.locations.value.find(row=>row.id==='ipsb').status,'ok');
     assert.equal(state.locations.value.find(row=>row.id==='ipinfo').status,'disabled');
     assert.equal(state.classification.value.hosting,false);
-    assert.equal(urls.length,3);
+    assert.equal(urls.length,4);
     assert.equal(state.riskState.value,'pending');
     assert.equal(urls.some(url=>url.includes('ip-risk')),false);
   } finally {state.scope.stop();}
 });
 
+test('network type loads automatically without starting a risk assessment',async()=>{
+  const urls=[];
+  const state=setup({getTrace:async()=>({ip:'8.8.8.8',loc:'US'}),getJSON:async url=>{
+    urls.push(url);
+    if(url.includes('ip-classification')) return {ip:'8.8.8.8',usageType:'business',usageTypeSource:'proxycheck.io',proxy:false};
+    return {ip:'8.8.8.8',isHosting:false};
+  }});
+  try {
+    await flush();
+    assert.equal(state.classification.value.usageType,'business');
+    assert.equal(state.classification.value.usageTypeSource,'proxycheck.io');
+    assert.equal(state.riskState.value,'pending');
+    assert.equal(urls.some(url=>url.includes('ip-risk')),false);
+  }finally{state.scope.stop();}
+});
+
+test('automatic classification never erases a positive proxy marker regardless of response order',async()=>{
+  for(const automaticProxy of [null,false]) for(const classificationFirst of [true,false]) {
+    let finishClass,finishGeo;
+    const state=setup({getTrace:async()=>({}),getJSON:async url=>{
+      if(url.includes('ip-classification')) return new Promise(resolve=>{finishClass=resolve;});
+      if(url.includes('ipapicom')) return new Promise(resolve=>{finishGeo=resolve;});
+      return {ip:'8.8.8.8'};
+    }});
+    try{
+      const classify=()=>finishClass({ip:'8.8.8.8',usageType:'unknown',proxy:automaticProxy});
+      const geo=()=>finishGeo({ip:'8.8.8.8',isProxy:true});
+      (classificationFirst?classify:geo)();await flush();
+      (classificationFirst?geo:classify)();await flush();
+      assert.equal(state.classification.value.proxy,true);
+    }finally{state.scope.stop();}
+  }
+});
+
 test('late network and purity responses from a previous IP are ignored', async () => {
-  let finishNetwork,finishRisk;
+  let finishNetwork,finishRisk,finishClassification;
   const state=setup({getTrace:async()=>({ip:'8.8.8.8',loc:'US'}),getJSON:async url=>{
     if(url.includes('ip-risk')) return new Promise(resolve=>{finishRisk=resolve;});
+    if(url.includes('ip-classification')&&url.includes('8.8.8.8')) return new Promise(resolve=>{finishClassification=resolve;});
     if(url.includes('network-info')&&url.includes('8.8.8.8')) return new Promise(resolve=>{finishNetwork=resolve;});
     return {ip:'1.1.1.1',country_code:'AU',asn:13335};
   }});
@@ -43,11 +78,13 @@ test('late network and purity responses from a previous IP are ignored', async (
     state.ip.value='1.1.1.1';await flush();
     finishNetwork({ip:'8.8.8.8',asn:15169});
     finishRisk({ip:'8.8.8.8',status:'ok',score:10});
+    finishClassification({ip:'8.8.8.8',usageType:'business'});
     await riskRequest;await flush();
     assert.equal(state.network.value.ip,'1.1.1.1');
     assert.equal(state.network.value.asn,13335);
     assert.equal(state.risk.value,null);
     assert.equal(state.riskState.value,'pending');
+    assert.equal(state.classification.value.usageType,undefined);
     assert.equal(state.locations.value.find(row=>row.id==='cloudflare').status,'different');
   } finally {state.scope.stop();}
 });
