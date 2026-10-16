@@ -1900,7 +1900,7 @@
   },
   "pwa": {
     "appDescription": "一站式 IP 工具箱",
-    "installDescription": "這已經是你第 {count} 次使用 IPCheck.ing 了，將它安裝為應用程式，可以獲得更好的使用體驗，開啟也更方便。"
+    "installDescription": "這已經是你第 {count} 次使用 IP.NodeCloak 了，將它安裝為應用程式，可以獲得更好的使用體驗，開啟也更方便。"
   },
   "ipnodecloak": {
     "live": "即時 · 你的公網位址",
