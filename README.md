@@ -32,3 +32,5 @@ Production deployment, trusted proxy headers, persistent datasets and rollback: 
 ## Attribution
 
 IP.NodeCloak is a maintained fork of **MyIP / IPCheck.ing**, by **Jason Ng and contributors**. The original MIT license remains in [LICENSE](LICENSE). Original project documentation is retained in [README.upstream.md](README.upstream.md) and the upstream language READMEs; those describe the original deployment. Geist fonts retain their SIL Open Font License in `public/fonts/LICENSE-Geist.txt`. IP.NodeCloak visual assets were supplied for this project.
+
+When enabled, this product includes GeoLite data created by [MaxMind](https://www.maxmind.com/). Downloaded databases and license credentials stay outside the repository and are maintained by the configured daily dataset updater.

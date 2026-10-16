@@ -1947,6 +1947,7 @@
     "resumeSpeed": "Continuar teste",
     "startSpeed": "Testar velocidade",
     "footerNote": "Seu histórico de IP fica neste navegador.",
+    "maxmindAttribution": "Este produto inclui dados GeoLite criados pela {provider}.",
     "poweredBy": "Baseado no MyIP",
     "webrtcNote": "Veja os endereços de rede que o WebRTC revela aos sites.",
     "dnsNote": "Compare endereços de resolvedores DNS em serviços independentes.",

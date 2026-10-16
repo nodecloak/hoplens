@@ -37,6 +37,8 @@ IPinfo and IP2Location are available without credentials through their official 
 
 Capability config is served with `Cache-Control: no-store`, and the frontend bypasses old browser cache entries when loading it. This keeps source availability and database readiness current after a deployment or credential change; public geolocation results keep their own route caches.
 
+Enabling MaxMind requires accepting its GeoLite license and creating a private download key. Validate both City/ASN download endpoints before installing credentials. The shared updater downloads, validates and publishes the database pair atomically at boot and checks daily at `DATASET_UPDATE_CRON`; persistent files live in `/var/lib/ipnodecloak/maxmind-db`. Verify `maxMind: true` in `/api/configs`, a successful `/api/maxmind?ip=<public-ip>` response, and the homepage location row after the first download. The footer includes MaxMind attribution when the databases are ready; all full locales carry it. Do not store database archives or credentials in Git.
+
 Cloudflare Radar human/bot percentages require `CLOUDFLARE_API_KEY` and describe ASN-wide HTTP traffic over seven days, not individual-IP activity. With no key, the panel shows the source state and an ASN report link.
 
 ## Full IP report and first-party risk model
