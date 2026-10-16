@@ -91,26 +91,35 @@ function inlineSvgComputedStyles(root) {
 // it gets cloned alongside the masked elements, keeping the url() reference
 // self-contained.
 const SVG_NS = 'http://www.w3.org/2000/svg';
-function freezeInfoMaskForCapture(root) {
+export const freezeInfoMaskForCapture = (root) => {
     if (!root || typeof document === 'undefined') return () => {};
     if (!document.documentElement.hasAttribute('data-mask-level')) return () => {};
     const targets = root.querySelectorAll('[data-mask="ip"]');
     if (!targets.length) return () => {};
 
-    const filterId = `myip-mask-blur-${Math.random().toString(36).slice(2, 8)}`;
+    const filterPrefix = `myip-mask-blur-${Math.random().toString(36).slice(2, 8)}`;
     const holder = document.createElementNS(SVG_NS, 'svg');
     holder.setAttribute('aria-hidden', 'true');
     holder.setAttribute('style', 'position:absolute;width:0;height:0;overflow:hidden');
-    const filterEl = document.createElementNS(SVG_NS, 'filter');
-    filterEl.setAttribute('id', filterId);
-    const blur = document.createElementNS(SVG_NS, 'feGaussianBlur');
-    blur.setAttribute('stdDeviation', '6');
-    filterEl.appendChild(blur);
-    holder.appendChild(filterEl);
     root.appendChild(holder);
 
     const restorers = [() => holder.remove()];
+    const filters = new Map();
     targets.forEach((el) => {
+        // Read the declared pixel strength rather than an in-flight CSS transition.
+        const declared = Number.parseFloat(window.getComputedStyle(el).getPropertyValue('--info-mask-blur'));
+        const radius = Number.isFinite(declared) && declared >= 7 ? declared : 7;
+        let filterId = filters.get(radius);
+        if (!filterId) {
+            filterId = `${filterPrefix}-${filters.size}`;
+            const filterEl = document.createElementNS(SVG_NS, 'filter');
+            filterEl.setAttribute('id', filterId);
+            filterEl.setAttribute('x', '-100%');filterEl.setAttribute('y', '-100%');
+            filterEl.setAttribute('width', '300%');filterEl.setAttribute('height', '300%');
+            const blur = document.createElementNS(SVG_NS, 'feGaussianBlur');
+            blur.setAttribute('stdDeviation', String(radius));
+            filterEl.appendChild(blur);holder.appendChild(filterEl);filters.set(radius, filterId);
+        }
         const orig = el.getAttribute('style');
         el.setAttribute('style', (orig || '') + `;filter:url(#${filterId})`);
         restorers.push(() => {
@@ -119,7 +128,7 @@ function freezeInfoMaskForCapture(root) {
         });
     });
     return () => restorers.forEach((fn) => fn());
-}
+};
 
 // Cross-origin stylesheets on `document.styleSheets` — mostly the docs
 // assistant widget's, plus anything an extension or translator injected —

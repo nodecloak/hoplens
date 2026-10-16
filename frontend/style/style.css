@@ -165,7 +165,7 @@
    then renders those values unreadable in screenshots without mutating any data,
    so toggling on/off is instantaneous and screenshot-safe. */
 [data-mask-level="1"] [data-mask="ip"] {
-  filter: blur(7px) saturate(0.6);
+  filter: blur(var(--info-mask-blur, 7px)) saturate(0.6);
   -webkit-user-select: none;
   user-select: none;
   pointer-events: none;
