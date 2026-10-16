@@ -1,5 +1,6 @@
 // Validate environment variables exist to enable/disable frontend features
 import { isReportSharingConfigured } from './share-report.js';
+import { isMaxMindReady } from '../common/maxmind-service.js';
 
 export default (req, res) => {
     // defensive; app.get() in backend-server.js already gates method, but a
@@ -26,6 +27,7 @@ export default (req, res) => {
         originalSite,
         cloudFlare: process.env.CLOUDFLARE_API_KEY || process.env.CLOUDFLARE_API,
         ipapiis: process.env.IPAPIIS_API_KEY,
+        maxMind: isMaxMindReady(),
         // Share-link feature gate: all three CLOUDFLARE_* KV variables present.
         reportSharing: isReportSharingConfigured(),
     };

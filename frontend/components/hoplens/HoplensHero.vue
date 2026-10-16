@@ -6,7 +6,7 @@
       <h1 id="hl-public-address" class="hl-public-ip" :class="{ 'hl-ipv6': summary.primary?.ip.includes(':'), 'hl-empty-ip': !summary.primary }" :data-mask="summary.primary ? 'ip' : undefined">{{ summary.primary?.ip || '—' }}</h1>
       <div class="hl-chips" v-if="summary.primary">
         <span v-if="summary.primary.city || summary.primary.countryCode">{{ [summary.primary.city, summary.primary.countryCode].filter(Boolean).join(', ') }}</span>
-        <span v-if="summary.primary.asn || summary.primary.isp">{{ [summary.primary.asn, summary.primary.isp].filter(Boolean).join(' · ') }}</span>
+        <span v-if="primaryNetwork">{{ primaryNetwork }}</span>
         <span class="hl-mono" v-if="summary.ipv6" data-mask="ip">{{ summary.ipv6.ip }}</span>
       </div>
       <p v-else class="hl-hero-pending" role="status">{{ t(store.loadingStatus.IPInfo ? 'hoplens.unavailable' : 'hoplens.sourceLoading') }}</p>
@@ -31,6 +31,7 @@
         <div><dt>IPv6</dt><dd :class="{ 'hl-signal': summary.ipv6 }">{{ t(summary.ipv6 ? 'hoplens.available' : attempted.IPInfo ? 'hoplens.unavailable' : 'hoplens.pending') }}</dd></div>
       </dl>
     </aside>
+    <HoplensIPDetails :ip="summary.primary?.ip || ''" @network="networkDetails=$event" />
   </section>
 </template>
 
@@ -44,6 +45,7 @@ import { REPORT_EVENT_BUILDERS } from '@/utils/report-builders.js';
 import { summarizeDiagnostics } from '@/utils/hoplens-summary.js';
 import { Button } from '@/components/ui/button';
 import { Copy, Share2, Search, Settings2, Check } from '@lucide/vue';
+import HoplensIPDetails from './HoplensIPDetails.vue';
 const emit = defineEmits(['share-report', 'query-ip']);
 const { t } = useI18n();
 const store = useMainStore();
@@ -59,6 +61,12 @@ const unsubscribes = Object.entries(events).map(([event, key]) => onAppEvent(eve
   liveSections[section] = build(payload);
 }));
 const summary = computed(() => summarizeDiagnostics(liveSections, attempted));
+const networkDetails=ref(null);
+const primaryNetwork=computed(()=>{
+  const data=networkDetails.value;
+  if(data?.ip===summary.value.primary?.ip&&data.asn) return ['AS'+data.asn,data.asnName].filter(Boolean).join(' · ');
+  return [summary.value.primary?.asn,summary.value.primary?.isp].filter(Boolean).join(' · ');
+});
 unsubscribes.push(onAppEvent('ipinfo:updated', (payload) => {
   liveSections.ipinfo = REPORT_EVENT_BUILDERS['ipinfo:finished'].build(payload);
 }));

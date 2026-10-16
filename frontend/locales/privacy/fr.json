@@ -7,8 +7,8 @@
       "tools": {
         "title": "Comment fonctionnent les outils",
         "paragraphs": [
-          "La plupart de ce que les outils vous affichent — détails de votre IP, empreinte du navigateur, DNS, connectivité et résultats de test de débit — est calculé dans votre navigateur ou interrogé en direct et affiché à vous seul. Nous ne conservons pas ces résultats sur nos serveurs de manière accessible à d'autres, sauf si vous créez explicitement un lien de rapport partageable.",
-          "Pour rechercher la géolocalisation d'une IP, l'IP interrogée est envoyée à des fournisseurs tiers (tels qu'ipinfo.io, ip-api.com et similaires). Ces recherches sont régies par la politique de confidentialité propre à chaque fournisseur."
+          "La plupart des résultats sont calculés dans votre navigateur ou consultés en direct. Les réponses publiques de métadonnées IP peuvent être temporairement mises en cache sur notre serveur pour réduire les requêtes répétées. Les rapports de diagnostic ne sont partagés que lorsque vous créez explicitement un lien de partage.",
+          "Les recherches transmettent l’IP interrogée à des fournisseurs externes, dont RIPEstat, IPWhois, IP-API et les autres sources de géolocalisation configurées. Le bouton de pureté publique transmet cette IP à IPure (ipure.dev). La politique de confidentialité de chaque fournisseur s’applique. Les métadonnées réseau sont mises en cache dans une mémoire de capacité limitée pendant six heures au maximum, et les rapports de pureté réussis pendant une heure ; les entrées expirées sont remplacées ou évincées. Ces caches de sources publiques ne contiennent pas vos autres diagnostics du navigateur."
         ]
       },
       "pulse": {

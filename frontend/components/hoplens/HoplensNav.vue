@@ -4,7 +4,7 @@
     <div class="hl-nav-container">
       <a class="hl-brand" href="/" aria-label="IP.NodeCloak"><img :src="store.isDarkMode ? '/brand/hoplens-mark-dark.svg' : '/brand/hoplens-mark-light.svg'" width="30" height="30" alt="" /><span>IP.NodeCloak</span></a>
       <nav class="hl-desktop-nav" :aria-label="t('hoplens.navigation')">
-        <a v-for="link in links" :key="link.id" :href="'#' + link.id" :class="{ active: store.currentSection === link.id }">{{ t(link.key) }}</a>
+        <a v-for="link in links" :key="link.id" :href="'#' + (link.anchor || link.id)" :class="{ active: store.currentSection === link.id }">{{ t(link.key) }}</a>
       </nav>
       <div class="hl-nav-actions">
         <Select :model-value="locale" @update:model-value="changeLanguage">
@@ -16,7 +16,7 @@
         <DropdownMenu v-model:open="menuOpen">
           <DropdownMenuTrigger as-child><Button variant="outline" size="icon" class="hl-mobile-menu" :aria-label="t('hoplens.navigation')"><Menu /></Button></DropdownMenuTrigger>
           <DropdownMenuContent align="end" class="min-w-52">
-            <DropdownMenuItem v-for="link in links" :key="link.id" as-child><a :href="'#' + link.id" @click="menuOpen = false">{{ t(link.key) }}</a></DropdownMenuItem>
+            <DropdownMenuItem v-for="link in links" :key="link.id" as-child><a :href="'#' + (link.anchor || link.id)" @click="menuOpen = false">{{ t(link.key) }}</a></DropdownMenuItem>
             <DropdownMenuSeparator /><DropdownMenuItem :disabled="busy" @select="emit('full-check')"><RefreshCw />{{ t('hoplens.fullCheck') }}</DropdownMenuItem>
             <DropdownMenuItem @select="store.toggleSheet('preferences')"><Settings2 />{{ t('hoplens.settings') }}</DropdownMenuItem>
           </DropdownMenuContent>
@@ -25,7 +25,7 @@
     </div>
   </header>
   <nav class="hl-mobile-tabs" :aria-label="t('hoplens.navigation')">
-    <a v-for="link in mobileLinks" :key="link.id" :href="'#' + link.id" :class="{ active: store.currentSection === link.id || (link.id === 'WebRTC' && store.currentSection === 'DNSLeakTest') }"><component :is="link.icon" /><span>{{ t(link.key) }}</span></a>
+    <a v-for="link in mobileLinks" :key="link.id" :href="'#' + (link.anchor || link.id)" :class="{ active: store.currentSection === link.id || (link.id === 'WebRTC' && store.currentSection === 'DNSLeakTest') }"><component :is="link.icon" /><span>{{ t(link.key) }}</span></a>
   </nav>
 </template>
 
@@ -43,7 +43,7 @@ const emit = defineEmits(['full-check']);
 const { t, locale } = useI18n();
 const store = useMainStore();
 const menuOpen = ref(false);
-const links = [{ id: 'IPInfo', key: 'hoplens.overview' }, { id: 'WebRTC', key: 'hoplens.leaks' }, { id: 'Connectivity', key: 'hoplens.connectivity' }, { id: 'SpeedTest', key: 'hoplens.speed' }, { id: 'AdvancedTools', key: 'hoplens.tools' }];
+const links = [{ id: 'IPInfo', anchor: 'hl-public-address', key: 'hoplens.overview' }, { id: 'WebRTC', key: 'hoplens.leaks' }, { id: 'Connectivity', key: 'hoplens.connectivity' }, { id: 'SpeedTest', key: 'hoplens.speed' }, { id: 'AdvancedTools', key: 'hoplens.tools' }];
 const mobileLinks = [links[0], links[1], links[3], links[4]].map((link, index) => ({ ...link, icon: [Scan, ShieldCheck, Gauge, Network][index] }));
 const changeLanguage = (code) => {
   if (!LOCALES.some((item) => item.code === code) || code === locale.value) return;
