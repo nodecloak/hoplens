@@ -221,7 +221,7 @@ export const useMainStore = defineStore('main', {
     // Fetch configs from server. A longer timeout than the default: the boot
     // request competes with every other first-render fetch on slow links.
     fetchConfigs() {
-      fetchWithTimeout('/api/configs', { timeoutMs: 10000 })
+      fetchWithTimeout('/api/configs', { timeoutMs: 10000, cache: 'no-store' })
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');

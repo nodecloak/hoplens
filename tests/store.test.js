@@ -58,6 +58,26 @@ describe('store — trivial setter actions', () => {
   });
 });
 
+describe('store — live backend capabilities',()=>{
+  it('reloads changed provider availability instead of reusing browser-cached config',async()=>{
+    const originalFetch=globalThis.fetch;
+    const store=useMainStore();
+    store.configs={ipInfo:false,ip2location:false};
+    globalThis.fetch=async(url,options)=>{
+      assert.equal(url,'/api/configs');
+      const fresh=options.cache==='no-store';
+      return Response.json({ipInfo:fresh,ip2location:fresh,maxMind:false});
+    };
+    try {
+      store.fetchConfigs();
+      await new Promise(resolve=>setImmediate(resolve));
+      assert.equal(store.configs.ipInfo,true);
+      assert.equal(store.configs.ip2location,true);
+      assert.equal(store.configs.maxMind,false);
+    }finally{globalThis.fetch=originalFetch;}
+  });
+});
+
 describe('store — sheet toggling', () => {
   it('setOpenSheet assigns directly', () => {
     const s = useMainStore();

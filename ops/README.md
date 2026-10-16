@@ -35,6 +35,8 @@ The expanded homepage panel queries RIPEstat for the selected IP's BGP prefix an
 
 IPinfo and IP2Location are available without credentials through their official keyless APIs. IPinfo uses its legacy `/json` endpoint with shared anonymous rate limits (https://support.ipinfo.io/hc/en-us/articles/34121895556242-Legacy-Free-API-vs-IPinfo-Lite); IP2Location permits 1,000 keyless queries per day, resetting at 00:00 UTC (https://www.ip2location.io/ip2location-documentation). Optional `IPINFO_API_KEY` (legacy alias `IPINFO_API_TOKEN`) and `IP2LOCATION_API_KEY` are used when configured. Upstream quota/errors remain unavailable; no substitute data is labelled as these providers. The `/api/configs` booleans indicate backend capability, not guaranteed provider uptime. MaxMind remains gated on loaded GeoLite2 City and ASN databases; `MAXMIND_ACCOUNT_ID` plus `MAXMIND_LICENSE_KEY` enable official downloads and daily updates. Its signup and license details are at https://dev.maxmind.com/geoip/geolite2-free-geolocation-data/.
 
+Capability config is served with `Cache-Control: no-store`, and the frontend bypasses old browser cache entries when loading it. This keeps source availability and database readiness current after a deployment or credential change; public geolocation results keep their own route caches.
+
 Cloudflare Radar human/bot percentages require `CLOUDFLARE_API_KEY` and describe ASN-wide HTTP traffic over seven days, not individual-IP activity. With no key, the panel shows the source state and an ASN report link.
 
 ## Full IP report and first-party risk model
