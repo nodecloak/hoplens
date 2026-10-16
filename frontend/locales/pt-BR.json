@@ -1845,7 +1845,7 @@
     "AsnProfile": "Abrir painel de consulta de perfil de ASN"
   },
   "page": {
-    "title": "Hoplens — IP & network toolbox",
+    "title": "IP.NodeCloak — IP & network toolbox",
     "description": "Uma caixa de ferramentas de IP melhor e de código aberto: verifique seu IP e sua geolocalização, teste vazamentos de IP por WebRTC e DNS, faça uma verificação de qualidade de IP, verifique a impressão digital do navegador, além de teste de velocidade, teste de latência global, teste MTR, pesquisa Whois e muito mais.",
     "keywords": "MyIP, ferramenta de IP, verificar IP, teste de vazamento de IP, verificação de qualidade de IP, consulta de IP, teste de vazamento de DNS, teste de vazamento WebRTC, verificação de impressão digital do navegador, teste de velocidade, teste de latência global, teste MTR, consulta DNS, pesquisa Whois",
     "footerLink": "https://github.com/nodecloak/hoplens",

@@ -1845,7 +1845,7 @@
     "AsnProfile": "Открыть панель поиска профиля ASN"
   },
   "page": {
-    "title": "Hoplens — IP & network toolbox",
+    "title": "IP.NodeCloak — IP & network toolbox",
     "description": "Удобный набор IP-инструментов с открытым кодом: проверка IP-адреса и геолокации, проверка утечек IP через WebRTC и DNS, проверка качества IP, отпечатка браузера, скорости, глобальной задержки и MTR, поиск Whois и другие функции.",
     "keywords": "MyIP, инструменты IP, проверка IP, утечка IP, качество IP, поиск IP, тест утечки DNS, тест утечки WebRTC, отпечаток браузера, тест скорости, глобальная задержка, тест MTR, поиск DNS, поиск Whois",
     "footerLink": "https://github.com/nodecloak/hoplens",

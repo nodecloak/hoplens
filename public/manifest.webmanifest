@@ -1,6 +1,6 @@
 {
-  "name": "Hoplens · IP & network toolbox",
-  "short_name": "Hoplens",
+  "name": "IP.NodeCloak · IP & network toolbox",
+  "short_name": "IP.NodeCloak",
   "description": "All in one IP Toolbox",
   "id": "com.nodecloak.hoplens",
   "start_url": "/",

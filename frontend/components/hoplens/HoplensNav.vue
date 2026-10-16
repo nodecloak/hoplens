@@ -2,7 +2,7 @@
 <template>
   <header class="hl-header">
     <div class="hl-nav-container">
-      <a class="hl-brand" href="/" aria-label="Hoplens"><img :src="store.isDarkMode ? '/brand/hoplens-mark-dark.svg' : '/brand/hoplens-mark-light.svg'" width="30" height="30" alt="" /><span>hoplens</span></a>
+      <a class="hl-brand" href="/" aria-label="IP.NodeCloak"><img :src="store.isDarkMode ? '/brand/hoplens-mark-dark.svg' : '/brand/hoplens-mark-light.svg'" width="30" height="30" alt="" /><span>IP.NodeCloak</span></a>
       <nav class="hl-desktop-nav" :aria-label="t('hoplens.navigation')">
         <a v-for="link in links" :key="link.id" :href="'#' + link.id" :class="{ active: store.currentSection === link.id }">{{ t(link.key) }}</a>
       </nav>

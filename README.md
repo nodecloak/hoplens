@@ -1,9 +1,9 @@
-<!-- Hoplens fork overview, local development and attribution. -->
-# Hoplens · NodeCloak
+<!-- IP.NodeCloak fork overview, local development and attribution. -->
+# IP.NodeCloak · NodeCloak
 
 [ip.nodecloak.com](https://ip.nodecloak.com) · [GitHub](https://github.com/nodecloak/hoplens)
 
-Hoplens 是 NodeCloak 的 IP 与网络诊断工具，基于 [Jason Ng / MyIP](https://github.com/jason5ng32/MyIP) 的 MIT 开源项目构建，界面采用 Hoplens 视觉设计。
+IP.NodeCloak 是 NodeCloak 的 IP 与网络诊断工具，基于 [Jason Ng / MyIP](https://github.com/jason5ng32/MyIP) 的 MIT 开源项目构建，界面采用 IP.NodeCloak 视觉设计。
 
 - 多来源公网 IPv4 / IPv6、位置与网络信息对照。
 - WebRTC、DNS、网站连通性检测和手动测速。
@@ -30,4 +30,4 @@ Production deployment, trusted proxy headers, persistent datasets and rollback: 
 
 ## Attribution
 
-Hoplens is a maintained fork of **MyIP / IPCheck.ing**, by **Jason Ng and contributors**. The original MIT license remains in [LICENSE](LICENSE). Original project documentation is retained in [README.upstream.md](README.upstream.md) and the upstream language READMEs; those describe the original deployment. Geist fonts retain their SIL Open Font License in `public/fonts/LICENSE-Geist.txt`. Hoplens visual assets were supplied for this project.
+IP.NodeCloak is a maintained fork of **MyIP / IPCheck.ing**, by **Jason Ng and contributors**. The original MIT license remains in [LICENSE](LICENSE). Original project documentation is retained in [README.upstream.md](README.upstream.md) and the upstream language READMEs; those describe the original deployment. Geist fonts retain their SIL Open Font License in `public/fonts/LICENSE-Geist.txt`. IP.NodeCloak visual assets were supplied for this project.
