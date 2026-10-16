@@ -42,6 +42,16 @@ body.hl-app{font-family:Geist,ui-sans-serif,system-ui,sans-serif;background:var(
 .hl-hero-actions>.hl-copy-button{background:var(--foreground);color:var(--background);border-color:var(--foreground);font-weight:600}
 .hl-hero-actions>.hl-copy-button:hover{opacity:.88}
 .hl-hero-actions .rounded-full{border-radius:12px!important;box-shadow:none!important;width:42px;height:44px;background:transparent;color:var(--foreground);border:1px solid var(--border)}
+.hl-ip-lookup{margin-top:28px;max-width:640px}
+.hl-ip-lookup>label{display:block;margin-bottom:9px;font-size:12px;font-weight:500;color:var(--muted-foreground)}
+.hl-ip-lookup-row{display:flex;align-items:center;gap:10px}
+.hl-ip-lookup-field{position:relative;flex:1;min-width:0}
+.hl-ip-lookup-field>svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--muted-foreground);pointer-events:none}
+.hl-ip-lookup-field>input{width:100%;height:46px;padding-left:42px;border-radius:12px;background:var(--card);font-size:16px}
+@media(min-width:701px){.hl-ip-lookup-field>input{font-size:13px}}
+.hl-ip-lookup-row>button{height:46px;flex-shrink:0;padding:0 18px;border-radius:12px;background:var(--hl-signal);color:var(--background);font-size:13px;cursor:pointer}
+.hl-ip-lookup-row>button:hover{background:var(--hl-signal);filter:brightness(.94)}
+.hl-ip-lookup>p{font-size:12px;line-height:1.6;margin-top:9px}
 .hl-overview-card{padding:26px;background:var(--card);border:1px solid var(--border);border-radius:20px;min-width:0}
 .hl-overview-heading{display:flex;justify-content:space-between;gap:12px;color:var(--muted-foreground);font-size:13px;margin-bottom:22px}
 .hl-overview-heading .hl-mono{font-size:12px}

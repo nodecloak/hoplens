@@ -125,6 +125,11 @@ Every "business state → color" mapping goes through `use-status-tone.js`
   content inside that viewport.
 
 - **Trigger button** — `variant="action"` + `<Spinner v-if />` + `:disabled` (QueryIP, Whois).
+- **Homepage purity query** — `IPNodeCloakIPQuery` stays visible in the hero,
+  validates a public IPv4/IPv6 and opens `/tools/ipreport?q=<IP>` with its own
+  score and evidence. Never replace the visitor's local diagnostic IP with
+  manually entered input. Keep the search icon inside the field and mobile
+  input text at least 16px to avoid focus zoom on iOS.
 - **Input + icon trigger** — flex row, compact icon Button, no text label (QueryIP).
 - **AutoFill-proof inputs** — all six on every free-form Input: `autocomplete`
   / `autocorrect` / `autocapitalize="off"`, `spellcheck="false"`,
