@@ -85,7 +85,10 @@ body.hl-app{font-family:Geist,ui-sans-serif,system-ui,sans-serif;background:var(
 .hl-source-detail:hover{color:var(--hl-signal);background:var(--hl-panel-raised)}
 .hl-ip-dialog{max-width:680px!important;max-height:88dvh;overflow-y:auto;padding:24px}
 /* Source details use a single surface, with no embedded card chrome. */
-.hl-source-dialog{max-width:760px!important;padding:28px;border-radius:20px;background:var(--card);color:var(--foreground)}
+.hl-source-dialog{max-width:760px!important;padding:8px;overflow:hidden;border-radius:20px;background:var(--card);color:var(--foreground)}
+.hl-source-dialog-scroll{max-height:calc(88dvh - 18px);overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding:20px;scrollbar-width:thin;scrollbar-color:var(--muted-foreground) transparent}
+/* Firefox uses its thin native track; WebKit/Blink get a 4px track without buttons. */
+@supports selector(::-webkit-scrollbar){.hl-source-dialog-scroll{scrollbar-width:auto;scrollbar-color:auto}.hl-source-dialog-scroll::-webkit-scrollbar{width:4px;height:4px}.hl-source-dialog-scroll::-webkit-scrollbar-track{background:transparent}.hl-source-dialog-scroll::-webkit-scrollbar-thumb{background:var(--muted-foreground);border-radius:99px}.hl-source-dialog-scroll::-webkit-scrollbar-button{display:none;width:0;height:0}.hl-source-dialog-scroll::-webkit-scrollbar-corner{background:transparent}}
 .hl-source-dialog-capture{background:var(--card)}
 .hl-source-dialog-header{padding-bottom:18px;margin-bottom:0}
 .hl-source-dialog-header h2{font-size:18px;line-height:1.4;letter-spacing:-.02em}
@@ -101,7 +104,7 @@ body.hl-app{font-family:Geist,ui-sans-serif,system-ui,sans-serif;background:var(
 .hl-source-detail-panel>dl:first-child dt{font-size:11px;margin-bottom:7px}
 .hl-source-detail-panel>div{padding-left:0;padding-right:0}
 .hl-source-detail-panel>div.border-t{padding-top:18px;padding-bottom:0}
-@media(max-width:560px){.hl-source-dialog{padding:20px;border-radius:16px}.hl-source-dialog-hero{flex-wrap:wrap;gap:16px;padding:22px 0}.hl-source-dialog-address{flex-basis:100%}.hl-source-dialog-actions{margin-left:auto}.hl-source-detail-panel>dl:first-child{gap:18px 16px;padding-bottom:22px}}
+@media(max-width:560px){.hl-source-dialog{padding:6px;border-radius:16px}.hl-source-dialog-scroll{max-height:calc(88dvh - 14px);padding:14px}.hl-source-dialog-hero{flex-wrap:wrap;gap:16px;padding:22px 0}.hl-source-dialog-address{flex-basis:100%}.hl-source-dialog-actions{margin-left:auto}.hl-source-detail-panel>dl:first-child{gap:18px 16px;padding-bottom:22px}}
 .hl-leak-section>h2{margin-bottom:28px}
 .hl-leak-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
 .hl-probe-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;min-width:0;margin:0;height:100%}

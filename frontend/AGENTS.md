@@ -120,6 +120,9 @@ Every "business state → color" mapping goes through `use-status-tone.js`
   directly in a single `.hl-source-dialog` surface; do not nest the legacy
   `IPCard` chrome in it. Map and country traffic expand inline. Keep the shared
   copy, screenshot, refresh and ASN controls, and the VI light/dark tokens.
+  The rounded shell clips a separate inset scroll viewport; use its 4px
+  arrowless scrollbar (Firefox thin fallback), keeping capture on the full
+  content inside that viewport.
 
 - **Trigger button** — `variant="action"` + `<Spinner v-if />` + `:disabled` (QueryIP, Whois).
 - **Input + icon trigger** — flex row, compact icon Button, no text label (QueryIP).

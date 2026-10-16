@@ -8,24 +8,26 @@
   </article>
   <Dialog v-model:open="open">
     <DialogContent class="hl-ip-dialog hl-source-dialog" :title="card.source">
-      <div class="hl-source-dialog-capture" data-screenshot-root>
-        <DialogHeader :title="card.source" class="hl-source-dialog-header" />
-        <div class="hl-source-dialog-hero">
-          <div class="hl-source-dialog-address" :data-mask="maskAttr(card.ip)">
-            <FitText v-if="valid" :text="card.ip" :tiers="addressTiers" :max-lines="2" :title="card.ip" class="hl-mono min-w-0" />
-            <span v-else class="hl-source-dialog-status" role="status">{{ t(card.ip?'ipnodecloak.unavailable':'ipnodecloak.sourceLoading') }}</span>
-            <CopyButton v-if="valid" :value="card.ip" :tooltip="t('Tooltips.CopyIP')" :aria-label="'Copy '+card.ip" class="hl-source-dialog-copy" />
+      <div class="hl-source-dialog-scroll">
+        <div class="hl-source-dialog-capture" data-screenshot-root>
+          <DialogHeader :title="card.source" class="hl-source-dialog-header" />
+          <div class="hl-source-dialog-hero">
+            <div class="hl-source-dialog-address" :data-mask="maskAttr(card.ip)">
+              <FitText v-if="valid" :text="card.ip" :tiers="addressTiers" :max-lines="2" :title="card.ip" class="hl-mono min-w-0" />
+              <span v-else class="hl-source-dialog-status" role="status">{{ t(card.ip?'ipnodecloak.unavailable':'ipnodecloak.sourceLoading') }}</span>
+              <CopyButton v-if="valid" :value="card.ip" :tooltip="t('Tooltips.CopyIP')" :aria-label="'Copy '+card.ip" class="hl-source-dialog-copy" />
+            </div>
+            <div class="hl-source-dialog-actions" data-screenshot-exclude>
+              <ScreenshotButton filename-prefix="ipnodecloak" :filename-label="card.source" :track-label="card.source" :disabled="!valid"
+                :tooltip-text="t('Tooltips.SaveAsImage')" :aria-label="'Save '+card.source+' as image'" button-class="hl-source-dialog-action" />
+              <Button variant="outline" size="icon" class="hl-source-dialog-action" :aria-label="'Refresh '+card.source" @click="emit('refresh-card',card,index)"><RefreshCw /></Button>
+            </div>
           </div>
-          <div class="hl-source-dialog-actions" data-screenshot-exclude>
-            <ScreenshotButton filename-prefix="ipnodecloak" :filename-label="card.source" :track-label="card.source" :disabled="!valid"
-              :tooltip-text="t('Tooltips.SaveAsImage')" :aria-label="'Save '+card.source+' as image'" button-class="hl-source-dialog-action" />
-            <Button variant="outline" size="icon" class="hl-source-dialog-action" :aria-label="'Refresh '+card.source" @click="emit('refresh-card',card,index)"><RefreshCw /></Button>
+          <div v-if="valid" class="hl-source-detail-panel">
+            <IpDetailPanel :data="card" :index="index" :ip-geo-source="ipGeoSource" :asn-infos="asnInfos"
+              :asn-history-infos="asnHistoryInfos" :asn-connectivity-infos="asnConnectivityInfos" :configs="configs"
+              :is-dark-mode="isDarkMode" map-mode="inline" country-traffic-mode="inline" @open-tool="open=false" />
           </div>
-        </div>
-        <div v-if="valid" class="hl-source-detail-panel">
-          <IpDetailPanel :data="card" :index="index" :ip-geo-source="ipGeoSource" :asn-infos="asnInfos"
-            :asn-history-infos="asnHistoryInfos" :asn-connectivity-infos="asnConnectivityInfos" :configs="configs"
-            :is-dark-mode="isDarkMode" map-mode="inline" country-traffic-mode="inline" @open-tool="open=false" />
         </div>
       </div>
     </DialogContent>
