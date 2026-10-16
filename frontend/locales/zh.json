@@ -1947,6 +1947,7 @@
     "resumeSpeed": "继续测速",
     "startSpeed": "开始测速",
     "footerNote": "IP 历史记录保存在当前浏览器中。",
+    "maxmindAttribution": "本产品包含由 {provider} 创建的 GeoLite 数据。",
     "poweredBy": "基于 MyIP",
     "webrtcNote": "查看 WebRTC 向网站提供的网络地址。",
     "dnsNote": "通过独立服务对照 DNS 解析器地址。",
