@@ -56,7 +56,11 @@ const assessment=(checks,weights)=>{
   const potential=row=>!row||row.status==='disabled'?0:row.hit===true?row.points:row.status==='ok'?0:row.maxPoints;
   const maxAnon=Math.max(potential(tor),potential(proxy));
   const max=Math.min(100,active.filter(row=>!['tor','proxy'].includes(row.id)).reduce((sum,row)=>sum+potential(row),0)+maxAnon);
-  return {score:known.length===active.length?min:null,observedPoints:min,range:{min,max},coverage:{checked:known.length,total:active.length},checks:rows};
+  // Partial evidence yields an observed score; unknown checks keep their potential weight.
+  const usable=known.length>0||active.some(row=>row.hit===true||row.coverage?.checked>0);
+  const complete=active.length>0&&known.length===active.length;
+  return {score:usable?min:null,scoreKind:complete?'complete':usable?'observed':'unavailable',
+    status:complete?'ok':'partial',observedPoints:min,range:{min,max},coverage:{checked:known.length,total:active.length},checks:rows};
 };
 
 export const assessReportRisk=(sources,now=Date.now())=>{
@@ -82,7 +86,7 @@ export const assessReportRisk=(sources,now=Date.now())=>{
   const dns=sources.filter(row=>row.id.startsWith('dnsbl-')&&row.status!=='disabled');
   const dnsKnown=dns.filter(row=>freshSource(row,now)&&typeof row.data?.listed==='boolean');
   const dnsHit=dnsKnown.some(row=>row.data.listed);
-  checks.push(rule('dnsbl','DNSBL',25,dns.length&&dnsKnown.length===dns.length?'ok':'partial',dnsHit?true:dnsKnown.length===dns.length&&dns.length?false:null,{asOf:dnsKnown[0]?.observedAt??null}));
+  checks.push(rule('dnsbl','DNSBL',25,dns.length&&dnsKnown.length===dns.length?'ok':'partial',dnsHit?true:dnsKnown.length===dns.length&&dns.length?false:null,{asOf:dnsKnown[0]?.observedAt??null,coverage:{checked:dnsKnown.length,total:dns.length}}));
   const host=get('internetdb'),hostKnown=freshSource(host,now,2*3600000)&&Array.isArray(host.data?.vulnerabilities);
   checks.push(rule('services','Shodan InternetDB',10,hostKnown?'ok':host?.status??'missing',hostKnown?host.data.vulnerabilities.length>0:null,{asOf:host?.observedAt??null}));
   const abuse=get('abuseipdb'),abuseKnown=freshSource(abuse,now)&&integer(abuse.data?.totalReports)!==null&&integer(abuse.data?.distinctReporters)!==null;
@@ -92,7 +96,7 @@ export const assessReportRisk=(sources,now=Date.now())=>{
   // The optional abuse category uses our count thresholds, never the provider's confidence score.
   abuseRule.severity=abusePoints/30;checks.push(abuseRule);
   const result=assessment(checks);
-  return {...result,model:'nodecloak-ip-risk-v2',status:result.score===null?'partial':'ok',
+  return {...result,model:'nodecloak-ip-risk-v2',
     level:result.score===null?null:result.score===0?'none':result.score<=15?'low':result.score<=40?'moderate':result.score<70?'elevated':'high',queriedAt:new Date(now).toISOString()};
 };
 
@@ -114,7 +118,7 @@ export const buildIPReport=(ip,sources,now=Date.now())=>{
     const subset=[...risk.checks,ptrRule].map(row=>({...row,maxPoints:weights[row.id]??0})).filter(row=>row.maxPoints>0);
     const evaluated=assessment(subset,weights);
     const range={min:100-evaluated.range.max,max:100-evaluated.range.min};
-    return {id,score:evaluated.score===null?null:100-evaluated.score,range,coverage:evaluated.coverage,
+    return {id,score:evaluated.score===null?null:100-evaluated.score,scoreKind:evaluated.scoreKind,status:evaluated.status,range,coverage:evaluated.coverage,
       level:range.max-range.min>=20?'incomplete':range.min>=85?'favorable':range.min>=65?'mixed':range.min>=40?'caution':'adverse',factors:evaluated.checks};
   });
   return {ip,model:risk.model,generatedAt:new Date(now).toISOString(),
@@ -131,9 +135,9 @@ export const buildIPReport=(ip,sources,now=Date.now())=>{
 // Plain text contains the same bounded public observations as the JSON export.
 export const reportToText=report=>[
   `IP.NodeCloak IP assessment\n${report.ip}\n${report.generatedAt}\nModel: ${report.model}`,
-  `Risk: ${report.risk.score??`${report.risk.range.min}-${report.risk.range.max}`} /100 (higher means more observed risk signals)\nCoverage: ${report.risk.coverage.checked}/${report.risk.coverage.total}`,
+  `Risk: ${report.risk.score??'unavailable'} /100 (higher means more observed risk signals)\nScore basis: ${report.risk.scoreKind}\nRisk range: ${report.risk.range.min}-${report.risk.range.max} /100\nCoverage: ${report.risk.coverage.checked}/${report.risk.coverage.total}`,
   `Profile\n${JSON.stringify(report.profile,null,2)}`,
-  'Scenarios\n'+report.scenarios.map(row=>`${row.id}: ${row.score??`${row.range.min}-${row.range.max}`} /100; ${row.level}`).join('\n'),
+  'Scenarios\n'+report.scenarios.map(row=>`${row.id}: ${row.score??'unavailable'} /100; basis=${row.scoreKind}; range=${row.range.min}-${row.range.max}; coverage=${row.coverage.checked}/${row.coverage.total}; ${row.level}`).join('\n'),
   'Regional policy snapshots\n'+report.platforms.map(row=>`${row.id}: ${row.status}; ${row.reviewedAt}; ${row.source}`).join('\n'),
   'Evidence\n'+report.evidence.map(row=>`${row.id}: ${row.status}; observed=${row.hit}; points=${row.points}; source=${row.source}; asOf=${row.asOf??'unknown'}`).join('\n'),
   'Sources\n'+report.sources.map(row=>`${row.id}: ${row.status}; ${row.durationMs}ms; ${row.observedAt}`).join('\n'),

@@ -63,7 +63,9 @@ behind `dns-resolver` (gated by `tests/dns-resolvers-data.test.js`).
   read by `common/ip-risk-data.js`; original timestamps/copyright remain in
   the files. Risk matching refuses snapshots older than 48 hours. The
   full-report heuristic in `common/ip-report-model.js` returns per-rule
-  evidence, coverage and a bounded interval when observations are incomplete.
+  evidence, coverage and a numeric observed score with a bounded interval when
+  observations are incomplete. `scoreKind` distinguishes complete, observed and
+  unavailable scores; `status` follows evidence completeness, not score presence.
   `/api/ip-risk` is the same assessment's summary; `/api/ip-report` adds
   profile, scenario weights, dated official region policy and source states.
   `common/ip-report.js` bounds/coalesces provider caches and deadlines; snapshot
