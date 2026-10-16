@@ -7,8 +7,8 @@
       "tools": {
         "title": "How the tools work",
         "paragraphs": [
-          "Most of what the tools show you — your IP details, browser fingerprint, DNS, connectivity and speed-test results — is computed in your browser or looked up live and shown only to you. We do not keep these results on our servers for anyone else to access, unless you explicitly create a shareable report link.",
-          "To look up IP geolocation, the IP being queried is sent to third-party providers (such as ipinfo.io, ip-api.com and similar). Those lookups are governed by each provider's own privacy policy."
+          "Most tool results are computed in your browser or looked up live. Public IP metadata responses may be cached temporarily on our server to reduce repeated provider requests. Diagnostic reports are shared only when you explicitly create a shareable link.",
+          "IP lookups send the queried IP to external providers, including RIPEstat, IPWhois, IP-API and the other configured geolocation sources. Clicking the public purity check sends that IP to IPure (ipure.dev). Each provider's own privacy policy applies. Network metadata is cached in a bounded memory cache for up to six hours and successful purity reports for one hour; expired entries are replaced or evicted. These public-source caches do not contain your other browser diagnostics."
         ]
       },
       "pulse": {

@@ -7,8 +7,8 @@
       "tools": {
         "title": "Como as ferramentas funcionam",
         "paragraphs": [
-          "A maior parte do que as ferramentas mostram — detalhes do seu IP, impressão digital do navegador, DNS, conectividade e resultados do teste de velocidade — é calculada no seu navegador ou consultada em tempo real e exibida somente para você. Não mantemos esses resultados em nossos servidores para que outras pessoas os acessem, a menos que você crie explicitamente um link de relatório compartilhável.",
-          "Para consultar a geolocalização de um IP, o endereço IP pesquisado é enviado a fornecedores terceirizados (como ipinfo.io, ip-api.com e similares). Essas consultas são regidas pela política de privacidade de cada fornecedor."
+          "A maioria dos resultados é calculada no navegador ou consultada ao vivo. Respostas públicas de metadados de IP podem ser armazenadas temporariamente em cache no nosso servidor para reduzir consultas repetidas. Relatórios de diagnóstico são compartilhados somente quando você cria explicitamente um link de compartilhamento.",
+          "As consultas enviam o IP pesquisado a provedores externos, incluindo RIPEstat, IPWhois, IP-API e outras fontes de geolocalização configuradas. O botão de pureza pública envia esse IP ao IPure (ipure.dev). A política de privacidade de cada provedor se aplica. Metadados de rede ficam em um cache de memória com capacidade limitada por até seis horas, e relatórios de pureza bem-sucedidos por uma hora; entradas vencidas são substituídas ou removidas. Esses caches de fontes públicas não contêm outros diagnósticos do navegador."
         ]
       },
       "pulse": {

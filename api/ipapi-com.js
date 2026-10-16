@@ -27,7 +27,10 @@ function modifyJsonForIPAPI(json) {
         latitude: lat,
         longitude: lon,
         asn,
-        org: isp
+        org: isp,
+        ...(typeof json.hosting === 'boolean' ? {isHosting:json.hosting} : {}),
+        ...(typeof json.mobile === 'boolean' ? {isMobile:json.mobile} : {}),
+        ...(typeof json.proxy === 'boolean' ? {isProxy:json.proxy} : {})
     };
 }
 

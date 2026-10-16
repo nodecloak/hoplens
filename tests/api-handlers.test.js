@@ -104,7 +104,7 @@ describe('configs handler', () => {
         const res = createResponse();
         configsHandler(createRequest(), res);
         assert.equal(res.statusCode, 200);
-        for (const key of ['map', 'ipInfo', 'ipChecking', 'ip2location', 'originalSite', 'cloudFlare', 'ipapiis', 'reportSharing']) {
+        for (const key of ['map', 'ipInfo', 'ipChecking', 'ip2location', 'originalSite', 'cloudFlare', 'ipapiis', 'reportSharing', 'maxMind']) {
             assert.equal(typeof res.body[key], 'boolean');
         }
         assert.equal(res.body.originalSite, false);
