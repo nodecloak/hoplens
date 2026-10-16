@@ -116,6 +116,11 @@ Every "business state → color" mapping goes through `use-status-tone.js`
 
 ### Canonical patterns — copy the named exemplar, don't re-invent
 
+- **Homepage source details** — `IPNodeCloakIPCard` renders `IpDetailPanel`
+  directly in a single `.hl-source-dialog` surface; do not nest the legacy
+  `IPCard` chrome in it. Map and country traffic expand inline. Keep the shared
+  copy, screenshot, refresh and ASN controls, and the VI light/dark tokens.
+
 - **Trigger button** — `variant="action"` + `<Spinner v-if />` + `:disabled` (QueryIP, Whois).
 - **Input + icon trigger** — flex row, compact icon Button, no text label (QueryIP).
 - **AutoFill-proof inputs** — all six on every free-form Input: `autocomplete`
