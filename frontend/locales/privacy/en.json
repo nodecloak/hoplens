@@ -2,7 +2,7 @@
   "privacy": {
     "Title": "Privacy Policy",
     "UpdatedLabel": "Last updated",
-    "Intro": "IPCheck.ing is a free, open-source IP toolbox. We built it to help you see what your network and browser reveal about you, so respecting your own privacy matters to us. This page explains what happens to your data when you use the site.",
+    "Intro": "Hoplens is a free, open-source IP toolbox. We built it to help you see what your network and browser reveal about you, so respecting your own privacy matters to us. This page explains what happens to your data when you use the site.",
     "sections": {
       "tools": {
         "title": "How the tools work",
@@ -97,13 +97,19 @@
         "title": "If you are in the EU/EEA or UK",
         "paragraphs": [
           "We currently do not show a cookie consent banner. If you would rather not be measured by analytics, you can opt out at any time using the methods below — blocking the analytics cookie does not affect any tool on the site.",
-          "To opt out: use a content blocker (such as uBlock Origin) or Google's official opt-out browser add-on, block third-party cookies, or clear this site's cookies. Self-hosted copies of IPCheck.ing only run analytics if their operator configures it."
+          "To opt out: use a content blocker (such as uBlock Origin) or Google's official opt-out browser add-on, block third-party cookies, or clear this site's cookies. Self-hosted copies of Hoplens only run analytics if their operator configures it."
         ]
       },
       "retention": {
         "title": "Data retention",
         "paragraphs": [
           "Analytics data is kept according to Google Analytics' retention settings (up to 14 months) and is then deleted automatically. Account data is kept while your account exists."
+        ]
+      },
+      "infrastructure": {
+        "title": "Infrastructure & external services",
+        "paragraphs": [
+          "Hoplens is operated by NodeCloak and delivered through Cloudflare. Cloudflare processes request metadata, including your IP address, to serve and protect this site under its own privacy policy. Tests contact external IP, DNS, STUN, connectivity and speed-test providers; those services can observe the requests sent to them. Your browser performs a speed test only when you start it."
         ]
       }
     }

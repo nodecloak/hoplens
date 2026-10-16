@@ -1,0 +1,5 @@
+{
+  "watch": ["backend-server.js", "sentry-instrument.js", "api", "common"],
+  "ext": "js,json",
+  "ignore": ["common/*-db/**", ".qa/**", "dist/**", "tests/**"]
+}

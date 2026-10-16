@@ -264,6 +264,8 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: frontEndPort,
+    // Downloaded datasets and deployment evidence are not frontend sources.
+    watch: { ignored: ['**/common/*-db/**', '**/.qa/**'] },
     proxy: {
       '/api': `http://localhost:${backEndPort}`
     },

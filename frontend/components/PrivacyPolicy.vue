@@ -57,7 +57,7 @@ const store = useMainStore();
 const { isFireBaseSet } = storeToRefs(store);
 
 // Bump when the policy text changes materially.
-const LAST_UPDATED = '2026-08-20';
+const LAST_UPDATED = '2026-10-16';
 
 // Sentry telemetry is a build-time decision (see frontend/AGENTS.md): the
 // section only renders on deployments actually built with a DSN.
@@ -104,7 +104,7 @@ watch(locale, async (loc) => {
 // Ordered section ids, gated on which collection actually happens here. The
 // "why" section explains the reason for whichever collection is active.
 const order = computed(() => {
-  const ids = ['tools'];
+  const ids = ['tools', 'infrastructure'];
   // Earth Online — gated on the pulse beacon backend (build-time), where all its
   // collection (beacon / status sends) happens; the outage-only mode
   // collects nothing, so no section.
@@ -151,7 +151,7 @@ const bullets = (id) => {
 // uses the always-loaded about.Privacy key; the description (from the on-demand
 // pack) fills in once ready — watchEffect re-runs when it loads.
 useDocumentMeta(() => ({
-  title: `${t('about.Privacy')} · IPCheck.ing`,
+  title: `${t('about.Privacy')} · Hoplens`,
   description: ready.value ? t('privacy.Intro') : '',
   canonical: `${window.location.origin}/privacy`,
 }));

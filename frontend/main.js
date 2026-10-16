@@ -13,6 +13,7 @@ import { addCollection } from '@iconify/vue';
 
 import { detectOS } from './utils/system-detect';
 import './style/style.css'
+import './style/hoplens.css'
 
 // vConsole — mobile on-screen devtools. Dev-only AND mobile-only.
 // Sets `window.__vConsoleActive` so `frontend/utils/shortcut.js` can disable

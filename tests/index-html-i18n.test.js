@@ -109,14 +109,14 @@ describe('index.html boot copy — shape holds across languages', () => {
     }
 
     for (const [code, hint] of Object.entries(SLOW_HINTS)) {
-        it(`SLOW_HINTS.${code} is one sentence carrying the Lite link`, () => {
+        it(`SLOW_HINTS.${code} carries a same-origin reload link`, () => {
             assert.ok(typeof hint === 'string' && hint.trim() !== '',
                 `index.html SLOW_HINTS.${code} is empty`);
             const links = hint.match(/<a\s+href="([^"]*)"/g) ?? [];
             assert.equal(links.length, 1,
                 `index.html SLOW_HINTS.${code}: expected exactly one link, found ${links.length}`);
-            assert.match(hint, /<a\s+href="https:\/\/lite\.ipcheck\.ing\/">/,
-                `index.html SLOW_HINTS.${code}: the link must point at IPCheck.ing Lite`);
+            assert.match(hint, /<a\s+href="\/">/,
+                `index.html SLOW_HINTS.${code}: reload must stay on Hoplens`);
         });
     }
 });

@@ -13,14 +13,14 @@ describe('DEFAULT_PREFERENCES', () => {
 
   it('contains the full preference shape with expected defaults', () => {
     assert.deepEqual(DEFAULT_PREFERENCES, {
-      theme: 'auto',
+      theme: 'dark',
       connectivityMultipleTests: true,
       simpleMode: false,
-      autoRunConnectivity: true,
-      autoRunWebRTC: true,
-      autoRunDnsLeak: true,
+      autoRunConnectivity: false,
+      autoRunWebRTC: false,
+      autoRunDnsLeak: false,
       popupConnectivityNotifications: false,
-      ipCardsToShow: 2,
+      ipCardsToShow: 6,
       ipGeoSource: 0,
       ipHistoryEnabled: true,
       ipHistoryDays: 30,
@@ -45,7 +45,7 @@ describe('createDefaultPreferences()', () => {
   it('does not share reference with DEFAULT_PREFERENCES', () => {
     const p = createDefaultPreferences();
     assert.notEqual(p, DEFAULT_PREFERENCES);
-    p.theme = 'dark';
-    assert.equal(DEFAULT_PREFERENCES.theme, 'auto');
+    p.theme = 'light';
+    assert.equal(DEFAULT_PREFERENCES.theme, 'dark');
   });
 });

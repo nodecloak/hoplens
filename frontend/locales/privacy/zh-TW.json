@@ -2,7 +2,7 @@
   "privacy": {
     "Title": "隱私政策",
     "UpdatedLabel": "最後更新",
-    "Intro": "IPCheck.ing 是一個免費、開源的 IP 工具箱。我們做它，是為了協助你看清自己的網路和瀏覽器會暴露哪些資訊——正因如此，尊重你的隱私對我們很重要。本頁說明你使用本站時，資料會被如何處理。",
+    "Intro": "Hoplens 是一個免費、開源的 IP 工具箱。我們做它，是為了協助你看清自己的網路和瀏覽器會暴露哪些資訊——正因如此，尊重你的隱私對我們很重要。本頁說明你使用本站時，資料會被如何處理。",
     "sections": {
       "tools": {
         "title": "工具如何運作",
@@ -97,13 +97,19 @@
         "title": "如果你在歐盟 / 歐洲經濟區或英國",
         "paragraphs": [
           "我們目前沒有提供 Cookie 同意橫幅。如果你不希望被統計追蹤，可以隨時透過下列方式選擇退出——遮蔽統計 cookie 不會影響本站任何工具的使用。",
-          "退出方式：使用內容攔截器（如 uBlock Origin）或 Google 官方的退出瀏覽器擴充功能、遮蔽第三方 cookie，或清除本站的 cookie。IPCheck.ing 的自部署版本只有在營運者自行設定時才會啟用統計。"
+          "退出方式：使用內容攔截器（如 uBlock Origin）或 Google 官方的退出瀏覽器擴充功能、遮蔽第三方 cookie，或清除本站的 cookie。Hoplens 的自部署版本只有在營運者自行設定時才會啟用統計。"
         ]
       },
       "retention": {
         "title": "資料保留",
         "paragraphs": [
           "統計資料按 Google Analytics 的保留設定儲存（最長 14 個月），到期後自動刪除。帳戶資料在你的帳戶存續期間保留。"
+        ]
+      },
+      "infrastructure": {
+        "title": "基礎設施與外部服務",
+        "paragraphs": [
+          "Hoplens 由 NodeCloak 營運，透過 Cloudflare 提供服務。Cloudflare 依其隱私權政策處理包含 IP 位址在內的請求中繼資料，用於網站交付與安全防護。檢測會連線至外部 IP、DNS、STUN、連通性與測速服務，這些服務可以看到傳送給它們的請求。測速僅在你主動開始時執行。"
         ]
       }
     }

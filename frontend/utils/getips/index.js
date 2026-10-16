@@ -26,6 +26,7 @@ import { myExternalIPV4 } from './myexternalip-v4.js';
 import { myExternalIPV6 } from './myexternalip-v6.js';
 import { ipipNet } from './ipipnet.js';
 import { upai } from './upai.js';
+import { hoplensEdge } from './hoplens-edge.js';
 
 // Walk the providers in order; first hop whose IP passes isValidIP wins.
 export const runChain = async (providers, originalSite) => {
@@ -43,7 +44,7 @@ export const runChain = async (providers, originalSite) => {
 
 export const getIPFromIPChecking4 = (originalSite) => runChain([ipChecking4, ipifyV4], originalSite);
 export const getIPFromIPChecking6 = (originalSite) => runChain([ipChecking6, ipifyV6], originalSite);
-export const getIPFromIPChecking64 = (originalSite) => runChain([ipChecking64], originalSite);
+export const getIPFromIPChecking64 = (originalSite) => runChain([hoplensEdge, ipChecking64], originalSite);
 export const getIPFromCloudflare_V4 = () => runChain([cloudflareV4, myExternalIPV4]);
 export const getIPFromCloudflare_V6 = () => runChain([cloudflareV6, myExternalIPV6]);
 export const getIPFromIPIP = () => runChain([ipipNet, upai]);

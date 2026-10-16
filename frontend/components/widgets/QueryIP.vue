@@ -19,7 +19,7 @@
                         v-model="inputIP" @keyup.enter="submitQuery" :aria-invalid="modalQueryError !== ''"
                         autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-1p-ignore
                         data-lpignore="true" class="font-mono" />
-                    <Button id="sumitQueryButton" type="button" variant="action"
+                    <Button id="sumitQueryButton" type="button" variant="action" :aria-label="t('hoplens.query')"
                         :disabled="!isValidIP(inputIP) || isChecking === 'running'" @click="submitQuery"
                         class="cursor-pointer">
                         <Spinner v-if="isChecking === 'running'" />

@@ -1,19 +1,23 @@
 <template>
   <!-- Speed Test -->
-  <section class="mb-10">
+  <section class="hl-probe-panel hl-speed-panel">
     <!-- Header -->
     <header class="mb-2 flex flex-col items-start justify-between gap-4">
       <div class="flex flex-row items-center justify-between gap-4 w-full">
         <h2 id="SpeedTest"
           class="m-0 flex min-w-0 flex-1 items-center gap-2 text-xl md:text-3xl font-semibold tracking-tight leading-tight">
-          🚀 {{ t('speedtest.Title') }}
+          {{ t('speedtest.Title') }}
         </h2>
       </div>
       <div class="text-base text-muted-foreground">
-        <p v-if="!isSimpleMode">{{ t('speedtest.Note') }}</p>
+        <p v-if="!isSimpleMode">{{ t('hoplens.speedNote') }}</p>
       </div>
     </header>
+<div class="hl-speed-metrics"><div v-for="metric in metrics" :key="metric.key"><span>{{ metric.label }}</span><p>{{ state.speedTest[metric.key] }}<small>{{ metric.unit }}</small></p></div></div><div class="hl-speed-progress"><Progress v-if="isRunning || isPaused" :model-value="state.speedTest.progress" :aria-label="progressLabel" /><p>{{ isRunning || isPaused || isFinished || isError ? progressLabel : t('hoplens.speedNote') }}</p></div><Button variant="action" class="hl-speed-cta" @click="speedTestController"><component :is="ctaIcon" />{{ t(isRunning ? 'hoplens.pauseSpeed' : isPaused ? 'hoplens.resumeSpeed' : 'hoplens.startSpeed') }}</Button>
 
+
+<details class="hl-test-details"><summary>{{ t('hoplens.details') }}</summary>
+<p class="hl-detail-note">{{ t('speedtest.Note') }}</p>
     <Card class="keyboard-shortcut-card jn-card">
       <CardContent class="p-4 md:p-6">
         <!-- Control Area -->
@@ -171,6 +175,7 @@
       </CardContent>
     </Card>
 
+</details>
     <!-- Section banner slot (data-driven; see InfoBanner.vue) -->
     <InfoBanner section="speedtest" :settled="hasEverSettled" />
   </section>

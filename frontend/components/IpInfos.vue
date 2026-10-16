@@ -1,23 +1,23 @@
 <template>
   <!-- IP Infos -->
-  <section class="ip-data-section mb-10 mt-2">
+  <section class="ip-data-section hl-addresses">
     <header class="mb-2 flex flex-col items-start justify-between gap-4">
       <h2 id="IPInfo"
         class="m-0 flex min-w-0 flex-1 items-center gap-2 text-xl md:text-3xl font-semibold tracking-tight leading-tight">
-        🔦 {{ t('ipInfos.Title') }}
+        {{ t('hoplens.sourcesTitle') }}
       </h2>
       <div class="text-base text-muted-foreground">
-        <p v-if="!isSimpleMode">{{ t('ipInfos.Notes') }}</p>
+        <p>{{ t('hoplens.sourcesNote') }}</p>
       </div>
     </header>
 
     <!-- Card grid: 1 col on mobile, always 2 cols on PC (md+). Card counts
         (2 / 4 / 6) are all even, so the last row always fills. -->
-    <div class="grid gap-4 items-stretch grid-cols-1 md:grid-cols-2">
+    <div class="hl-address-grid">
       <div v-for="(card, index) in ipDataCards.slice(0, ipCardsToShow)" :key="card.id" :ref="card.id"
-        :id="'IPInfoCard-' + (index + 1)" class="flex"
-        :class="{ 'opacity-60': !card.ip || card.ip === t('ipInfos.IPv4Error') || card.ip === t('ipInfos.IPv6Error') }">
-        <IPCard class="w-full" :card="card" :index="index" :isDarkMode="isDarkMode" :isMobile="isMobile"
+        :id="'IPInfoCard-' + (index + 1)" class="flex">
+        <IPCard class="w-full" :card="card" :index="index" :isDarkMode="isDarkMode" :isMobile="isMobile" :pending="!cardsHaveSettled"
+          :reference="ipDataCards.find(item => isUsablePublicIP(item.ip) && item.ip.includes(':') === card.ip.includes(':'))?.ip || ''"
           :ipGeoSource="ipGeoSource" :configs="configs" :asnInfos="asnInfos" :asnHistoryInfos="asnHistoryInfos"
           :asnConnectivityInfos="asnConnectivityInfos" @refresh-card="refreshCard" />
       </div>
@@ -43,7 +43,7 @@ import { emitAppEvent, waitForAppEvent } from '@/utils/app-events';
 import { useAppCommand } from '@/composables/use-app-command.js';
 import { useAsnInfo } from '@/composables/use-asn-info.js';
 import { authenticatedFetch, fetchErrorLabel, logSourceFetchFailure } from '@/utils/authenticated-fetch';
-import IPCard from './ip-infos/IPCard.vue';
+import IPCard from './hoplens/HoplensIPCard.vue';
 import InfoBanner from './widgets/InfoBanner.vue';
 
 

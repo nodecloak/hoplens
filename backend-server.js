@@ -64,6 +64,7 @@ initUpstreamUserAgent();
 
 const app = express();
 const backEndPort = parseInt(process.env.BACKEND_PORT || 11966, 10);
+const backEndHost = process.env.BACKEND_HOST || '127.0.0.1';
 // Local rate-limit ledger file — opt-in: empty means no file is written.
 // The logger.warn in the limiter handler always fires regardless (and flows
 // to Sentry Logs when a backend DSN is configured), so the file only adds a
@@ -348,7 +349,7 @@ const bootBackend = async () => {
         await reloadMaxMindDatabases('startup').catch(() => {});
     }
 
-    app.listen(backEndPort, () => {
+    app.listen(backEndPort, backEndHost, () => {
         logger.info(`🚀 Backend server ready on http://localhost:${backEndPort}`);
     });
 

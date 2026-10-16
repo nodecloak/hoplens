@@ -3,6 +3,20 @@
 Single source of truth for anyone — human or AI — contributing to MyIP.
 Area-specific details: @frontend/AGENTS.md (Vue SPA) · @api/AGENTS.md (Express API).
 
+## Hoplens fork
+
+This repository is NodeCloak's Hoplens fork, deployed at https://ip.nodecloak.com.
+Keep upstream MIT attribution. The Hoplens visual layer is in
+`frontend/components/hoplens/` and `frontend/style/hoplens.css`; use its dark,
+light and mobile tokens. Live summaries must use the latest diagnostic event,
+including failed reruns, rather than an older successful share-report snapshot.
+The dashboard shows actual check coverage, never a fabricated privacy score.
+Basic probes are opt-in beyond the initial IP lookup; speed tests stay manual.
+Deployment and rollback are documented in `ops/README.md`. The dedicated API
+binds loopback by default; do not replace the system Node runtime or edit the
+existing NodeCloak services. Upstream auto-sync and publishing workflows are
+intentionally absent; bring upstream changes through a reviewed PR.
+
 ## Local skill discovery
 
 Before choosing a workflow for a project task, check the repository-root
@@ -143,9 +157,9 @@ Access control and timeouts live in shared middleware, not handlers
 
 ## Workflow
 
-- **Branch discipline — `dev` in, `dev` out.** `main` only moves via
-  dev → main PRs. From a worktree, fast-forward dev with `git push . HEAD:dev`
-  (repo has `receive.denyCurrentBranch=updateInstead`), not `git update-ref`.
+- **Fork branch discipline.** Preserve the inherited `dev` branch for upstream
+  integration. Hoplens features use `codex/*` or other descriptive branches;
+  `main` only moves through reviewed pull requests after checks pass.
 - **No commits without explicit user approval** — AI edits → user reviews →
   user tests → user says "commit". Even with tests green, visual changes need
   user eyes before landing.

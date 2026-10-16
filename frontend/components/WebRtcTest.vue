@@ -1,11 +1,11 @@
 <template>
-  <section class="mb-10">
+  <section class="hl-probe-panel">
     <!-- Header -->
     <header class="mb-2 flex flex-col items-start justify-between gap-4">
       <div class="flex flex-row items-center justify-between gap-4 w-full">
         <h2 id="WebRTC"
           class="m-0 flex min-w-0 flex-1 items-center gap-2 text-xl md:text-3xl font-semibold tracking-tight leading-tight">
-          🚱 {{ t('webrtc.Title') }}
+          {{ t('webrtc.Title') }}
         </h2>
         <JnTooltip :text="t('Tooltips.RefreshWebRTC')" side="left">
           <Button size="icon" variant="outline" class="shrink-0 cursor-pointer" @click="checkAllWebRTC(true)"
@@ -15,10 +15,14 @@
         </JnTooltip>
       </div>
       <div class="text-base text-muted-foreground">
-        <p v-if="!isSimpleMode">{{ t('webrtc.Note') }}</p>
+        <p v-if="!isSimpleMode">{{ t('hoplens.webrtcNote') }}</p>
       </div>
     </header>
+<dl class="hl-probe-rows"><div v-for="stun in stunServers" :key="stun.id"><dt :title="stun.url">{{ stun.url }}</dt><dd :class="textClass(toneOf(stun))" :data-mask="maskAttr(stun.ip)">{{ stun.ip }}</dd></div></dl>
 
+
+<details class="hl-test-details"><summary>{{ t('hoplens.details') }}</summary>
+<p class="hl-detail-note">{{ t('webrtc.Note') }}</p>
     <!-- Card grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
       <Card v-for="(stun, index) in stunServers" :key="stun.id"
@@ -113,6 +117,7 @@
       </Card>
     </div>
 
+</details>
     <!-- Section banner slot (data-driven; see InfoBanner.vue) -->
     <InfoBanner section="webrtc" :settled="hasEverSettled" />
   </section>

@@ -1,10 +1,10 @@
 <template>
-  <section class="mb-10">
+  <section class="hl-probe-panel hl-connectivity-panel">
     <header class="mb-2 flex flex-col items-start justify-between gap-4">
       <div class="flex flex-row items-center justify-between gap-4 w-full">
         <h2 id="Connectivity"
           class="m-0 flex min-w-0 flex-1 items-center gap-2 text-xl md:text-3xl font-semibold tracking-tight leading-tight">
-          🚦 {{ t('connectivity.Title') }}
+          {{ t('connectivity.Title') }}
         </h2>
         <!-- List picker + refresh as one joined button group. The picker
              half only exists once a second list does; list management
@@ -40,10 +40,14 @@
         </div>
       </div>
       <div class="text-base text-muted-foreground">
-        <p v-if="!isSimpleMode">{{ t('connectivity.Note') }}</p>
+        <p v-if="!isSimpleMode">{{ t('hoplens.connectivityNote') }}</p>
       </div>
     </header>
+<dl class="hl-reach-rows"><div v-for="test in connectivityTests" :key="test.id"><dt>{{ test.name }}</dt><dd class="hl-reach-bar"><span v-if="test.time > 0" :class="{ 'hl-slow-bar': test.time > 150 }" :style="{ width: Math.min(100, Math.max(3, test.time / 3)) + '%' }" /></dd><dd><button type="button" class="hl-reach-value" @click="checkConnectivityHandler(test, () => {}, true)" :aria-label="t('connectivity.RefreshThisTest') + ': ' + test.name" :class="textClass(toneOf(test))">{{ test.time > 0 ? test.time + ' ms' : test.status }}</button></dd></div></dl>
 
+
+<details class="hl-test-details"><summary>{{ t('hoplens.details') }}</summary>
+<p class="hl-detail-note">{{ t('connectivity.Note') }}</p>
     <!-- Card grid -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
       <Card v-for="test in connectivityTests" :key="test.id"
@@ -148,6 +152,7 @@
     <!-- Add / import / manage-lists dialog -->
     <ConnectivityAddDialog v-model:open="addDialogOpen" :initial-tab="dialogTab" :active-list-id="activeListId" />
 
+</details>
     <!-- Section banner slot (data-driven; see InfoBanner.vue) -->
     <InfoBanner section="connectivity" :settled="hasEverSettled" />
   </section>

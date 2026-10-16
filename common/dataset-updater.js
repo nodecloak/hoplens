@@ -117,7 +117,7 @@ export const readState = async (row) => {
 const writeState = (row, state) =>
     writeFileAtomic(path.join(row.dir, STATE_FILE), `${JSON.stringify(state, null, 2)}\n`);
 
-// The published files as this process last loaded them (mtime + size per
+// The published files as this process last loaded them (mtime + ctime + size per
 // file), so the watcher can tell someone else's publish from its own.
 const loadedFingerprints = new Map();
 // Rows this process is publishing right now: from the first file move until
@@ -127,7 +127,7 @@ const ownPublishes = new Set();
 const fingerprint = (row) => row.files.map((file) => {
     try {
         const stat = fs.statSync(path.join(row.dir, file));
-        return `${stat.mtimeMs}:${stat.size}`;
+        return `${stat.mtimeMs}:${stat.ctimeMs}:${stat.size}`;
     } catch {
         return '-';
     }
@@ -441,6 +441,7 @@ export const watchDatasets = (rows, { intervalMs = 5000, settleMs = 1000 } = {})
         if (!loadedFingerprints.has(row.id)) loadedFingerprints.set(row.id, fingerprint(row));
         let timer = null;
         let seen = null;
+        let attempted = null;
         const settle = async () => {
             const current = fingerprint(row);
             if (current !== seen) {
@@ -456,7 +457,11 @@ export const watchDatasets = (rows, { intervalMs = 5000, settleMs = 1000 } = {})
                 timer.unref?.();
                 return;
             }
-            if (current === loadedFingerprints.get(row.id) || !isPresent(row)) return;
+            if (current === loadedFingerprints.get(row.id) || current === attempted || !isPresent(row)) return;
+            // Multiple watchFile callbacks can describe the same publication.
+            // Retry a failed validation/reload only after another disk change;
+            // ctime in the fingerprint also catches repaired permissions.
+            attempted = current;
             const published = Object.fromEntries(row.files.map((file) => [file, path.join(row.dir, file)]));
             try {
                 await row.validate(published);

@@ -1,27 +1,22 @@
 <template>
-  <NavBar />
+  <HoplensNav :busy="!store.allHasLoaded" @full-check="store.setRefreshEveryThing(true)" />
   <User ref="userRef" />
   <Achievements ref="achievementsRef" />
   <Preferences />
-  <main id="mainpart" class="mx-auto w-full px-4 jn-container">
-    <div class="rounded-md">
+  <main id="mainpart" class="hl-main">
+    <HoplensHero @share-report="shareReportRef?.openDialog()" @query-ip="queryIPRef?.openModal()">
+      <template #history><IPHistory /><InfoMask :show-mask-button="showMaskButton" :info-mask-level="infoMaskLevel" :toggle-info-mask="toggleInfoMask" /></template>
+    </HoplensHero>
       <IPCheck />
-      <Connectivity />
-      <WebRTC />
-      <DNSLeaks />
-      <SpeedTest />
+      <section class="hl-leak-section"><h2>{{ t('hoplens.leaks') }}</h2><div class="hl-leak-grid"><WebRTC /><DNSLeaks /></div></section>
+      <div class="hl-network-grid"><Connectivity /><SpeedTest /></div>
       <AdvancedTools ref="advancedToolsRef" />
-    </div>
   </main>
-  <FloatingDock :ready="showMaskButton" :mask-active="infoMaskLevel > 0">
-    <InfoMask :showMaskButton.value="showMaskButton" :infoMaskLevel.value="infoMaskLevel"
-      :toggleInfoMask="toggleInfoMask" />
+  <div class="hl-hidden-triggers" aria-hidden="true" inert>
     <ShareReport ref="shareReportRef" />
-    <IPHistory />
     <QueryIP ref="queryIPRef" />
-  </FloatingDock>
+  </div>
   <HelpModal ref="helpModalRef" />
-  <Additional />
   <Footer />
 </template>
 
@@ -37,7 +32,8 @@
 // out of the route chunk and out of the mount's critical path. Their
 // template refs are null until the chunk lands — consumers (use-shortcuts)
 // must optional-chain.
-import NavBar from './Nav.vue';
+import HoplensNav from './hoplens/HoplensNav.vue';
+import HoplensHero from './hoplens/HoplensHero.vue';
 import IPCheck from './IpInfos.vue';
 import Connectivity from './ConnectivityTest.vue';
 import WebRTC from './WebRtcTest.vue';
@@ -45,13 +41,11 @@ import DNSLeaks from './DnsLeaksTest.vue';
 import SpeedTest from './SpeedTest.vue';
 import AdvancedTools from './Advanced.vue';
 import InfoMask from './widgets/InfoMask.vue';
-import FloatingDock from './widgets/FloatingDock.vue';
 
 // Vue + Store
 import { ref, computed, onMounted, defineAsyncComponent } from 'vue';
 
 // Async (off-critical-path) components
-const Additional = defineAsyncComponent(() => import('./Additional.vue'));
 const Footer = defineAsyncComponent(() => import('./Footer.vue'));
 const User = defineAsyncComponent(() => import('./User.vue'));
 const Achievements = defineAsyncComponent(() => import('./Achievements.vue'));
