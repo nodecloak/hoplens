@@ -1,6 +1,6 @@
 <!-- Always-visible IP intelligence: routing, source-labelled locations, classification and optional public scores. -->
 <template>
-  <section class="hl-ip-details" aria-labelledby="hl-ip-details-title">
+  <section id="IPPurity" class="hl-ip-details" aria-labelledby="hl-ip-details-title">
     <header class="hl-detail-header"><div><h2 id="hl-ip-details-title">{{ t('ipDetails.title') }}</h2><p>{{ t('ipDetails.note') }}</p></div><Button variant="outline" size="icon" :disabled="!valid" :aria-label="t('ipDetails.refresh')" @click="refresh"><RefreshCw :class="{'animate-spin':networkState==='loading'}" /></Button></header>
     <div class="hl-intelligence-grid">
       <div>

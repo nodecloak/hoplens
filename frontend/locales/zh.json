@@ -1953,8 +1953,8 @@
     "connectivityNote": "检测常用网站的连通性与响应时间。"
   },
   "ipDetails": {
-    "title": "你的 IP，详细看",
-    "note": "展开查看网络归属、位置与风险参考，每项信息均标注来源。",
+    "title": "纯净度",
+    "note": "查看 IP 纯净度、网络归属与位置，每项信息均标注来源。",
     "domain": "AS 域名",
     "prefix": "BGP 网段",
     "range": "IP 范围",
