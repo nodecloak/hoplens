@@ -140,6 +140,8 @@ Every "business state → color" mapping goes through `use-status-tone.js`
   later changes in an open drawer both run), `router.replace` it on every run
   (AsnProfile); both `/tools/` and `?tool=` URLs.
 - **Fixed option sets** — a closed list wider than one line is a `Select`.
+  The header locale picker sets `SelectContent :body-lock="false"` so opening
+  it keeps the page scrollbar; other selects retain their default scroll lock.
 - **Qualifier + input + run** — `Select` + `Input` in one `ButtonGroup`, the run
   Button in a second (DnsResolver); trigger `w-auto shrink-0`; never wraps.
 - **Tables vs lists** — real per-column header semantics → `<table>`;

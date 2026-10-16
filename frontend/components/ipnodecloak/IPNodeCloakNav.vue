@@ -9,7 +9,7 @@
       <div class="hl-nav-actions">
         <Select :model-value="locale" @update:model-value="changeLanguage">
           <SelectTrigger class="hl-language" :aria-label="t('ipnodecloak.language')"><span>{{ locale === 'zh' ? '简' : locale === 'zh-TW' ? '繁' : locale.slice(0, 2).toUpperCase() }}</span></SelectTrigger>
-          <SelectContent><SelectItem v-for="language in LOCALES" :key="language.code" :value="language.code">{{ language.nativeName }}</SelectItem></SelectContent>
+          <SelectContent :body-lock="false"><SelectItem v-for="language in LOCALES" :key="language.code" :value="language.code">{{ language.nativeName }}</SelectItem></SelectContent>
         </Select>
         <Button variant="outline" size="icon" class="hl-theme-button" :aria-label="t('ipnodecloak.theme')" @click="store.updatePreference('theme', store.isDarkMode ? 'light' : 'dark')"><Sun v-if="store.isDarkMode" /><Moon v-else /></Button>
         <Button variant="action" class="hl-full-check" :disabled="busy" @click="emit('full-check')"><LoaderCircle v-if="busy" class="animate-spin" />{{ t(busy ? 'ipnodecloak.running' : 'ipnodecloak.fullCheck') }}</Button>
