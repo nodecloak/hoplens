@@ -13,10 +13,10 @@
       <div class="hl-hero-actions">
         <Button class="hl-copy-button" :disabled="!summary.primary" @click="copyIP"><Check v-if="copied" /><Copy v-else />{{ t(copied ? 'ipnodecloak.copied' : 'ipnodecloak.copyIP') }}</Button>
         <Button variant="outline" :disabled="!summary.primary" @click="emit('share-report')"><Share2 />{{ t('ipnodecloak.report') }}</Button>
-        <Button variant="outline" size="icon" :aria-label="t('ipnodecloak.query')" @click="emit('query-ip')"><Search /></Button>
         <slot name="history" />
         <Button variant="outline" size="icon" :aria-label="t('ipnodecloak.settings')" @click="store.toggleSheet('preferences')"><Settings2 /></Button>
       </div>
+      <IPNodeCloakIPQuery />
     </div>
     <aside class="hl-overview-card" :aria-label="t('ipnodecloak.progress')">
       <div class="hl-overview-heading"><span>{{ t('ipnodecloak.progress') }}</span><span class="hl-mono">{{ summary.completed }} / {{ summary.total }}</span></div>
@@ -44,9 +44,10 @@ import { onAppEvent } from '@/utils/app-events.js';
 import { REPORT_EVENT_BUILDERS } from '@/utils/report-builders.js';
 import { summarizeDiagnostics } from '@/utils/ipnodecloak-summary.js';
 import { Button } from '@/components/ui/button';
-import { Copy, Share2, Search, Settings2, Check } from '@lucide/vue';
+import { Copy, Share2, Settings2, Check } from '@lucide/vue';
 import IPNodeCloakIPDetails from './IPNodeCloakIPDetails.vue';
-const emit = defineEmits(['share-report', 'query-ip']);
+import IPNodeCloakIPQuery from './IPNodeCloakIPQuery.vue';
+const emit = defineEmits(['share-report']);
 const { t } = useI18n();
 const store = useMainStore();
 const { sections } = useCollectedReport();

@@ -4,7 +4,7 @@
   <Achievements ref="achievementsRef" />
   <Preferences />
   <main id="mainpart" class="hl-main">
-    <IPNodeCloakHero @share-report="shareReportRef?.openDialog()" @query-ip="queryIPRef?.openModal()">
+    <IPNodeCloakHero @share-report="shareReportRef?.openDialog()">
       <template #history><IPHistory /><InfoMask :show-mask-button="showMaskButton" :info-mask-level="infoMaskLevel" :toggle-info-mask="toggleInfoMask" /></template>
     </IPNodeCloakHero>
       <IPCheck />
