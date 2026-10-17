@@ -3,8 +3,10 @@
     "native": "Native IP (reference)",
     "broadcast": "Broadcast IP (reference)",
     "unknown": "Unconfirmed",
-    "countries": "Registered {registered} · Located {located}",
-    "method": "Registration country compared with two location sources; a reference, not physical routing verification."
+    "countries": "ASN {registered} · IP {located}",
+    "method": "Compares ASN registration and IP geolocation countries; reference only.",
+    "legacyMethod": "Registration country compared with two location sources; a reference, not physical routing verification.",
+    "legacyCountries": "Registered {registered} · Located {located}"
   },
   "user": {
     "SignIn": "Sign In",

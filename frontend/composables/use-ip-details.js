@@ -43,7 +43,7 @@ export const useIPDetails=(ip,configs,{getJSON=readJSON,getTrace=readTrace}={})=
     if(!isUsablePublicIP(selected)) return;
     const query=encodeURIComponent(selected);
     originState.value='loading';
-    getJSON(`/api/ip-origin?ip=${query}`,signal,12000).then(body=>{
+    getJSON(`/api/ip-origin?ip=${query}`,signal,25000).then(body=>{
       if(signal.aborted) return;
       if(!sameIP(body.ip,selected)) throw Error('Mismatched origin IP');
       origin.value=body;originState.value='ok';

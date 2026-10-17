@@ -71,10 +71,11 @@ behind `dns-resolver` (gated by `tests/dns-resolvers-data.test.js`).
   `/api/ip-classification` loads just IP-API/proxycheck network classification
   automatically for the homepage; it shares the report provider caches without
   running risk checks. Risk assessment remains an explicit user action.
-  `/api/ip-origin` independently reuses RDAP/IP-API/proxycheck observations.
-  It compares registration country with two agreeing location countries and
-  returns a qualified native/broadcast reference. Missing, stale or conflicting
-  evidence stays unknown; it does not verify physical routing or affect scores.
+  `/api/ip-origin` reuses routing/IP-API/proxycheck observations, queries the
+  resolved ASN's registration country through Team Cymru DNS TXT, validates
+  that ASN, and compares it with IP-API's country (proxycheck fallback).
+  Multiple-origin routes and missing/stale data stay unknown. This reference
+  does not verify physical routing or affect scores.
   `common/ip-report.js` bounds/coalesces provider caches and deadlines; snapshot
   matching is current on every request. Optional credentials stay server-side.
 

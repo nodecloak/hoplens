@@ -19,11 +19,11 @@ const countryCode = value => typeof value === 'string' && /^[A-Z]{2}$/.test(valu
 
 // Only the qualified, current-IP comparison is shareable; arbitrary provider fields are discarded.
 const originSnapshot = (origin, ip, originState) => {
-  if (originState !== 'ok' || !sameIP(origin?.ip, ip) || origin.reference !== true || origin.basis !== 'registry-geolocation') return undefined;
+  if (originState !== 'ok' || !sameIP(origin?.ip, ip) || origin.reference !== true || !['registry-geolocation','asn-registration-geolocation'].includes(origin.basis)) return undefined;
   return compact({
-    type: ['native', 'broadcast'].includes(origin.type) ? origin.type : 'unknown', reference: true, basis: 'registry-geolocation',
+    type: ['native', 'broadcast'].includes(origin.type) ? origin.type : 'unknown', reference: true, basis: origin.basis, asn: integer(origin.asn,4294967295),
     registrationCountry: countryCode(origin.registrationCountry), locationCountry: countryCode(origin.locationCountry), queriedAt: date(origin.queriedAt),
-    evidence: (Array.isArray(origin.evidence) ? origin.evidence : []).filter(row => ['rdap', 'ipapi', 'proxycheck'].includes(row?.id)).slice(0, 3)
+    evidence: (Array.isArray(origin.evidence) ? origin.evidence : []).filter(row => ['network', 'asn-registration', 'rdap', 'ipapi', 'proxycheck'].includes(row?.id)).slice(0, 4)
       .map(row => ({ id: row.id, status: state(row.status), countryCode: countryCode(row.countryCode) })),
   });
 };

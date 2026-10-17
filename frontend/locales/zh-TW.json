@@ -3,8 +3,10 @@
     "native": "原生 IP（參考）",
     "broadcast": "廣播 IP（參考）",
     "unknown": "待確認",
-    "countries": "註冊地 {registered} · 定位 {located}",
-    "method": "註冊地與兩個定位來源對照，僅供參考，不代表實體路由核驗。"
+    "countries": "ASN {registered} · IP {located}",
+    "method": "比較 ASN 註冊國家與 IP 歸屬國家，結果僅供參考。",
+    "legacyMethod": "註冊地與兩個定位來源對照，僅供參考，不代表實體路由核驗。",
+    "legacyCountries": "註冊地 {registered} · 定位 {located}"
   },
   "user": {
     "SignIn": "登入",

@@ -3,8 +3,10 @@
     "native": "IP native (indicatif)",
     "broadcast": "IP diffusée (indicatif)",
     "unknown": "À confirmer",
-    "countries": "Enregistrée {registered} · Localisée {located}",
-    "method": "Pays d’enregistrement comparé à deux sources de localisation ; indication sans vérification du routage physique."
+    "countries": "ASN {registered} · IP {located}",
+    "method": "Compare les pays d’enregistrement de l’ASN et de localisation de l’IP ; à titre indicatif.",
+    "legacyMethod": "Pays d’enregistrement comparé à deux sources de localisation ; indication sans vérification du routage physique.",
+    "legacyCountries": "Enregistrée {registered} · Localisée {located}"
   },
   "user": {
     "SignIn": "Connexion",

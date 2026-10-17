@@ -8,6 +8,7 @@ import { normalizeTraffic } from './ip-intelligence.js';
 import { normalizePassiveHost,normalizeProxyObservation,normalizeRegistration,normalizeAbuseObservation } from './ip-report-model.js';
 import { parseIp } from './ip-math.js';
 import { isValidDomain } from './valid-ip.js';
+import { normalizeASNRegistration } from './ip-origin.js';
 
 const absent=error=>['ENOTFOUND','ENODATA'].includes(error?.code);
 const failed=error=>({status:['AbortError','TimeoutError'].includes(error?.name)?'timeout':'error'});
@@ -24,6 +25,7 @@ export const createReportSources=(deps={})=>{
   const resolver=new Resolver({timeout:1500,tries:1});
   if(env().IP_REPORT_DNS_SERVERS) resolver.setServers(env().IP_REPORT_DNS_SERVERS.split(',').map(value=>value.trim()));
   const resolve4=deps.resolve4??resolver.resolve4.bind(resolver),reverse=deps.reverse??resolver.reverse.bind(resolver),health=new Map();
+  const resolveTxt=deps.resolveTxt??resolver.resolveTxt.bind(resolver);
   const json=async(url,init={})=>{
     // Keep the body read under the same deadline; the shared fetch timeout ends at headers.
     const response=await fetch(url,{timeoutMs:6000,...init,signal:AbortSignal.timeout(6000)});
@@ -36,6 +38,10 @@ export const createReportSources=(deps={})=>{
     try {const result=await json(url,init);if(result.status!=='ok') return result;const data=normalize(result.data);return data?{status:'ok',data}:{status:'error'};} catch(error){return failed(error);}
   };
   return {
+    'asn-registration':async asn=>{
+      if(!Number.isInteger(asn)||asn<1||asn>4294967295)return {status:'unsupported'};
+      try{const data=normalizeASNRegistration(await resolveTxt(`AS${asn}.asn.cymru.com`),asn);return data?{status:'ok',data}:{status:'error'};}catch(error){return failed(error);}
+    },
     ipapi:ip=>normalized(`http://ip-api.com/json/${encodeURIComponent(ip)}?fields=status,query,country,countryCode,regionName,city,proxy,hosting,mobile`,body=>{
       const expected=parseIp(ip),actual=parseIp(body?.query);
       if(body?.status!=='success'||!actual||actual.family!==expected?.family||actual.value!==expected?.value) return null;

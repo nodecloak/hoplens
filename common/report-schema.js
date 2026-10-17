@@ -174,9 +174,9 @@ const SECTION_SPECS = {
         usageType: oneOf('business', 'residential', 'mobile', 'hosting', 'education', 'unknown'),
         usageTypeSource: opt(str(96)), proxy: nullable(bool()),
         origin: opt(obj({
-            type: oneOf('native', 'broadcast', 'unknown'), reference: oneOf(true), basis: oneOf('registry-geolocation'),
+            type: oneOf('native', 'broadcast', 'unknown'), reference: oneOf(true), basis: oneOf('registry-geolocation','asn-registration-geolocation'), asn: opt(int(0,4294967295)),
             registrationCountry: nullable(countryCode()), locationCountry: nullable(countryCode()), queriedAt: opt(isoDate()),
-            evidence: arr(3, obj({ id: oneOf('rdap', 'ipapi', 'proxycheck'), status: purityState(), countryCode: nullable(countryCode()) })),
+            evidence: arr(4, obj({ id: oneOf('network', 'asn-registration', 'rdap', 'ipapi', 'proxycheck'), status: purityState(), countryCode: nullable(countryCode()) })),
         })),
         locations: arr(8, obj({ id: str(32), name: str(64), status: purityState(), countryCode: countryCode(), country: opt(str(180)), region: opt(str(180)), city: opt(str(180)), countryOnly: bool() })),
         traffic: opt(obj({ human: num(0, 100), bot: num(0, 100) })),
