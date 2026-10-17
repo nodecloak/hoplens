@@ -4,9 +4,9 @@
     "broadcast": "广播 IP",
     "unknown": "待确认",
     "countries": "ASN {registered} · IP {located}",
-    "method": "对比 ASN 注册国家与 IP 归属国家，结果仅供参考。",
     "legacyMethod": "注册地与两个定位来源对照，仅供参考，不代表物理路由核验。",
-    "legacyCountries": "注册地 {registered} · 定位 {located}"
+    "legacyCountries": "注册地 {registered} · 定位 {located}",
+    "details": "查看 IP 来源详情"
   },
   "user": {
     "SignIn": "登录",

@@ -51,8 +51,9 @@ routing/IP-API/proxycheck caches. It resolves the IP's ASN, then queries
 must match; multiple-origin routes and missing/stale data stay unknown.
 The country is compared with IP-API geolocation, falling back to proxycheck only
 when the primary country is absent. A match yields `native`, a difference yields
-`broadcast`; labels omit the parenthetical qualifier while the visible method
-explains the comparison. These are references, not physical-routing verification.
+`broadcast`; labels omit the parenthetical qualifier. Country/ASN details open
+from the circular alert icon beside the homepage label; no explanation paragraph
+appears below the cards. These are references, not physical-routing verification.
 ASN registration country is distinct from IP-prefix registration country.
 No geography comparison affects risk scores.
 
