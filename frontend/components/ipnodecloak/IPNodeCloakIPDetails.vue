@@ -21,6 +21,7 @@
       </div>
       <aside class="hl-reputation-column">
         <div class="hl-classification-grid"><div><span><Network />{{ t('ipDetails.type') }}</span><strong>{{ t('ipDetails.'+usage) }}</strong><small v-if="usage!=='unknown'">{{ risk?.usageTypeSource || classification.usageTypeSource || 'IP-API' }}</small></div><div><span><Route />{{ t('ipRisk.proxyMarker') }}</span><strong>{{ t(proxyFlag===true?'ipDetails.proxy':proxyFlag===false?'ipRisk.noProxyMarker':'ipDetails.unknown') }}</strong></div></div>
+        <div class="hl-classification-grid hl-origin-grid"><div class="hl-origin-card"><span><MapPin />{{ t('ipDetails.origin') }}</span><strong>{{ t(originState==='loading'?'ipDetails.loading':'ipOrigin.'+(origin?.type||'unknown')) }}</strong><small v-if="origin?.registrationCountry&&origin?.locationCountry">{{ t('ipOrigin.countries',{registered:origin.registrationCountry,located:origin.locationCountry}) }}</small><p class="hl-source-caption">{{ t('ipOrigin.method') }}</p></div></div>
         <IPNodeCloakRiskScore :ip="ip" :result="risk" :state="riskState" :valid="valid" @check="requestRisk" />
       </aside>
     </div>
@@ -36,15 +37,15 @@ import { emitAppEvent } from '@/utils/app-events.js';
 import IPNodeCloakRiskScore from './IPNodeCloakRiskScore.vue';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@iconify/vue';
-import { ArrowUpRight, RefreshCw, Route, Network } from '@lucide/vue';
+import { ArrowUpRight, RefreshCw, Route, Network, MapPin } from '@lucide/vue';
 const props=defineProps({ip:{type:String,default:''}});
 const emit=defineEmits(['network']);
 const {t,locale}=useI18n();
 const store=useMainStore();
 const valid=computed(()=>isUsablePublicIP(props.ip));
-const {network,locations,classification,traffic,risk,networkState,trafficState,riskState,refresh,requestRisk}=useIPDetails(()=>props.ip,()=>store.configs);
-watch([()=>props.ip,network,locations,classification,traffic,risk,networkState,trafficState,riskState],()=>{
-  emitAppEvent('ippurity:updated',{ip:props.ip,network:network.value,locations:locations.value,classification:classification.value,traffic:traffic.value,risk:risk.value,networkState:networkState.value,trafficState:trafficState.value,riskState:riskState.value});
+const {network,locations,classification,traffic,risk,origin,originState,networkState,trafficState,riskState,refresh,requestRisk}=useIPDetails(()=>props.ip,()=>store.configs);
+watch([()=>props.ip,network,locations,classification,traffic,risk,origin,originState,networkState,trafficState,riskState],()=>{
+  emitAppEvent('ippurity:updated',{ip:props.ip,network:network.value,locations:locations.value,classification:classification.value,traffic:traffic.value,risk:risk.value,origin:origin.value,originState:originState.value,networkState:networkState.value,trafficState:trafficState.value,riskState:riskState.value});
 },{immediate:true,deep:true});
 watch(network,value=>emit('network',value));
 const proxyFlag=computed(()=>risk.value?.checks?.find(check=>check.id==='proxy')?.hit??classification.value.proxy??null);

@@ -43,6 +43,22 @@ Cloudflare Radar human/bot percentages require `CLOUDFLARE_API_KEY` and describe
 
 ## Full IP report and first-party risk model
 
+### Native / broadcast origin reference
+
+The homepage independently loads `/api/ip-origin?ip=<public-ip>`, sharing the
+report's cached RDAP, IP-API and proxycheck observations. Two distinct location
+sources must agree on an ISO country, and the registration country must be
+available. Matching countries yield `native`; differing countries yield
+`broadcast`. Missing, stale (over 15 minutes), duplicated or conflicting evidence
+yields `unknown`. Every positive label carries a visible reference qualifier.
+The comparison is also included in assessment and diagnostic exports, with its
+method and countries. It does not change the risk score or start risk checks.
+
+Registration country can describe administration rather than network location;
+this rule does not verify routing, anycast, exclusivity or platform acceptance.
+See [ARIN RDAP](https://www.arin.net/resources/rdap.html) and
+[RIPE country-code semantics](https://labs.ripe.net/author/kjerstin-burdiek/country-codes-in-the-ripe-database/).
+
 The public /tools/ipreport?q=<IP> route consumes /api/ip-report. The homepage /api/ip-risk endpoint extracts the same risk object; there is one scoring model, nodecloak-ip-risk-v2. Source caches are bounded to 256 keys per adapter, coalesced, successful observations cached for five minutes and failed observations for 30 seconds. Each adapter has a 10-second enforced deadline, including stalled body reads; dependent network/Radar work fits below the frontend's 25-second deadline. Underlying routing metadata can retain its established six-hour cache. Current local Tor/DROP snapshots are re-matched on every assessment and expire after 48 hours.
 
 Overall risk weights: DROP70, max(Tor30, proxy25), hosting10, DNSBL abuse25, passive CVE labels10. Optional AbuseIPDB counts over30days add5 for any report,15 for >=5 reports from>=3reporters,30 for>=20 reports from>=5reporters. The total is capped at100; geography, PTR, ASN traffic and subnet estimates do not change it. Partial evidence still returns a numeric observed score, observed-point lower bound and potential upper bound. `scoreKind` is `complete`, `observed` or `unavailable`; `status` and coverage retain completeness independently of score presence. With no usable evidence, score remains null. Scenario fit scores disclose the same basis and their possible range. Disabled optional sources are excluded and disclosed. CVE labels are passive software-match evidence, not confirmed exploitable vulnerabilities. InternetDB404 is unknown coverage, not a clean scan.

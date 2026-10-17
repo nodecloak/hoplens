@@ -142,6 +142,9 @@ Every "business state → color" mapping goes through `use-status-tone.js`
   Pending/failed reruns remove the previous score; an invalid current IP clears
   the section. Sharing never triggers scoring. Prefix addresses and range
   endpoints use IP schema fields so every export honors tail masking.
+  Native/broadcast origin is an independently loaded registry/geolocation
+  reference. Keep its qualifier and method visible in cards, assessments and
+  shared exports; unknown or conflicting evidence must never imply native IP.
 - **Input + icon trigger** — flex row, compact icon Button, no text label (QueryIP).
 - **AutoFill-proof inputs** — all six on every free-form Input: `autocomplete`
   / `autocorrect` / `autocapitalize="off"`, `spellcheck="false"`,

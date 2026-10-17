@@ -24,6 +24,7 @@
             <div><dt>{{ t('ipReport.prefix') }}</dt><dd class="hl-mono">{{ report.profile.prefix||unknown }}</dd></div>
             <div><dt>{{ t('ipReport.range') }}</dt><dd class="hl-mono">{{ report.profile.range?report.profile.range.start+' – '+report.profile.range.end:unknown }}</dd></div>
             <div><dt>{{ t('ipReport.type') }}</dt><dd>{{ t('ipReport.types.'+report.profile.type) }}</dd></div>
+            <div><dt>{{ t('ipDetails.origin') }}</dt><dd>{{ t('ipOrigin.'+(report.profile.origin?.type||'unknown')) }}<small>{{ t('ipOrigin.method') }}</small></dd></div>
             <div><dt>{{ t('ipReport.registration') }}</dt><dd>{{ report.profile.registration?.countryCode||unknown }} · {{ report.profile.registration?.name||unknown }}</dd></div>
             <div><dt>{{ t('ipReport.relation') }}</dt><dd>{{ t('ipReport.relations.'+report.profile.registrationRelation) }}</dd></div>
             <div><dt>PTR</dt><dd class="hl-mono">{{ report.profile.rdns?(report.profile.rdns.exists?report.profile.rdns.names.join(', '):t('ipReport.noPtr')):unknown }}</dd></div>

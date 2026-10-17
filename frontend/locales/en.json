@@ -1,4 +1,11 @@
 {
+  "ipOrigin": {
+    "native": "Native IP (reference)",
+    "broadcast": "Broadcast IP (reference)",
+    "unknown": "Unconfirmed",
+    "countries": "Registered {registered} · Located {located}",
+    "method": "Registration country compared with two location sources; a reference, not physical routing verification."
+  },
   "user": {
     "SignIn": "Sign In",
     "SignInWithGoogle": "Sign In with Google",

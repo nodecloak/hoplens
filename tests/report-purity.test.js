@@ -23,6 +23,18 @@ test('purity is an optional additive version-2 section after IP info', () => {
   assert.equal(report.sections.ippurity.risk.queriedAt, '2026-10-17T00:00:00.000Z');
 });
 
+test('origin reference survives shared exports while stale, wrong-IP and unqualified results are excluded',()=>{
+  const payload=purityPayload();
+  payload.originState='ok';
+  payload.origin={ip:payload.ip,type:'broadcast',reference:true,basis:'registry-geolocation',registrationCountry:'US',locationCountry:'HK',queriedAt:'2026-10-17T00:00:00.000Z',evidence:[{id:'rdap',status:'ok',countryCode:'US'}],apiKey:'PRIVATE-CREDENTIAL'};
+  const report=envelope(payload);
+  assert.equal(report.sections.ippurity.origin.type,'broadcast');
+  assert(!JSON.stringify(report).includes('PRIVATE-CREDENTIAL'));
+  assert.deepEqual(validateReport(report),{ok:true,errors:[]});
+  assert(reportToMarkdown(report,key=>key).includes('not verify physical routing'));
+  for(const patch of [{originState:'loading'},{origin:{...payload.origin,ip:'1.1.1.1'}},{origin:{...payload.origin,reference:false}}])assert.equal(build({...payload,...patch}).origin,undefined);
+});
+
 test('purity strips unrelated fields and masks IPs, /32 prefixes, ranges and matched evidence', () => {
   const payload = purityPayload();
   payload.risk.apiKey = 'PRIVATE-CREDENTIAL'; payload.network.credentials = 'PRIVATE-CREDENTIAL';

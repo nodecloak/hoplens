@@ -10,6 +10,7 @@
           <div><dt>{{ t('ipDetails.prefix') }}</dt><dd class="hl-mono">{{ prefix(section.network?.prefix) }}</dd></div>
           <div><dt>{{ t('ipDetails.range') }}</dt><dd class="hl-mono">{{ section.network?.range ? section.network.range.start+' – '+section.network.range.end : unknown }}</dd></div>
           <div><dt>{{ t('ipDetails.type') }}</dt><dd>{{ t('ipReport.types.'+section.usageType) }}<span>{{ section.usageTypeSource }}</span></dd></div>
+          <div><dt>{{ t('ipDetails.origin') }}</dt><dd>{{ t('ipOrigin.'+(section.origin?.type || 'unknown')) }}<span>{{ t('ipOrigin.method') }}</span><span v-if="section.origin?.registrationCountry && section.origin?.locationCountry">{{ t('ipOrigin.countries',{registered:section.origin.registrationCountry,located:section.origin.locationCountry}) }}</span></dd></div>
           <div><dt>{{ t('ipRisk.proxyMarker') }}</dt><dd>{{ t(section.proxy === true ? 'ipDetails.proxy' : section.proxy === false ? 'ipRisk.noProxyMarker' : 'ipDetails.unknown') }}</dd></div>
         </dl>
       </div>

@@ -15,6 +15,18 @@ const sameIP = (left, right) => {
 };
 const prefix = value => typeof value === 'string' && parseCidr(value) ? { address: value.split('/')[0], length: Number(value.split('/')[1]) } : undefined;
 const usageType = value => ['business', 'residential', 'mobile', 'hosting', 'education', 'unknown'].includes(value) ? value : 'unknown';
+const countryCode = value => typeof value === 'string' && /^[A-Z]{2}$/.test(value) ? value : null;
+
+// Only the qualified, current-IP comparison is shareable; arbitrary provider fields are discarded.
+const originSnapshot = (origin, ip, originState) => {
+  if (originState !== 'ok' || !sameIP(origin?.ip, ip) || origin.reference !== true || origin.basis !== 'registry-geolocation') return undefined;
+  return compact({
+    type: ['native', 'broadcast'].includes(origin.type) ? origin.type : 'unknown', reference: true, basis: 'registry-geolocation',
+    registrationCountry: countryCode(origin.registrationCountry), locationCountry: countryCode(origin.locationCountry), queriedAt: date(origin.queriedAt),
+    evidence: (Array.isArray(origin.evidence) ? origin.evidence : []).filter(row => ['rdap', 'ipapi', 'proxycheck'].includes(row?.id)).slice(0, 3)
+      .map(row => ({ id: row.id, status: state(row.status), countryCode: countryCode(row.countryCode) })),
+  });
+};
 
 // Unknown results stay unknown; no absent check is normalized into a clean score.
 const riskSnapshot = (risk, ip, riskState) => {
@@ -48,6 +60,7 @@ export const buildPurity = payload => {
   const matchingRisk = risk ? payload.risk : {};
   return compact({
     ip, networkState: state(payload.networkState), trafficState: state(payload.trafficState), riskState,
+    origin: originSnapshot(payload.origin, ip, payload.originState),
     network: data ? compact({
       asn: integer(data.asn, 4294967295), asnName: text(data.asnName), asnSource: text(data.asnSource, 64),
       domain: text(data.domain, 253), prefix: prefix(data.prefix),

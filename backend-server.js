@@ -23,6 +23,7 @@ import ipsbHandler from './api/ip-sb.js';
 import networkInfoHandler from './api/network-info.js';
 import ipRiskHandler from './api/ip-risk.js';
 import ipClassificationHandler from './api/ip-classification.js';
+import ipOriginHandler from './api/ip-origin.js';
 import ipReportHandler from './api/ip-report.js';
 import maxmindHandler from './api/maxmind.js';
 // Others
@@ -255,6 +256,7 @@ app.get('/api/ipsb', requirePublicIP(), withTimeZone(), cacheable(ONE_DAY_CACHE)
 app.get('/api/network-info', requirePublicIP(), cacheable(300,{cacheIf:body=>Object.values(body.status||{}).every(state=>state==='ok'),degradedMaxAge:30}), networkInfoHandler);
 app.get('/api/ip-risk', requirePublicIP(), ipRiskHandler);
 app.get('/api/ip-classification', requirePublicIP(), ipClassificationHandler);
+app.get('/api/ip-origin', requirePublicIP(), ipOriginHandler);
 app.get('/api/ip-report', requirePublicIP(), ipReportHandler);
 app.get('/api/ipapiis', requirePublicIP(), withTimeZone(), cacheable(ONE_DAY_CACHE), ipapiisHandler);
 app.get('/api/ip2location', requirePublicIP(), withTimeZone(), cacheable(ONE_DAY_CACHE), ip2locationHandler);
