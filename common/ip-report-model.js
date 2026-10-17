@@ -141,7 +141,7 @@ export const reportToText=report=>[
   `IP.NodeCloak IP assessment\n${report.ip}\n${report.generatedAt}\nModel: ${report.model}`,
   `Risk: ${report.risk.score??'unavailable'} /100 (higher means more observed risk signals)\nScore basis: ${report.risk.scoreKind}\nRisk range: ${report.risk.range.min}-${report.risk.range.max} /100\nCoverage: ${report.risk.coverage.checked}/${report.risk.coverage.total}`,
   `Profile\n${JSON.stringify(report.profile,null,2)}`,
-  'Origin reference: registration country compared with two agreeing geolocation sources. This does not verify physical routing or exclusive use.',
+  'Origin reference: ASN registration country compared with IP geolocation country (IP-API, then proxycheck fallback). This does not verify physical routing or exclusive use.',
   'Scenarios\n'+report.scenarios.map(row=>`${row.id}: ${row.score??'unavailable'} /100; basis=${row.scoreKind}; range=${row.range.min}-${row.range.max}; coverage=${row.coverage.checked}/${row.coverage.total}; ${row.level}`).join('\n'),
   'Regional policy snapshots\n'+report.platforms.map(row=>`${row.id}: ${row.status}; ${row.reviewedAt}; ${row.source}`).join('\n'),
   'Evidence\n'+report.evidence.map(row=>`${row.id}: ${row.status}; observed=${row.hit}; points=${row.points}; source=${row.source}; asOf=${row.asOf??'unknown'}`).join('\n'),

@@ -3,7 +3,7 @@ import { createReportSources } from './ip-report-sources.js';
 import { createCachedLoader } from './ip-intelligence.js';
 import { getRiskEvidence } from './ip-risk-data.js';
 import { buildIPReport } from './ip-report-model.js';
-import { deriveIPOrigin } from './ip-origin.js';
+import { deriveIPOrigin, originASN } from './ip-origin.js';
 
 export const createReportLoader=({adapters=createReportSources(),evidence=getRiskEvidence,now=Date.now,timeoutMs=10000}={})=>{
   const loaders=new Map();
@@ -30,13 +30,16 @@ export const createReportLoader=({adapters=createReportSources(),evidence=getRis
     const tasks=ids.filter(id=>id!=='network').map(id=>observe(id,ip,adapters[id]));
     const dns=['spamcop','psbl','dronebl','spamhaus'].map(provider=>observe('dnsbl-'+provider,ip,value=>adapters.dnsbl(value,provider)));
     const radar=network.then(row=>observe('radar',row.data?.asn??0,adapters.radar));
-    const sources=await Promise.all([network,...tasks,...dns,radar]);
+    const registration=network.then(row=>observe('asn-registration',originASN(row)??0,adapters['asn-registration']));
+    const sources=await Promise.all([network,...tasks,...dns,radar,registration]);
     for(const [id,value] of Object.entries(evidence(ip))) sources.push({id,status:value.status,data:value.status==='ok'?value:null,observedAt:new Date(now()).toISOString(),durationMs:0});
     return buildIPReport(ip,sources,now());
   };
   load.classification=classification;
   load.origin=async ip=>{
-    const sources=await Promise.all(['ipapi','proxycheck','rdap'].map(id=>observe(id,ip,adapters[id])));
+    const network=observe('network',ip,adapters.network);
+    const registration=network.then(row=>observe('asn-registration',originASN(row)??0,adapters['asn-registration']));
+    const sources=await Promise.all([network,registration,...['ipapi','proxycheck'].map(id=>observe(id,ip,adapters[id]))]);
     return {ip,...deriveIPOrigin(sources,now()),queriedAt:new Date(now()).toISOString()};
   };
   return load;

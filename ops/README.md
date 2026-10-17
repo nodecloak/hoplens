@@ -46,18 +46,20 @@ Cloudflare Radar human/bot percentages require `CLOUDFLARE_API_KEY` and describe
 ### Native / broadcast origin reference
 
 The homepage independently loads `/api/ip-origin?ip=<public-ip>`, sharing the
-report's cached RDAP, IP-API and proxycheck observations. Two distinct location
-sources must agree on an ISO country, and the registration country must be
-available. Matching countries yield `native`; differing countries yield
-`broadcast`. Missing, stale (over 15 minutes), duplicated or conflicting evidence
-yields `unknown`. Every positive label carries a visible reference qualifier.
-The comparison is also included in assessment and diagnostic exports, with its
-method and countries. It does not change the risk score or start risk checks.
+routing/IP-API/proxycheck caches. It resolves the IP's ASN, then queries
+`AS<n>.asn.cymru.com` TXT for that ASN's registration country. The returned ASN
+must match; multiple-origin routes and missing/stale data stay unknown.
+The country is compared with IP-API geolocation, falling back to proxycheck only
+when the primary country is absent. A match yields `native`, a difference yields
+`broadcast`; both remain qualified references, not physical-routing verification.
+ASN registration country is distinct from IP-prefix registration country.
+No geography comparison affects risk scores.
 
-Registration country can describe administration rather than network location;
-this rule does not verify routing, anycast, exclusivity or platform acceptance.
-See [ARIN RDAP](https://www.arin.net/resources/rdap.html) and
-[RIPE country-code semantics](https://labs.ripe.net/author/kjerstin-burdiek/country-codes-in-the-ripe-database/).
+The type, proxy and origin cards share one row. Reports retain the ASN, country
+pair, evidence and method. Older shared snapshots keep their original method
+label. Provider caches/deadlines are reused; the frontend permits 25 seconds for
+the dependent routing/ASN lookup.
+See [Team Cymru's ASN registry-country documentation](https://www.team-cymru.com/ip-asn-mapping).
 
 The public /tools/ipreport?q=<IP> route consumes /api/ip-report. The homepage /api/ip-risk endpoint extracts the same risk object; there is one scoring model, nodecloak-ip-risk-v2. Source caches are bounded to 256 keys per adapter, coalesced, successful observations cached for five minutes and failed observations for 30 seconds. Each adapter has a 10-second enforced deadline, including stalled body reads; dependent network/Radar work fits below the frontend's 25-second deadline. Underlying routing metadata can retain its established six-hour cache. Current local Tor/DROP snapshots are re-matched on every assessment and expire after 48 hours.
 

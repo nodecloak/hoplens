@@ -32,6 +32,9 @@ test('origin reference survives shared exports while stale, wrong-IP and unquali
   assert(!JSON.stringify(report).includes('PRIVATE-CREDENTIAL'));
   assert.deepEqual(validateReport(report),{ok:true,errors:[]});
   assert(reportToMarkdown(report,key=>key).includes('not verify physical routing'));
+  const asn=envelope({...payload,origin:{...payload.origin,basis:'asn-registration-geolocation',asn:402139,evidence:[{id:'network',status:'ok',countryCode:null},{id:'asn-registration',status:'ok',countryCode:'US'},{id:'ipapi',status:'ok',countryCode:'HK'},{id:'proxycheck',status:'ok',countryCode:'HK'}]}});
+  assert.deepEqual(validateReport(asn),{ok:true,errors:[]});assert.equal(asn.sections.ippurity.origin.asn,402139);
+  assert(reportToMarkdown(asn,key=>key).includes('AS402139 registration country'));
   for(const patch of [{originState:'loading'},{origin:{...payload.origin,ip:'1.1.1.1'}},{origin:{...payload.origin,reference:false}}])assert.equal(build({...payload,...patch}).origin,undefined);
 });
 

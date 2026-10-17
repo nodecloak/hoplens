@@ -4,8 +4,15 @@ import assert from 'node:assert/strict';
 import { createReportSources, classifyDNSBLAnswer } from '../common/ip-report-sources.js';
 import { createReportLoader } from '../common/ip-report.js';
 const ip='157.254.32.95';
+test('ASN country adapter queries the ASN record instead of the IP prefix and reports DNS failures',async()=>{
+  let fail=false;
+  const sources=createReportSources({resolveTxt:async host=>{assert.equal(host,'AS402139.asn.cymru.com');if(fail)throw Error('DNS failure');return [['402139 | US | arin | 2025-01-01 | Example']];},env:()=>({})});
+  assert.deepEqual(await sources['asn-registration'](402139),{status:'ok',data:{asn:402139,countryCode:'US'}});
+  assert.equal((await sources['asn-registration'](0)).status,'unsupported');
+  fail=true;assert.equal((await sources['asn-registration'](402139)).status,'error');
+});
 test('report deadlines release stalled sources and coalesced callers',async()=>{
-  const adapters=Object.fromEntries(['network','ipapi','proxycheck','rdap','rdns','internetdb','abuseipdb','radar','dnsbl'].map(id=>[id,()=>new Promise(()=>{})]));
+  const adapters=Object.fromEntries(['network','asn-registration','ipapi','proxycheck','rdap','rdns','internetdb','abuseipdb','radar','dnsbl'].map(id=>[id,()=>new Promise(()=>{})]));
   const load=createReportLoader({adapters,evidence:()=>({}),timeoutMs:10});
   const [first,second]=await Promise.all([load(ip),load(ip)]);
   assert.ok(first.sources.every(row=>row.status==='timeout'));

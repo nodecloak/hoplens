@@ -3,8 +3,10 @@
     "native": "IP nativo (referência)",
     "broadcast": "IP broadcast (referência)",
     "unknown": "Não confirmado",
-    "countries": "Registro {registered} · Localização {located}",
-    "method": "País de registro comparado com duas fontes de localização; referência, sem verificar o roteamento físico."
+    "countries": "ASN {registered} · IP {located}",
+    "method": "Compara o país de registro do ASN com a geolocalização do IP; apenas referência.",
+    "legacyMethod": "País de registro comparado com duas fontes de localização; referência, sem verificar o roteamento físico.",
+    "legacyCountries": "Registro {registered} · Localização {located}"
   },
   "user": {
     "SignIn": "Entrar",
