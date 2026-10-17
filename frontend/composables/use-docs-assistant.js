@@ -131,7 +131,7 @@ export function useDocsAssistant() {
     const readResultsTool = {
         name: 'get_my_test_results',
         description: [
-            "Read the diagnostic results currently on the visitor's own MyIP page:",
+            "Read the diagnostic results currently on the visitor's own IP.NodeCloak page:",
             'IP addresses and their geolocation/ASN, connectivity checks, WebRTC,',
             'DNS leak, speed test, and any other test they have run.',
             'Use it whenever the question is about their own situation — "what is my IP",',
@@ -159,7 +159,7 @@ export function useDocsAssistant() {
     const runTestsTool = {
         name: 'run_my_tests',
         description: [
-            "Run (or re-run) the visitor's core network tests on their MyIP page",
+            "Run (or re-run) the visitor's core network tests on their IP.NodeCloak page",
             'and return the fresh results when they finish.',
             'Use it when the visitor asks to run, re-run, or refresh their tests,',
             'or when the results a question needs are missing or stale.',

@@ -221,14 +221,14 @@
     "AskIPilot": "詢問 IPilot",
     "OpenDocs": "開啟文件",
     "DocsGreetingTitle": "有什麼可以幫你？",
-    "DocsGreetingSubtitle": "關於 MyIP 的工具、測試結果或自行部署，都可以問我。",
+    "DocsGreetingSubtitle": "關於 IP.NodeCloak 的工具、測試結果或自行部署，都可以問我。",
     "DocsQuestions": [
       "我的 VPN 洩漏真實 IP 了嗎？",
       "為什麼我的 IP 位置不正確？",
       "比較我的 WebRTC 測試與 DNS 洩漏測試結果，並給我一些建議",
       "要如何閱讀 MTR 結果？",
-      "要如何部署自己的 MyIP？",
-      "我想贊助 MyIP 專案"
+      "要如何部署自己的 IP.NodeCloak？",
+      "我想贊助 IP.NodeCloak 專案"
     ],
     "pulse": {
       "title": "地球線上",
@@ -1316,8 +1316,8 @@
     "CopiedTitle": "已複製",
     "CopiedMessage": "報告已複製，可直接貼上給任意 AI 助手。",
     "ai": {
-      "Heading": "MyIP 網路診斷報告",
-      "Intro": "本報告由 MyIP（{origin}）於 {time} 產生，資料來自在使用者瀏覽器中執行的網路測試。欄位名為穩定的 schema 識別符號；所有延遲數值單位為毫秒。",
+      "Heading": "IP.NodeCloak 網路診斷報告",
+      "Intro": "本報告由 IP.NodeCloak（{origin}）於 {time} 產生，資料來自在使用者瀏覽器中執行的網路測試。欄位名為穩定的 schema 識別符號；所有延遲數值單位為毫秒。",
       "Masked": "注意：出於隱私考慮，報告中的 IP 位址已遮蓋尾段（IPv4 末段、IPv6 介面位，以 \"x\" 表示）。",
       "Instruction": "請基於以上資料分析該網路的健康狀況，指出異常項（DNS 洩漏、WebRTC 暴露、代理/VPN 特徵、封包遺失、高延遲、路由問題等），並給出具體的疑難排解建議。",
       "Sections": {
@@ -1858,7 +1858,7 @@
   "page": {
     "title": "IP.NodeCloak — IP 與網路檢測工具箱",
     "description": "更完善的開源 IP 工具箱：查詢 IP 位址與地理位置、測試 WebRTC 與 DNS IP 洩漏、執行 IP 品質檢查、瀏覽器指紋檢查，還有網速測試、全球延遲測試、MTR 測試、Whois 查詢等。",
-    "keywords": "MyIP, IP 工具, IP 檢查, IP 洩漏檢查, IP 品質檢查, IP 查詢, DNS 洩漏測試, WebRTC 洩漏測試, 瀏覽器指紋檢查, 網速測試, 全球延遲測試, MTR 測試, DNS 查詢, Whois 查詢",
+    "keywords": "IP.NodeCloak, IP 工具, IP 檢查, IP 洩漏檢查, IP 品質檢查, IP 查詢, DNS 洩漏測試, WebRTC 洩漏測試, 瀏覽器指紋檢查, 網速測試, 全球延遲測試, MTR 測試, DNS 查詢, Whois 查詢",
     "footerLink": "https://github.com/nodecloak/ipnodecloak",
     "copyRightName": "原始來源：",
     "copyRightLink": "https://ipcheck.ing",
@@ -1883,7 +1883,7 @@
     ],
     "contactTitle": "聯絡我們",
     "contact": [
-      "如果你在使用 IPCheck.ing 或者部署 MyIP 專案的時候，遇到問題，可以先前往「說明中心」尋找答案。如果找不到答案，而你無法解決，可以在 Github 上給我們提 issue 或透過郵件和我們聯絡。",
+      "如果你在使用 IPCheck.ing 或者部署 IP.NodeCloak 專案的時候，遇到問題，可以先前往「說明中心」尋找答案。如果找不到答案，而你無法解決，可以在 Github 上給我們提 issue 或透過郵件和我們聯絡。",
       "當然了，如果你遇到了一個 bug，而你又喜歡程式設計（或者使用 AI 程式設計），非常歡迎你將你的最佳化方案直接提交 PR 給我們。",
       "我們的電子郵件信箱： i[AT]ipcheck.ing。"
     ],
@@ -1959,7 +1959,7 @@
     "startSpeed": "開始測速",
     "footerNote": "IP 歷史紀錄儲存在目前瀏覽器中。",
     "maxmindAttribution": "本產品包含由 {provider} 建立的 GeoLite 資料。",
-    "poweredBy": "基於 MyIP",
+    "poweredBy": "開源致謝",
     "webrtcNote": "查看 WebRTC 向網站提供的網路位址。",
     "dnsNote": "透過獨立服務比對 DNS 解析器位址。",
     "connectivityNote": "檢測常用網站的連通性與回應時間。"

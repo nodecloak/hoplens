@@ -130,6 +130,8 @@ Every "business state → color" mapping goes through `use-status-tone.js`
   score and evidence. Never replace the visitor's local diagnostic IP with
   manually entered input. Keep the search icon inside the field and mobile
   input text at least 16px to avoid focus zoom on iOS.
+- **Report branding** — headings, AI introductions and download names use
+  IP.NodeCloak / `ipnodecloak`; keep upstream URLs and legal attribution intact.
 - **Report images** — local PNG exports reuse `useScreenshot`. Diagnostic
   images render only `buildShareReport`'s selected, masked snapshot through
   `ReportImage`; tables and truncated values wrap in the export. Assessment

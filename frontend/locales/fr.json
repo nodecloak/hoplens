@@ -221,14 +221,14 @@
     "AskIPilot": "Demander à IPilot",
     "OpenDocs": "Ouvrir la doc",
     "DocsGreetingTitle": "Comment puis-je vous aider ?",
-    "DocsGreetingSubtitle": "Posez vos questions sur MyIP : les outils, vos résultats ou l'auto-hébergement.",
+    "DocsGreetingSubtitle": "Posez vos questions sur IP.NodeCloak : les outils, vos résultats ou l'auto-hébergement.",
     "DocsQuestions": [
       "Mon VPN fuit-il ma vraie IP ?",
       "Pourquoi ma localisation IP est-elle fausse ?",
       "Comparer mes résultats de test WebRTC et de fuite DNS et me donner des suggestions",
       "Comment lire les résultats MTR ?",
-      "Comment déployer mon propre MyIP ?",
-      "Je veux financer le projet MyIP"
+      "Comment déployer mon propre IP.NodeCloak ?",
+      "Je veux financer le projet IP.NodeCloak"
     ],
     "pulse": {
       "title": "La Terre en ligne",
@@ -1316,8 +1316,8 @@
     "CopiedTitle": "Copié",
     "CopiedMessage": "Rapport copié — collez-le dans n'importe quel assistant IA.",
     "ai": {
-      "Heading": "Rapport de diagnostic réseau MyIP",
-      "Intro": "Ce rapport a été généré par MyIP ({origin}) le {time} à partir de tests réseau exécutés dans le navigateur de l'utilisateur. Les noms de champs sont des identifiants stables du schéma ; toutes les latences sont en millisecondes.",
+      "Heading": "Rapport de diagnostic réseau IP.NodeCloak",
+      "Intro": "Ce rapport a été généré par IP.NodeCloak ({origin}) le {time} à partir de tests réseau exécutés dans le navigateur de l'utilisateur. Les noms de champs sont des identifiants stables du schéma ; toutes les latences sont en millisecondes.",
       "Masked": "Remarque : les adresses IP sont partiellement masquées pour la confidentialité (IPv4 : dernier octet, IPv6 : moitié d'interface, indiqués par « x »).",
       "Instruction": "À partir des données ci-dessus, analysez l'état de ce réseau. Signalez les anomalies (fuites DNS, exposition WebRTC, traits de proxy/VPN, pertes de paquets, latence élevée, problèmes de routage) et proposez des pistes de dépannage concrètes.",
       "Sections": {
@@ -1883,7 +1883,7 @@
     ],
     "contactTitle": "Nous contacter",
     "contact": [
-      "Si vous rencontrez un problème en utilisant IPCheck.ing ou en déployant le projet MyIP, commencez par chercher la réponse dans le « Centre d'aide ». Si vous ne la trouvez pas et que vous restez bloqué, ouvrez une issue sur GitHub ou écrivez-nous par email.",
+      "Si vous rencontrez un problème en utilisant IPCheck.ing ou en déployant le projet IP.NodeCloak, commencez par chercher la réponse dans le « Centre d'aide ». Si vous ne la trouvez pas et que vous restez bloqué, ouvrez une issue sur GitHub ou écrivez-nous par email.",
       "Et si vous tombez sur un bug et que vous aimez coder (ou coder avec l'IA), n'hésitez surtout pas à nous envoyer directement une PR avec votre correctif.",
       "Notre email : i[AT]ipcheck.ing."
     ],
@@ -1959,7 +1959,7 @@
     "startSpeed": "Tester le débit",
     "footerNote": "Votre historique IP est conservé dans ce navigateur.",
     "maxmindAttribution": "Ce produit inclut les données GeoLite créées par {provider}.",
-    "poweredBy": "Basé sur MyIP",
+    "poweredBy": "Crédits open source",
     "webrtcNote": "Découvrez les adresses réseau révélées aux sites par WebRTC.",
     "dnsNote": "Comparez les résolveurs DNS via plusieurs services indépendants.",
     "connectivityNote": "Mesurez les temps de réponse de vos sites habituels."
