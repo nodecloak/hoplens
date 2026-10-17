@@ -1,7 +1,7 @@
 {
   "ipOrigin": {
-    "native": "Нативный IP (оценка)",
-    "broadcast": "Broadcast IP (оценка)",
+    "native": "Нативный IP",
+    "broadcast": "Broadcast IP",
     "unknown": "Не подтверждено",
     "countries": "ASN {registered} · IP {located}",
     "method": "Сравнение страны регистрации ASN и геолокации IP; ориентировочная оценка.",

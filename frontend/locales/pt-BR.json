@@ -1,7 +1,7 @@
 {
   "ipOrigin": {
-    "native": "IP nativo (referência)",
-    "broadcast": "IP broadcast (referência)",
+    "native": "IP nativo",
+    "broadcast": "IP broadcast",
     "unknown": "Não confirmado",
     "countries": "ASN {registered} · IP {located}",
     "method": "Compara o país de registro do ASN com a geolocalização do IP; apenas referência.",
