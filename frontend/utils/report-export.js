@@ -79,11 +79,12 @@ const SECTION_RENDERERS = {
     ippurity: section => [
         kvLines([['ip', section.ip], ['networkState', section.networkState], ['asn', section.network?.asn], ['network', section.network?.asnName], ['domain', section.network?.domain],
             ['prefix', section.network?.prefix && `${section.network.prefix.address}/${section.network.prefix.length}`], ['range.start', section.network?.range?.start], ['range.end', section.network?.range?.end],
-            ['usageType', section.usageType], ['proxy', section.proxy], ['riskState', section.riskState], ['risk.model', section.risk?.model], ['risk.queriedAt', section.risk?.queriedAt],
+            ['usageType', section.usageType], ['origin.referenceType', section.origin?.type], ['origin.registrationCountry', section.origin?.registrationCountry], ['origin.locationCountry', section.origin?.locationCountry], ['origin.queriedAt', section.origin?.queriedAt], ['proxy', section.proxy], ['riskState', section.riskState], ['risk.model', section.risk?.model], ['risk.queriedAt', section.risk?.queriedAt],
             ['risk.score', section.risk ? section.risk.score ?? 'unavailable' : 'not assessed'], ['risk.scoreKind', section.risk?.scoreKind],
             ['risk.range', section.risk && `${section.risk.range.min}–${section.risk.range.max}`], ['risk.coverage', section.risk && `${section.risk.coverage.checked}/${section.risk.coverage.total}`],
             ['asn.humanPct', section.traffic?.human], ['asn.botPct', section.traffic?.bot]]),
         mdTable(['source', 'status', 'country', 'region', 'city'], section.locations.map(row => [row.name, row.status, row.country || row.countryCode, row.region, row.city])),
+        section.origin ? 'Origin reference: registration country compared with two agreeing geolocation sources; this does not verify physical routing or exclusive use.' : '',
         section.risk ? mdTable(['rule', 'source', 'status', 'hit', 'points', 'maxPoints', 'asOf', 'matchedPrefix', 'copyright', 'suppressedBy'], section.risk.checks.map(row => [row.id, row.source, row.status, row.hit, row.points, row.maxPoints, row.asOf, row.matchedPrefix && `${row.matchedPrefix.address}/${row.matchedPrefix.length}`, row.copyright, row.suppressedBy])) : '',
     ].filter(Boolean).join('\n\n'),
     ipinfo: (section) => {

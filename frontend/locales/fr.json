@@ -1,4 +1,11 @@
 {
+  "ipOrigin": {
+    "native": "IP native (indicatif)",
+    "broadcast": "IP diffusée (indicatif)",
+    "unknown": "À confirmer",
+    "countries": "Enregistrée {registered} · Localisée {located}",
+    "method": "Pays d’enregistrement comparé à deux sources de localisation ; indication sans vérification du routage physique."
+  },
   "user": {
     "SignIn": "Connexion",
     "SignInWithGoogle": "Connexion avec Google",

@@ -1,4 +1,11 @@
 {
+  "ipOrigin": {
+    "native": "原生 IP（参考）",
+    "broadcast": "广播 IP（参考）",
+    "unknown": "待确认",
+    "countries": "注册地 {registered} · 定位 {located}",
+    "method": "注册地与两个定位来源对照，仅供参考，不代表物理路由核验。"
+  },
   "user": {
     "SignIn": "登录",
     "SignInWithGoogle": "使用 Google 登录",

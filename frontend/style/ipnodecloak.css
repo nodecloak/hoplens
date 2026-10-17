@@ -226,6 +226,8 @@ body.hl-app{font-family:Geist,ui-sans-serif,system-ui,sans-serif;background:var(
 .hl-classification-grid svg{width:15px;height:15px}
 .hl-classification-grid strong{font-size:15px;font-weight:500;overflow-wrap:anywhere}
 .hl-classification-grid small{display:block;font-size:11px;color:var(--warning);margin-top:6px}
+.hl-classification-grid.hl-origin-grid{margin-top:12px;grid-template-columns:1fr}
+.hl-origin-card .hl-source-caption{margin-top:8px}
 .hl-purity-card{margin-top:23px;border:1px solid var(--border);background:var(--background);border-radius:14px;padding:22px}
 .hl-purity-card h3{display:flex;align-items:center;gap:8px}
 .hl-purity-card h3 svg{width:17px;height:17px;color:var(--hl-signal)}

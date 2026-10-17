@@ -4,11 +4,18 @@ import assert from 'node:assert/strict';
 import networkHandler from '../api/network-info.js';
 import { createIPRiskHandler } from '../api/ip-risk.js';
 import { createIPClassificationHandler } from '../api/ip-classification.js';
+import { createIPOriginHandler } from '../api/ip-origin.js';
 import { createReportLoader } from '../common/ip-report.js';
 import geoHandler from '../api/ipapi-com.js';
 const originalFetch=globalThis.fetch;
 afterEach(()=>{globalThis.fetch=originalFetch;});
 const response=()=>({statusCode:200,status(code){this.statusCode=code;return this;},json(body){this.body=body;return this;}});
+
+test('origin handler returns the requested public IP comparison without starting scoring',async()=>{
+  const result=response();
+  await createIPOriginHandler({load:async ip=>({ip,type:'unknown',reference:true,basis:'registry-geolocation'})})({query:{ip:'8.8.8.8'}},result);
+  assert.equal(result.body.ip,'8.8.8.8');assert.equal(result.body.type,'unknown');assert.equal(result.body.reference,true);
+});
 
 test('automatic classification uses only its two sources and reuses them in a later assessment',async()=>{
   const calls=[];

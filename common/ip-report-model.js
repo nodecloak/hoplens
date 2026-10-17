@@ -3,6 +3,7 @@ import { parseIp, cidrContains } from './ip-math.js';
 import { isValidDomain } from './valid-ip.js';
 import { isFreshRiskTime } from './ip-risk-score.js';
 import { assessPlatformRegions } from './ip-report-policy.js';
+import { deriveIPOrigin } from './ip-origin.js';
 
 const text=(value,max=160)=>typeof value==='string'?value.trim().slice(0,max):null;
 const integer=value=>Number.isInteger(value)&&value>=0&&value<=1e9?value:null;
@@ -115,6 +116,7 @@ export const buildIPReport=(ip,sources,now=Date.now())=>{
   const usageTypeSource=proxy?.type&&proxy.type!=='unknown'?'proxycheck.io':usageType!=='unknown'?'IP-API':null;
   const countryCode=classification?.countryCode??proxy?.countryCode??network?.location?.countryCode??null;
   const risk=assessReportRisk(sources,now);
+  const origin=deriveIPOrigin(sources,now);
   const ptrRule=rule('ptr','DNS PTR',15,rdns&&typeof rdns.exists==='boolean'?'ok':get('rdns')?.status??'missing',rdns?rdns.exists===false:null,{asOf:get('rdns')?.observedAt??null});
   const scenarios=Object.entries(SCENARIO_WEIGHTS).map(([id,weights])=>{
     const subset=[...risk.checks,ptrRule].map(row=>({...row,maxPoints:weights[row.id]??0})).filter(row=>row.maxPoints>0);
@@ -126,7 +128,7 @@ export const buildIPReport=(ip,sources,now=Date.now())=>{
   return {ip,model:risk.model,generatedAt:new Date(now).toISOString(),
     profile:{countryCode,country:classification?.country??proxy?.country??network?.location?.country??null,region:classification?.region??proxy?.region??null,city:classification?.city??proxy?.city??null,
       asn:network?.asn??null,asnName:network?.asnName??null,domain:network?.domain??null,prefix:network?.prefix??null,range:network?.range??null,
-      registration,registrationRelation:registration?.countryCode&&countryCode?registration.countryCode===countryCode?'same':'different':'unknown',nativeType:'unknown',
+      registration,registrationRelation:registration?.countryCode&&countryCode?registration.countryCode===countryCode?'same':'different':'unknown',nativeType:origin.type,origin,
       type:usageType,
       rdns,sharing:proxy&&proxy.subnetDevices!==null?{count:proxy.subnetDevices,subnet:proxy.subnet,source:'proxycheck.io',providerUpdatedAt:proxy.providerUpdatedAt}:null},
     risk:{...risk,usageType,usageTypeSource},scenarios,platforms:assessPlatformRegions(countryCode,now),
@@ -139,6 +141,7 @@ export const reportToText=report=>[
   `IP.NodeCloak IP assessment\n${report.ip}\n${report.generatedAt}\nModel: ${report.model}`,
   `Risk: ${report.risk.score??'unavailable'} /100 (higher means more observed risk signals)\nScore basis: ${report.risk.scoreKind}\nRisk range: ${report.risk.range.min}-${report.risk.range.max} /100\nCoverage: ${report.risk.coverage.checked}/${report.risk.coverage.total}`,
   `Profile\n${JSON.stringify(report.profile,null,2)}`,
+  'Origin reference: registration country compared with two agreeing geolocation sources. This does not verify physical routing or exclusive use.',
   'Scenarios\n'+report.scenarios.map(row=>`${row.id}: ${row.score??'unavailable'} /100; basis=${row.scoreKind}; range=${row.range.min}-${row.range.max}; coverage=${row.coverage.checked}/${row.coverage.total}; ${row.level}`).join('\n'),
   'Regional policy snapshots\n'+report.platforms.map(row=>`${row.id}: ${row.status}; ${row.reviewedAt}; ${row.source}`).join('\n'),
   'Evidence\n'+report.evidence.map(row=>`${row.id}: ${row.status}; observed=${row.hit}; points=${row.points}; source=${row.source}; asOf=${row.asOf??'unknown'}`).join('\n'),

@@ -71,6 +71,10 @@ behind `dns-resolver` (gated by `tests/dns-resolvers-data.test.js`).
   `/api/ip-classification` loads just IP-API/proxycheck network classification
   automatically for the homepage; it shares the report provider caches without
   running risk checks. Risk assessment remains an explicit user action.
+  `/api/ip-origin` independently reuses RDAP/IP-API/proxycheck observations.
+  It compares registration country with two agreeing location countries and
+  returns a qualified native/broadcast reference. Missing, stale or conflicting
+  evidence stays unknown; it does not verify physical routing or affect scores.
   `common/ip-report.js` bounds/coalesces provider caches and deadlines; snapshot
   matching is current on every request. Optional credentials stay server-side.
 

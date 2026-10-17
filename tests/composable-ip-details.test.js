@@ -25,7 +25,7 @@ test('IP detail source failures stay independent and unconfigured sources never 
     assert.equal(state.locations.value.find(row=>row.id==='ipsb').status,'ok');
     assert.equal(state.locations.value.find(row=>row.id==='ipinfo').status,'disabled');
     assert.equal(state.classification.value.hosting,false);
-    assert.equal(urls.length,4);
+    assert.equal(urls.length,5);
     assert.equal(state.riskState.value,'pending');
     assert.equal(urls.some(url=>url.includes('ip-risk')),false);
   } finally {state.scope.stop();}
@@ -101,4 +101,20 @@ test('manual risk assessment preserves incomplete evidence and valid zero scores
     status='ok';await state.requestRisk();assert.equal(state.risk.value.score,0);
     state.scope.stop();await state.requestRisk();assert.equal(riskCalls,2);
   } finally {state.scope.stop();}
+});
+
+test('origin is independent, rejects the wrong IP and ignores late results after an IP change',async()=>{
+  let finish;
+  const state=setup({getTrace:async()=>({}),getJSON:async url=>{
+    if(url.includes('ip-origin')&&url.includes('8.8.8.8'))return new Promise(resolve=>{finish=resolve;});
+    if(url.includes('ip-origin'))return {ip:'9.9.9.9',type:'native'};
+    return {ip:'8.8.8.8',usageType:'business'};
+  }});
+  try {
+    await flush();assert.equal(state.originState.value,'loading');assert.equal(state.classification.value.usageType,'business');
+    state.ip.value='1.1.1.1';await flush();
+    assert.equal(state.originState.value,'unavailable');
+    finish({ip:'8.8.8.8',type:'broadcast'});await flush();
+    assert.equal(state.origin.value,null);assert.equal(state.originState.value,'unavailable');
+  }finally{state.scope.stop();}
 });

@@ -27,7 +27,7 @@ const sameIP=(a,b)=>{const x=parseIp(a),y=parseIp(b);return !!x&&!!y&&x.family==
 const mergeProxy=(previous,incoming)=>previous===true||incoming===true?true:previous===false||incoming===false?false:null;
 
 export const useIPDetails=(ip,configs,{getJSON=readJSON,getTrace=readTrace}={})=>{
-  const network=shallowRef(null),locations=ref([]),classification=ref({}),traffic=ref(null),risk=ref(null);
+  const network=shallowRef(null),locations=ref([]),classification=ref({}),traffic=ref(null),risk=ref(null),origin=ref(null),originState=ref('pending');
   const networkState=ref('pending'),trafficState=ref('disabled'),riskState=ref('pending'),revision=ref(0);
   let controller=null;
   const updateRow=(id,patch)=>{locations.value=locations.value.map(row=>row.id===id?{...row,...patch}:row);};
@@ -36,12 +36,18 @@ export const useIPDetails=(ip,configs,{getJSON=readJSON,getTrace=readTrace}={})=
     const current=new AbortController();controller=current;
     const {signal}=current;
     onCleanup(()=>current.abort());
-    network.value=null;classification.value={};traffic.value=null;risk.value=null;riskState.value='pending';
+    network.value=null;classification.value={};traffic.value=null;risk.value=null;riskState.value='pending';origin.value=null;originState.value='pending';
     networkState.value=isUsablePublicIP(selected)?'loading':'pending';
     trafficState.value=settings?.cloudFlare?'pending':'disabled';
     locations.value=sources.map(source=>({...source,status:source.config&&!settings?.[source.config]?'disabled':networkState.value,location:null}));
     if(!isUsablePublicIP(selected)) return;
     const query=encodeURIComponent(selected);
+    originState.value='loading';
+    getJSON(`/api/ip-origin?ip=${query}`,signal,12000).then(body=>{
+      if(signal.aborted) return;
+      if(!sameIP(body.ip,selected)) throw Error('Mismatched origin IP');
+      origin.value=body;originState.value='ok';
+    }).catch(()=>{if(!signal.aborted) originState.value='unavailable';});
     getJSON(`/api/ip-classification?ip=${query}`,signal).then(body=>{
       if(signal.aborted||!sameIP(body.ip,selected)) return;
       classification.value={...classification.value,...body,proxy:mergeProxy(classification.value.proxy,body.proxy)};
@@ -94,5 +100,5 @@ export const useIPDetails=(ip,configs,{getJSON=readJSON,getTrace=readTrace}={})=
     } catch {if(!current.signal.aborted) riskState.value='unavailable';}
   };
   onScopeDispose(()=>controller?.abort());
-  return {network,locations,classification,traffic,risk,networkState,trafficState,riskState,refresh:()=>revision.value++,requestRisk};
+  return {network,locations,classification,traffic,risk,origin,originState,networkState,trafficState,riskState,refresh:()=>revision.value++,requestRisk};
 };
