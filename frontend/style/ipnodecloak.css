@@ -225,7 +225,6 @@ body.hl-app{font-family:Geist,ui-sans-serif,system-ui,sans-serif;background:var(
 .hl-classification-grid>div>span{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:12px;color:var(--muted-foreground);margin-bottom:15px}
 .hl-classification-grid svg{width:15px;height:15px;flex-shrink:0}
 .hl-classification-grid strong{font-size:15px;font-weight:500;overflow-wrap:anywhere}
-.hl-classification-grid small{display:block;font-size:11px;color:var(--warning);margin-top:6px}
 .hl-origin-value{display:flex;align-items:center;gap:6px}
 .hl-origin-value strong{min-width:0}
 .hl-origin-info-trigger{width:22px;height:24px;min-width:22px;padding:3px;border-radius:50%;color:var(--muted-foreground);flex-shrink:0}
