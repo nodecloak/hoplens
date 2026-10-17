@@ -4,9 +4,9 @@
     "broadcast": "Broadcast IP",
     "unknown": "Unconfirmed",
     "countries": "ASN {registered} · IP {located}",
-    "method": "Compares ASN registration and IP geolocation countries; reference only.",
     "legacyMethod": "Registration country compared with two location sources; a reference, not physical routing verification.",
-    "legacyCountries": "Registered {registered} · Located {located}"
+    "legacyCountries": "Registered {registered} · Located {located}",
+    "details": "View IP origin details"
   },
   "user": {
     "SignIn": "Sign In",

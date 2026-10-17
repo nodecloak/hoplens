@@ -4,9 +4,9 @@
     "broadcast": "IP broadcast",
     "unknown": "Não confirmado",
     "countries": "ASN {registered} · IP {located}",
-    "method": "Compara o país de registro do ASN com a geolocalização do IP; apenas referência.",
     "legacyMethod": "País de registro comparado com duas fontes de localização; referência, sem verificar o roteamento físico.",
-    "legacyCountries": "Registro {registered} · Localização {located}"
+    "legacyCountries": "Registro {registered} · Localização {located}",
+    "details": "Ver detalhes da origem do IP"
   },
   "user": {
     "SignIn": "Entrar",

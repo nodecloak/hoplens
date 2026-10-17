@@ -4,9 +4,9 @@
     "broadcast": "Broadcast IP",
     "unknown": "Не подтверждено",
     "countries": "ASN {registered} · IP {located}",
-    "method": "Сравнение страны регистрации ASN и геолокации IP; ориентировочная оценка.",
     "legacyMethod": "Страна регистрации сопоставляется с двумя источниками геолокации; это ориентир, а не проверка физической маршрутизации.",
-    "legacyCountries": "Регистрация {registered} · Геолокация {located}"
+    "legacyCountries": "Регистрация {registered} · Геолокация {located}",
+    "details": "Подробности происхождения IP"
   },
   "user": {
     "SignIn": "Войти",

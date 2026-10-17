@@ -4,9 +4,9 @@
     "broadcast": "IP diffusée",
     "unknown": "À confirmer",
     "countries": "ASN {registered} · IP {located}",
-    "method": "Compare les pays d’enregistrement de l’ASN et de localisation de l’IP ; à titre indicatif.",
     "legacyMethod": "Pays d’enregistrement comparé à deux sources de localisation ; indication sans vérification du routage physique.",
-    "legacyCountries": "Enregistrée {registered} · Localisée {located}"
+    "legacyCountries": "Enregistrée {registered} · Localisée {located}",
+    "details": "Voir les détails de l’origine IP"
   },
   "user": {
     "SignIn": "Connexion",

@@ -20,9 +20,7 @@
         <div class="hl-geography-block"><h3>{{ t('ipDetails.locations') }}</h3><p class="hl-source-caption">{{ t('ipDetails.locationNote') }}</p><dl class="hl-location-list"><div v-for="source in locations" :key="source.id"><dt>{{ source.name }}</dt><dd v-if="source.status==='ok'&&source.location"><Icon v-if="source.location.countryCode" :icon="'circle-flags:'+source.location.countryCode.toLowerCase()" class="size-4 shrink-0"/><span>{{ locationText(source.location) }}<small v-if="source.countryOnly"> · {{ t('ipDetails.countryOnly') }}</small></span></dd><dd v-else class="hl-detail-empty">{{ statusLabel(source.status) }}</dd></div></dl></div>
       </div>
       <aside class="hl-reputation-column">
-        <div class="hl-classification-grid"><div><span><Network />{{ t('ipDetails.type') }}</span><strong>{{ t('ipDetails.'+usage) }}</strong><small v-if="usage!=='unknown'">{{ risk?.usageTypeSource || classification.usageTypeSource || 'IP-API' }}</small></div><div><span><Route />{{ t('ipRisk.proxyMarker') }}</span><strong>{{ t(proxyFlag===true?'ipDetails.proxy':proxyFlag===false?'ipRisk.noProxyMarker':'ipDetails.unknown') }}</strong></div><div class="hl-origin-card"><span><MapPin />{{ t('ipDetails.origin') }}</span><strong>{{ t(originState==='loading'?'ipDetails.loading':'ipOrigin.'+(origin?.type||'unknown')) }}</strong></div></div>
-        <p v-if="origin?.registrationCountry&&origin?.locationCountry" class="hl-source-caption hl-origin-countries">{{ t('ipOrigin.countries',{registered:origin.registrationCountry,located:origin.locationCountry}) }}<template v-if="origin.asn"> · AS{{ origin.asn }}</template></p>
-        <p class="hl-source-caption hl-origin-method">{{ t('ipOrigin.method') }}</p>
+        <div class="hl-classification-grid"><div><span><Network />{{ t('ipDetails.type') }}</span><strong>{{ t('ipDetails.'+usage) }}</strong><small v-if="usage!=='unknown'">{{ risk?.usageTypeSource || classification.usageTypeSource || 'IP-API' }}</small></div><div><span><Route />{{ t('ipRisk.proxyMarker') }}</span><strong>{{ t(proxyFlag===true?'ipDetails.proxy':proxyFlag===false?'ipRisk.noProxyMarker':'ipDetails.unknown') }}</strong></div><div class="hl-origin-card"><span><MapPin />{{ t('ipDetails.origin') }}</span><div class="hl-origin-value"><strong>{{ t(originState==='loading'?'ipDetails.loading':'ipOrigin.'+(origin?.type||'unknown')) }}</strong><IPNodeCloakOriginInfo v-if="origin?.registrationCountry&&origin?.locationCountry" :origin="origin" /></div></div></div>
         <IPNodeCloakRiskScore :ip="ip" :result="risk" :state="riskState" :valid="valid" @check="requestRisk" />
       </aside>
     </div>
@@ -36,6 +34,7 @@ import { useIPDetails } from '@/composables/use-ip-details.js';
 import { isUsablePublicIP } from '@/utils/valid-ip.js';
 import { emitAppEvent } from '@/utils/app-events.js';
 import IPNodeCloakRiskScore from './IPNodeCloakRiskScore.vue';
+import IPNodeCloakOriginInfo from './IPNodeCloakOriginInfo.vue';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@iconify/vue';
 import { ArrowUpRight, RefreshCw, Route, Network, MapPin } from '@lucide/vue';

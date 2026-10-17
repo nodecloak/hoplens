@@ -143,8 +143,11 @@ Every "business state → color" mapping goes through `use-status-tone.js`
   the section. Sharing never triggers scoring. Prefix addresses and range
   endpoints use IP schema fields so every export honors tail masking.
   Native/broadcast origin is an independently loaded ASN-registration/geolocation
-  reference. Labels use plain native/broadcast wording; keep the method visible in cards, assessments and
-  shared exports; unknown or conflicting evidence must never imply native IP.
+  reference. Labels use plain native/broadcast wording. The circular alert icon
+  beside the label opens country/ASN details on click; no explanatory paragraph
+  appears below the homepage cards. Keep method metadata in exports and the
+  original explanation on legacy shared snapshots. Missing or ambiguous ASN
+  data must never imply native IP.
 - **Input + icon trigger** — flex row, compact icon Button, no text label (QueryIP).
 - **AutoFill-proof inputs** — all six on every free-form Input: `autocomplete`
   / `autocorrect` / `autocapitalize="off"`, `spellcheck="false"`,
