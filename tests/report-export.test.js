@@ -198,6 +198,6 @@ describe('reportToMarkdown', () => {
 
 describe('reportFileName', () => {
     it('derives a dated json filename from generatedAt', () => {
-        assert.equal(reportFileName('2026-07-14T08:00:00.000Z'), 'myip-report-2026-07-14.json');
+        assert.equal(reportFileName('2026-07-14T08:00:00.000Z'), 'ipnodecloak-report-2026-07-14.json');
     });
 });

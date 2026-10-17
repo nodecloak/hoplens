@@ -237,7 +237,7 @@ export const reportToMarkdown = (report, t, { masked = false } = {}) => {
 // --- JSON download --------------------------------------------------------------
 
 export const reportFileName = (generatedAt) =>
-    `myip-report-${String(generatedAt).slice(0, 10)}.json`;
+    `ipnodecloak-report-${String(generatedAt).slice(0, 10)}.json`;
 
 export const downloadReportJson = (report) => {
     const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });

@@ -176,7 +176,7 @@ export function useScreenshot() {
             // Restore DOM before opening share sheet / triggering download,
             // so the page behind the iOS share sheet shows the normal UI.
             while (cleanups.length) cleanups.pop()();
-            await deliverImage(dataUrl, filename || `myip-${Date.now()}.png`);
+            await deliverImage(dataUrl, filename || `ipnodecloak-${Date.now()}.png`);
             return true;
         } catch (err) {
             console.error('Screenshot failed:', err);

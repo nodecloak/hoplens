@@ -15,7 +15,7 @@
                 </span>
             </div>
             <div class="shrink-0 flex items-center gap-1" data-screenshot-exclude>
-                <ScreenshotButton filename-prefix="myip" :filename-label="card.source"
+                <ScreenshotButton filename-prefix="ipnodecloak" :filename-label="card.source"
                     :track-label="card.source || 'unknown'" :disabled="!hasData"
                     :tooltip-text="t('Tooltips.SaveAsImage')" :aria-label="'Save ' + card.source + ' as image'" />
                 <JnTooltip :text="t('Tooltips.RefreshIPCard')" side="left">

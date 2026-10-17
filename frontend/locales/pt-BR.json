@@ -221,14 +221,14 @@
     "AskIPilot": "Perguntar ao IPilot",
     "OpenDocs": "Abrir documentação",
     "DocsGreetingTitle": "Como posso ajudar?",
-    "DocsGreetingSubtitle": "Pergunte qualquer coisa sobre o MyIP — as ferramentas, seus resultados ou auto-hospedagem.",
+    "DocsGreetingSubtitle": "Pergunte qualquer coisa sobre o IP.NodeCloak — as ferramentas, seus resultados ou auto-hospedagem.",
     "DocsQuestions": [
       "Minha VPN está vazando meu IP real?",
       "Por que a localização do meu IP está errada?",
       "Compare meus resultados do teste WebRTC e do teste de vazamento de DNS e me dê sugestões",
       "Como leio resultados de MTR?",
-      "Como faço para hospedar meu próprio MyIP?",
-      "Quero patrocinar o projeto MyIP"
+      "Como faço para hospedar meu próprio IP.NodeCloak?",
+      "Quero patrocinar o projeto IP.NodeCloak"
     ],
     "pulse": {
       "title": "Earth Online",
@@ -1316,8 +1316,8 @@
     "CopiedTitle": "Copiado",
     "CopiedMessage": "Relatório copiado — cole-o em qualquer assistente de IA.",
     "ai": {
-      "Heading": "Relatório diagnóstico de rede MyIP",
-      "Intro": "Este relatório foi gerado pelo MyIP ({origin}) em {time}, a partir de testes de rede executados no navegador do usuário. Os nomes dos campos são identificadores estáveis de esquema; todos os valores de latência estão em milissegundos.",
+      "Heading": "Relatório diagnóstico de rede IP.NodeCloak",
+      "Intro": "Este relatório foi gerado pelo IP.NodeCloak ({origin}) em {time}, a partir de testes de rede executados no navegador do usuário. Os nomes dos campos são identificadores estáveis de esquema; todos os valores de latência estão em milissegundos.",
       "Masked": "Observação: os IPs estão parcialmente mascarados por privacidade (IPv4: último octeto; IPv6: metade de interface; exibidos como \"x\").",
       "Instruction": "Com base nos dados acima, analise a saúde desta rede. Aponte anomalias (vazamentos de DNS, exposição WebRTC, traços de proxy/VPN, perda de pacotes, alta latência, problemas de roteamento) e dê sugestões concretas de solução.",
       "Sections": {
@@ -1858,7 +1858,7 @@
   "page": {
     "title": "IP.NodeCloak — IP & network toolbox",
     "description": "Uma caixa de ferramentas de IP melhor e de código aberto: verifique seu IP e sua geolocalização, teste vazamentos de IP por WebRTC e DNS, faça uma verificação de qualidade de IP, verifique a impressão digital do navegador, além de teste de velocidade, teste de latência global, teste MTR, pesquisa Whois e muito mais.",
-    "keywords": "MyIP, ferramenta de IP, verificar IP, teste de vazamento de IP, verificação de qualidade de IP, consulta de IP, teste de vazamento de DNS, teste de vazamento WebRTC, verificação de impressão digital do navegador, teste de velocidade, teste de latência global, teste MTR, consulta DNS, pesquisa Whois",
+    "keywords": "IP.NodeCloak, ferramenta de IP, verificar IP, teste de vazamento de IP, verificação de qualidade de IP, consulta de IP, teste de vazamento de DNS, teste de vazamento WebRTC, verificação de impressão digital do navegador, teste de velocidade, teste de latência global, teste MTR, consulta DNS, pesquisa Whois",
     "footerLink": "https://github.com/nodecloak/ipnodecloak",
     "copyRightName": "Originalmente de ",
     "copyRightLink": "https://ipcheck.ing",
@@ -1883,7 +1883,7 @@
     ],
     "contactTitle": "Fale conosco",
     "contact": [
-      "Se tiver dificuldades para usar o IPCheck.ing ou implantar o projeto MyIP, acesse primeiro a \"Central de ajuda\". Se não encontrar a resposta e continuar travado, abra uma issue no GitHub ou fale conosco por e-mail.",
+      "Se tiver dificuldades para usar o IPCheck.ing ou implantar o projeto IP.NodeCloak, acesse primeiro a \"Central de ajuda\". Se não encontrar a resposta e continuar travado, abra uma issue no GitHub ou fale conosco por e-mail.",
       "E, se encontrar um bug e gostar de programar (ou programar com IA), será muito bem-vindo enviar um PR com a correção.",
       "Nosso e-mail: i[AT]ipcheck.ing."
     ],
@@ -1959,7 +1959,7 @@
     "startSpeed": "Testar velocidade",
     "footerNote": "Seu histórico de IP fica neste navegador.",
     "maxmindAttribution": "Este produto inclui dados GeoLite criados pela {provider}.",
-    "poweredBy": "Baseado no MyIP",
+    "poweredBy": "Créditos de código aberto",
     "webrtcNote": "Veja os endereços de rede que o WebRTC revela aos sites.",
     "dnsNote": "Compare endereços de resolvedores DNS em serviços independentes.",
     "connectivityNote": "Meça o tempo de resposta dos sites que você usa."
