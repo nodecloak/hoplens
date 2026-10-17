@@ -1,7 +1,7 @@
 {
   "ipOrigin": {
-    "native": "原生 IP（参考）",
-    "broadcast": "广播 IP（参考）",
+    "native": "原生 IP",
+    "broadcast": "广播 IP",
     "unknown": "待确认",
     "countries": "ASN {registered} · IP {located}",
     "method": "对比 ASN 注册国家与 IP 归属国家，结果仅供参考。",
